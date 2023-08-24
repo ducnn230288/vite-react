@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect } from 'react';
-import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
+import { HashRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
 
 import { Spin } from 'antd';
 import { keyUser, routerLinks, language, languages } from '@utils';
@@ -162,7 +162,7 @@ const Page = ({
 const Pages = () => {
   const lang = languages.indexOf(location.pathname.split('/')[1]) > -1 ? location.pathname.split('/')[1] : language;
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path={'/:lang'}>
           {pages.map(({ layout, isPublic, child }, index) => (
@@ -193,7 +193,7 @@ const Pages = () => {
         </Route>
         <Route path="*" element={<Navigate to={'/' + lang + '/'} />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 
