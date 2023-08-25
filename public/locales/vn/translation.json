@@ -70,6 +70,8 @@
     "Post": "Post"
   },
   "pages": {
+    "ForgetPassword": "Quên mật khẩu",
+    "SetPassword": "Đặt lại mật khẩu",
     "Login": "Đăng nhập",
     "Dashboard": "Tra cứu dữ liệu",
     "User": "Người Dùng",
@@ -133,8 +135,15 @@
         "Recovery Email": "Email khôi phục",
         "Enter Recovery Email": "Email khôi phục",
         "title": "Đặt lại mật khẩu",
-        "Submit": "Gửi đi",
-        "Back To Login": "Quay lại đăng nhập"
+        "Submit": "Đổi mật khẩu",
+        "subTitle": "Vui lòng nhập e-mail của bạn. Mã xác minh OTP sẽ được gửi cho bạn",
+        "OTP": "Lấy Mã OTP",
+        "Go back to login": "Quay trở lại đăng nhập",
+        "subEmail": "Vui lòng nhập mã OTP đã gửi đến email của bạn",
+        "Code OTP": "Mã OTP",
+        "Send code": "Gửi mã OTP",
+        "subReset": "Mật khẩu yêu cầu có 8 kí tự trở lên, có ít nhất 1 chữ hoa, 1 chữ thường,",
+        "subReset1": "1 chữ số và 1 kí tự đặc biệt."
       }
     },
     "admin": {
@@ -157,6 +166,7 @@
         "Pagination": "Hiển thị {{from}} - {{to}} /Tổng số {{total}} danh mục",
         "DayOff": "Hiển thị {{from}} - {{to}} /Tổng số {{total}} yêu cầu",
         "User": "Hiển thị {{from}} - {{to}} /Tổng số {{total}} người dùng",
+        "Change Password": "Đổi mật khẩu",
         "Day": "Ngày phép"
       },
       "user": {

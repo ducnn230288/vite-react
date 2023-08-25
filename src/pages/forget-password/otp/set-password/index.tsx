@@ -20,15 +20,21 @@ const Page = () => {
   const { search } = useLocation();
   return (
     <Fragment>
-      <div className="mb-8">
-        <h1 className="intro-x text-4xl mb-3 font-bold" id={'title-login'}>
+      <div className="text-center mb-8 mx-auto">
+        <h1
+          className="intro-x text-3xl mb-10 font-bold text-green-900 leading-8 md:text-5xl lg:leading-10"
+          id={'title-login'}
+        >
           {t('routes.auth.reset-password.title')}
         </h1>
-        <h5 className="intro-x font-medium text-gray-300">{t('routes.auth.login.subTitle')}</h5>
+        <h5 className="intro-x font-normal text-green-900">
+          {t('routes.auth.reset-password.subReset')}
+          <br></br> {t('routes.auth.reset-password.subReset1')}
+        </h5>
       </div>
       <Spin spinning={isLoading}>
         <Form
-          className="intro-x"
+          className="intro-x form-login"
           columns={[
             {
               name: 'password',
@@ -45,7 +51,22 @@ const Page = () => {
               formItem: {
                 placeholder: 'columns.auth.register.retypedPassword',
                 type: 'password',
-                rules: [{ type: 'required' }, { type: 'min', value: 6 }],
+                rules: [
+                  { type: 'required' },
+                  { type: 'min', value: 6 },
+                  {
+                    type: 'custom',
+                    validator: ({ getFieldValue }) => ({
+                      validator(rule, value: string) {
+                        const errorMsg = t('columns.auth.placeholder.subConfirm');
+                        if (!value || getFieldValue('password') === value) {
+                          return Promise.resolve();
+                        }
+                        return Promise.reject(new Error(errorMsg));
+                      },
+                    }),
+                  },
+                ],
               },
             },
           ]}

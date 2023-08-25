@@ -2,21 +2,21 @@ import React from 'react';
 
 import { keyRole } from '@utils';
 import './index.less';
-import { Chart, Cog, User } from '@svgs';
+import { Calendar, Cog, User } from '@svgs';
 
 const Layout = [
   {
-    icon: <Chart className="h-8 w-8" />,
+    icon: <Calendar className="h-6 w-6" />,
     name: 'Dashboard',
   },
   {
-    icon: <User className="h-8 w-8" />,
+    icon: <User className="h-6 w-6" />,
     name: 'User',
     permission: keyRole.P_USER_LISTED,
     queryParams: { filter: '{"roleCode":"staff"}' },
   },
   {
-    icon: <Cog className="h-8 w-8" />,
+    icon: <Cog className="h-6 w-6" />,
     name: 'Setting',
     child: [
       {

@@ -1,18 +1,15 @@
-import React, { Fragment, PropsWithChildren, useEffect, useState } from 'react';
-import { Dropdown, Select } from 'antd';
+import React, { PropsWithChildren, useEffect, useState, Fragment } from 'react';
+import { Dropdown } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import classNames from 'classnames';
 import { useLocation } from 'react-router-dom';
-// import { initializeApp } from 'firebase/app';
-// import { getMessaging, isSupported, getToken, onMessage } from 'firebase/messaging';
-import { routerLinks, language, languages } from '@utils';
 import { Avatar } from '@core/avatar';
-import { GlobalFacade, TLanguage } from '@store';
-import Menu from './menu';
-// import { firebaseConfig } from 'variable';
+import { GlobalFacade } from '@store';
+import { Key, Out, User, Arrow, Logo } from '@svgs';
+import { routerLinks, language, languages } from '@utils';
 import './index.less';
-import { Logo, Arrow } from '@svgs';
+import Menu from './menu';
 
 const Layout = ({ children }: PropsWithChildren) => {
   const { t } = useTranslation();
@@ -23,7 +20,7 @@ const Layout = ({ children }: PropsWithChildren) => {
   const location = useLocation();
 
   const [isCollapsed, set_isCollapsed] = useState(window.innerWidth < 1025);
-  const [isDesktop, set_isDesktop] = useState(window.innerWidth > 767);
+  const [isDesktop, set_isDesktop] = useState(window.innerWidth > 640);
   const lang = languages.indexOf(location.pathname.split('/')[1]) > -1 ? location.pathname.split('/')[1] : language;
 
   useEffect(() => {
@@ -38,7 +35,7 @@ const Layout = ({ children }: PropsWithChildren) => {
       if (window.innerWidth < 1025 && !isCollapsed) {
         set_isCollapsed(true);
       }
-      set_isDesktop(window.innerWidth > 767);
+      set_isDesktop(window.innerWidth > 640);
     }
     window.addEventListener('resize', handleResize, { passive: true });
 
@@ -84,86 +81,92 @@ const Layout = ({ children }: PropsWithChildren) => {
   const Header = ({ isCollapsed, isDesktop }: { isCollapsed: boolean; isDesktop: boolean }) => (
     <header
       className={classNames(
-        'bg-blue-50 w-full header h-20 transition-all duration-300 ease-in-out sticky top-0 block z-20',
+        'bg-white w-full h-16 transition-all duration-300 ease-in-out top-0 block sm:bg-gray-100 z-20 fixed lg:relative',
         {
-          'pl-60': !isCollapsed && isDesktop,
+          'pl-64': !isCollapsed && isDesktop,
           'pl-32': isCollapsed && isDesktop,
           'pl-28': !isDesktop,
         },
       )}
     >
-      <div className="flex items-center justify-end sm:justify-between px-5 h-20">
-        <div>
-          <h1 className={'text-xl font-bold hidden sm:block'}>{t('pages.' + title, titleOption || {})}</h1>
+      <div className="flex items-center justify-end sm:justify-between px-5 h-16">
+        {title !== 'Dashboard' && (
+          <div>
+            <h1 className={'text-xl font-bold hidden sm:block'}>{t('pages.' + title, titleOption || {})}</h1>
 
-          <div className={'hidden sm:flex items-center text-xs mt-0.5'}>
-            {breadcrumbs?.map((item, i) => (
-              <Fragment key={i}>
-                <span className={classNames({ 'text-gray-400': i < breadcrumbs.length - 1 })}>
-                  {t(item.title, titleOption || {})}
-                </span>{' '}
-                {i < breadcrumbs.length - 1 && <Arrow className={'w-2.5 h-2.5 mx-1.5'} />}
-              </Fragment>
-            ))}
+            <div className={'hidden sm:flex items-center text-xs mt-0.5'}>
+              {breadcrumbs?.map((item, i) => (
+                <Fragment key={i}>
+                  <span className={classNames({ 'text-gray-400': i < breadcrumbs.length - 1 })}>
+                    {t(item.title, titleOption || {})}
+                  </span>{' '}
+                  {i < breadcrumbs.length - 1 && <Arrow className={'w-2.5 h-2.5 mx-1.5'} />}
+                </Fragment>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
-        <div className="flex items-center gap-5">
-          <label>
-            <Select
-              aria-hidden="true"
-              value={globalFacade?.language}
-              onChange={(e: TLanguage) => globalFacade.setLanguage(e)}
-            >
-              <Select.Option value="en">
-                <img
-                  width={'16'}
-                  height={'16'}
-                  src="/assets/svg/en.svg"
-                  alt="US"
-                  className="mr-1 w-4 inline-block relative -top-0.5"
-                />{' '}
-                {t('routes.admin.Layout.English')}
-              </Select.Option>
-              <Select.Option value="vn">
-                <img
-                  width={'16'}
-                  height={'16'}
-                  src="/assets/svg/vn.svg"
-                  alt="VN"
-                  className="mr-1 w-4 inline-block relative -top-0.5"
-                />{' '}
-                {t('routes.admin.Layout.Vietnam')}
-              </Select.Option>
-            </Select>
-          </label>
-
+        <div className="flex items-center gap-5 absolute right-6">
           <Dropdown
-            trigger={['hover', 'click']}
+            trigger={['click']}
             menu={{
               items: [
                 {
                   key: '0',
+                  className: 'hover:!bg-white !border-b-slate-300 border-b !rounded-none',
                   label: (
-                    <div className="leading-none my-1">
-                      <div className="font-bold text-black text-lg leading-snug mb-0.5">{user?.name}</div>
-                      <div className="text-gray-600">{user?.email}</div>
+                    <div className="flex">
+                      <Avatar src={user?.avatar || ''} size={8} />
+                      <div className="text-left leading-none mr-3 block pl-2">
+                        <div className="font-semibold text-black text-sm leading-snug mb-0.5">{user?.name}</div>
+                        <div className="text-gray-500 text-[10px]">{user?.email}</div>
+                      </div>
                     </div>
                   ),
                 },
                 {
                   key: '1',
+                  className: 'h-11',
                   label: (
-                    <div onClick={() => navigate(`/${lang}${routerLinks('MyProfile')}`, { replace: true })}>
-                      {t('routes.admin.Layout.My Profile')}
+                    <div
+                      className="flex"
+                      onClick={() => navigate(`/${lang}${routerLinks('MyProfile')}?tab=1`, { replace: true })}
+                    >
+                      <div className="flex items-center">
+                        <User className="w-6 h-6 pr-2 text-black" />
+                      </div>
+                      <div>{t('routes.admin.Layout.My Profile')}</div>
                     </div>
                   ),
                 },
                 {
                   key: '2',
+                  className: 'h-11 !border-b-slate-300 border-b !rounded-none',
                   label: (
-                    <div onClick={() => navigate(`/${lang}${routerLinks('Login')}`, { replace: true })}>
-                      {t('routes.admin.Layout.Sign out')}
+                    <div
+                      className="flex"
+                      onClick={() => navigate(`/${lang}${routerLinks('MyProfile')}?tab=2`, { replace: true })}
+                    >
+                      <div className="flex items-center">
+                        <Key className="w-6 h-6 pr-2 text-black" />
+                      </div>
+                      <div>{t('routes.admin.Layout.Change Password')}</div>
+                    </div>
+                  ),
+                },
+                {
+                  key: '3',
+                  className: 'h-11',
+                  label: (
+                    <div
+                      className="flex"
+                      onClick={() => navigate(`/${lang}${routerLinks('Login')}`, { replace: true })}
+                    >
+                      <div className="flex items-center">
+                        <Out className="w-6 h-6 pr-2 text-black" />
+                      </div>
+                      <div>{t('routes.admin.Layout.Sign out')}</div>
                     </div>
                   ),
                 },
@@ -171,8 +174,8 @@ const Layout = ({ children }: PropsWithChildren) => {
             }}
             placement="bottomRight"
           >
-            <section className="flex items-center image-shine" id={'dropdown-profile'}>
-              <Avatar src="/assets/images/avatar.jpeg" size={10} />
+            <section className="flex items-center !rounded-full" id={'dropdown-profile'}>
+              <Avatar src={user?.avatar || ''} size={10} />
             </section>
           </Dropdown>
         </div>
@@ -182,28 +185,57 @@ const Layout = ({ children }: PropsWithChildren) => {
   return (
     <main>
       <div className="leading-5 leading-10" />
-      <Header isCollapsed={isCollapsed} isDesktop={isDesktop} />
+      <div className="h-16 relative">
+        <div className="absolute top-0 left-0 right-0">
+          <Header isCollapsed={isCollapsed} isDesktop={isDesktop} />
+        </div>
+      </div>
       <div
         className={classNames(
-          'flex items-center justify-between text-gray-800 hover:text-gray-600 h-20 fixed top-0 left-0 px-5 font-bold transition-all duration-300 ease-in-out z-20',
+          'flex items-center justify-between bg-white sm:bg-teal-900 text-gray-800 hover:text-gray-500 h-16 fixed top-0 left-0 pr-5 pl-[14px] font-bold transition-all duration-300 ease-in-out rounded-tr-3xl z-20',
           {
-            'w-60': !isCollapsed && isDesktop,
-            'w-20': isCollapsed,
-            'bg-blue-100': isDesktop,
-            'bg-blue-50': !isDesktop,
+            'w-64': !isCollapsed && isDesktop,
+            'w-16': isCollapsed && isDesktop,
+            'bg-teal-900': isDesktop,
+            'bg-gray-100': !isDesktop,
           },
         )}
       >
-        <div>
-          <a href="/" className="flex items-center">
-            <Logo className={'w-10 h-10 mr-3'} />
+        <div className="flex">
+          <div
+            className={classNames('hamburger sm:!hidden', {
+              'is-active': (isCollapsed && isDesktop) || (!isCollapsed && !isDesktop),
+            })}
+            onClick={() => {
+              set_isCollapsed(!isCollapsed), set_isDesktop(isDesktop);
+            }}
+          >
+            <span className="line" />
+            <span className="line" />
+            <span className="line" />
+          </div>
+
+          <a href="/vn/dashboard" className="flex items-center">
+            <Logo
+              className={classNames('w-12 mr-3 rounded bg-slate-200', {
+                'opacity-100 text-lg w-12': (!isCollapsed && isDesktop) || (isCollapsed && !isDesktop),
+                'opacity-0 text-[0px] hidden': isCollapsed && isDesktop,
+              })}
+            />
+            {/* <img
+              src={Logo}
+              className={classNames('w-12 mr-3 rounded ', {
+                'opacity-100 text-lg w-12': (!isCollapsed && isDesktop) || (isCollapsed && !isDesktop),
+                'opacity-0 text-[0px] hidden': isCollapsed && isDesktop,
+              })}
+            ></img> */}
             <div
               id={'name-application'}
               className={classNames(
-                'transition-all duration-300 ease-in-out absolute left-16 overflow-ellipsis overflow-hidden ml-2',
+                'transition-all duration-300 ease-in-out absolute text-white left-16 overflow-ellipsis overflow-hidden ml-5',
                 {
-                  'opacity-100 text-lg': !isCollapsed && isDesktop,
-                  'opacity-0 text-[0px] invisible': isCollapsed || !isDesktop,
+                  'opacity-100 text-2xl': !isCollapsed && isDesktop,
+                  'opacity-0 text-[0px] hidden': isCollapsed || !isDesktop,
                 },
               )}
             >
@@ -211,58 +243,44 @@ const Layout = ({ children }: PropsWithChildren) => {
             </div>
           </a>
         </div>
-
         <div
-          className={classNames('hamburger', {
+          className={classNames('relative', {
             'is-active': (isCollapsed && isDesktop) || (!isCollapsed && !isDesktop),
           })}
-          onClick={() => set_isCollapsed(!isCollapsed)}
+          onClick={() => {
+            set_isCollapsed(!isCollapsed), set_isDesktop(isDesktop);
+          }}
         >
-          <span className="line" />
-          <span className="line" />
-          <span className="line" />
+          <Arrow
+            className={classNames('w-9 text-white transition-all duration-300 ease-in-out', {
+              'rotate-180': !isCollapsed && isDesktop,
+            })}
+          />
         </div>
       </div>
-
-      {!isDesktop && (
-        <div
-          className={classNames('fixed h-full bg-black transition-all duration-500 ease-in-out w-full z-20', {
-            'opacity-70 left-0': !isCollapsed,
-            'opacity-0 -left-full': isCollapsed,
-          })}
-          onClick={() => set_isCollapsed(true)}
-        />
-      )}
       <div
-        onMouseEnter={() => {
-          const offsetWidth = document.body.offsetWidth;
-          document.body.style.overflowY = 'hidden';
-          document.body.style.paddingRight = document.body.offsetWidth - offsetWidth + 'px';
-        }}
-        onMouseLeave={() => {
-          document.body.style.overflowY = 'auto';
-          document.body.style.paddingRight = '';
-        }}
-        className={classNames('fixed z-20 top-20 left-0 h-screen bg-blue-100 transition-all duration-300 ease-in-out', {
-          'w-60': !isCollapsed,
-          'w-20': isCollapsed,
+        className={classNames('fixed z-30 top-16 left-0 h-screen bg-teal-900 transition-all duration-300 ease-in-out', {
+          'w-64': !isCollapsed,
+          'w-16': isCollapsed,
           '!-left-20': isCollapsed && !isDesktop,
         })}
       >
         <Menu isCollapsed={isCollapsed} permission={user?.role?.permissions} />
       </div>
-
+      {!isCollapsed && !isDesktop && (
+        <div className={'w-full h-full fixed bg-black opacity-30 z-20'} onClick={() => set_isCollapsed(true)} />
+      )}
       <section
         id={'main'}
         className={classNames(
-          'px-5 transition-all duration-300 ease-in-out z-10 h-[calc(100vh-5rem)] relative overflow-y-auto sm:overflow-y-hidden',
+          'px-2 sm:px-0 h-[calc(100vh-5rem)] transition-all duration-300 ease-in-out z-10 relative',
           {
-            'ml-60': !isCollapsed && isDesktop,
-            'ml-20': isCollapsed && isDesktop,
+            'ml-64': !isCollapsed && isDesktop,
+            'ml-16': isCollapsed && isDesktop,
           },
         )}
       >
-        <div className={'h-[calc(100vh-8rem)] overflow-y-auto lg:overflow-x-hidden'}>
+        <div className={'h-[calc(100vh-7rem)] overflow-y-auto lg:overflow-x-hidden'}>
           <h1 className={'text-xl font-bold block sm:hidden'}>{t('pages.' + title, titleOption || {})}</h1>
           <div className={'flex items-center text-xs mt-0.5 pb-5 sm:hidden'}>
             {breadcrumbs?.map((item, i) => (
@@ -277,11 +295,8 @@ const Layout = ({ children }: PropsWithChildren) => {
           {children}
         </div>
 
-        <footer className="text-center bg-blue-50 pt-2.5 w-full">
-          {t('layout.footer', { year: new Date().getFullYear() })}
-        </footer>
+        <footer className="text-center pt-1.5 w-full">{t('layout.footer', { year: new Date().getFullYear() })}</footer>
       </section>
-      <div className="hidden h-7 w-7 leading-7" />
     </main>
   );
 };

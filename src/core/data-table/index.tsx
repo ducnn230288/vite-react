@@ -153,20 +153,20 @@ export const DataTable = forwardRef(
     if (params.sorts && typeof params.sorts === 'string') params.sorts = JSON.parse(params.sorts);
 
     const groupButton = (confirm: any, clearFilters: any, key: any, value: any) => (
-      <div className="grid grid-cols-2 gap-2 mt-1">
+      <div className="grid grid-cols-2 gap-2 sm:mt-1 mt-2">
         <Button
           text={t('components.datatable.reset')}
           onClick={() => {
             clearFilters();
             confirm();
           }}
-          className={'justify-center'}
+          className={'justify-center !bg-gray-300 !text-black h-4/5 sm:h-auto !px-2 sm:px-4'}
         />
         <Button
-          icon={<Search className="fill-white h-4 w-4" />}
+          icon={<Search className="fill-white h-3 w-3" />}
           text={t('components.datatable.search')}
           onClick={() => confirm(value)}
-          className={'justify-center'}
+          className={'justify-center h-4/5 sm:h-auto !px-2 sm:px-4'}
         />
       </div>
     );
@@ -414,12 +414,12 @@ export const DataTable = forwardRef(
         : [];
     return (
       <div className={classNames(className, 'intro-x')}>
-        <div className="sm:flex justify-between mb-2.5">
+        <div className="lg:flex justify-between mb-2.5 gap-y-2.5 responsive-header supplier-tab4 store-tab3 flex-wrap form-index-supplier form-tab">
           {showSearch ? (
             <div className="relative">
               <input
                 id={idTable.current + '_input_search'}
-                className="w-full h-10 rounded-xl text-gray-600 bg-white border border-solid border-gray-100 pr-9 pl-4"
+                className="w-full sm:w-80 h-10 rounded-xl text-gray-600 bg-white border border-solid border-gray-300 pr-9 pl-9"
                 defaultValue={params.fullTextSearch}
                 type="text"
                 placeholder={searchPlaceholder || (t('components.datatable.pleaseEnterValueToSearch') as string)}
@@ -448,7 +448,7 @@ export const DataTable = forwardRef(
               />
               {!params.fullTextSearch ? (
                 <Search
-                  className="w-4 h-4 my-1 fill-gray-600 text-lg las absolute top-2 right-2.5 z-10"
+                  className="w-4 h-4 my-1 fill-gray-500 text-lg absolute top-2 left-2.5 z-10"
                   onClick={() => {
                     if (params.fullTextSearch) {
                       (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value = '';
@@ -459,7 +459,7 @@ export const DataTable = forwardRef(
               ) : (
                 !!params.fullTextSearch && (
                   <Times
-                    className="w-4 h-4 my-1 fill-gray-600 text-lg las absolute top-2 right-2.5 z-10"
+                    className="w-4 h-4 my-1 fill-gray-500 text-lg las absolute top-2 right-3 z-10"
                     onClick={() => {
                       if (params.fullTextSearch) {
                         (document.getElementById(idTable.current + '_input_search') as HTMLInputElement).value = '';

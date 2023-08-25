@@ -17,9 +17,19 @@ const pages = [
         title: 'Login',
       },
       {
-        path: routerLinks('ResetPassword'),
-        component: React.lazy(() => import('@pages/reset-password')),
-        title: 'Reset Password',
+        path: routerLinks('ForgetPassword'),
+        component: React.lazy(() => import('@pages/forget-password')),
+        title: 'ForgetPassword',
+      },
+      {
+        path: routerLinks('VerifyForotPassword'),
+        component: React.lazy(() => import('@pages/forget-password/otp')),
+        title: 'ForgetPassword',
+      },
+      {
+        path: routerLinks('SetPassword'),
+        component: React.lazy(() => import('@pages/forget-password/otp/set-password')),
+        title: 'SetPassword',
       },
     ],
   },

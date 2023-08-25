@@ -1,10 +1,38 @@
 .ant-modal-content {
-  @apply !p-4 !rounded-xl;
+  @apply !p-0 !rounded-xl;
 
   .ant-modal-header {
-    @apply rounded-t-xl pb-2;
+    @apply rounded-t-xl pb-2 mb-0 p-4 pl-9;
+    .ant-modal-title > h3 {
+      @apply text-2xl;
+    }
   }
   .ant-modal-body {
-    @apply p-0;
+    @apply px-4;
+  }
+  .ant-modal-close {
+    @apply hover:bg-transparent;
+    svg {
+      @apply text-2xl;
+    }
+  }
+  .ant-modal-footer {
+    @apply mt-0 py-3 px-4 bg-zinc-100;
+    div {
+      @apply justify-center;
+      button {
+        @apply w-32 h-11 border border-teal-900 px-4 py-2 rounded-xl justify-center;
+      }
+    }
+  }
+  #taxRate {
+    @apply !text-left;
+  }
+}
+.form {
+  .ant-modal-content {
+    .ant-modal-footer {
+      @apply bg-white border-t;
+    }
   }
 }

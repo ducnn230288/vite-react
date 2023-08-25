@@ -3,7 +3,9 @@ export const routerLinks = (name: string, type?: string) => {
     [selector: string]: string;
   } = {
     Login: '/auth/login',
-    ResetPassword: '/auth/reset-password',
+    ForgetPassword: '/forgot-password',
+    VerifyForotPassword: '/verify-forgot-password',
+    SetPassword: '/set-password',
     MyProfile: '/my-profile',
     Dashboard: '/dashboard',
     User: '/user',
