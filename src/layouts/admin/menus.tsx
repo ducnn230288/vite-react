@@ -6,18 +6,18 @@ import { Cog, User, Coffee } from '@svgs';
 
 const Layout = [
   {
-    icon: <User className="h-8 w-8" />,
+    icon: <User className="h-6 w-6" />,
     name: 'User',
     permission: keyRole.P_USER_LISTED,
     queryParams: { filter: '{"roleCode":"staff"}' },
   },
+    {
+        icon: <Coffee className="h-8 w-8" />,
+        name: 'DayOff',
+        permission: keyRole.P_DAYOFF_LISTED,
+    },
   {
-    icon: <Coffee className="h-8 w-8" />,
-    name: 'DayOff',
-    permission: keyRole.P_DAYOFF_LISTED,
-  },
-  {
-    icon: <Cog className="h-8 w-8" />,
+    icon: <Cog className="h-6 w-6" />,
     name: 'Setting',
     child: [
       {

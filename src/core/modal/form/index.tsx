@@ -13,6 +13,7 @@ export const ModalForm = forwardRef(
       widthModal = 1200,
       columns,
       textSubmit,
+      textCancel,
       className = '',
       footerCustom,
       facade,
@@ -39,6 +40,7 @@ export const ModalForm = forwardRef(
         keyState={keyState}
         widthModal={widthModal}
         textSubmit={textSubmit}
+        textCancel={textCancel}
         className={className}
         footerCustom={footerCustom}
         title={() => title(data)}
@@ -69,6 +71,7 @@ type Type = {
   widthModal?: number;
   columns: FormModel[];
   textSubmit?: string;
+  textCancel?: string;
   className?: string;
   footerCustom?: (handleOk: () => Promise<any>, handleCancel: () => void) => JSX.Element[] | JSX.Element;
   idElement?: string;

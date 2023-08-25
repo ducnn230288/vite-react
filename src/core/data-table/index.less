@@ -1,25 +1,30 @@
 .ant-table {
   &-content {
     .ant-table-thead > tr > th {
-      @apply font-bold border-gray-400;
-
+      @apply font-bold bg-white border-none border-0;
       &.ant-table-cell-fix-left,
       &.ant-table-cell-fix-right {
         @apply ~'mt-[1px]';
       }
     }
     .ant-table-tbody > tr.ant-table-row {
-      > td {
-        @apply border-gray-200;
-      }
       &:nth-of-type(odd) > td {
-        @apply bg-gray-50;
+        @apply border-b bg-gray-100;
+        &:first-child {
+          @apply rounded-bl-xl rounded-tl-xl;
+        }
+        &:last-child {
+          @apply rounded-br-xl rounded-tr-xl;
+        }
       }
-      &:hover > td {
-        @apply bg-gray-200 text-black;
-      }
-      &:last-child > td {
-        @apply border-none;
+      > td {
+        @apply border-none bg-white;
+        &:first-child {
+          @apply rounded-bl-xl rounded-tl-xl;
+        }
+        &:last-child {
+          @apply rounded-br-xl rounded-tr-xl;
+        }
       }
     }
   }

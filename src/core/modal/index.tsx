@@ -14,6 +14,7 @@ export const Modal = forwardRef(
       onOk,
       firstChange = true,
       textSubmit,
+      textCancel,
       className = '',
       footerCustom,
       children,
@@ -45,13 +46,14 @@ export const Modal = forwardRef(
           ((footerCustom && footerCustom(handleOk, handleCancel)) || (
             <div className="flex justify-end gap-2">
               <Button
-                text={t('components.form.modal.cancel')}
-                className="!bg-red-600 btn-cancel"
+                text={t(textCancel || '') || t('components.datatable.cancel')}
+                className="!bg-white !text-teal-900 btn-cancel"
                 onClick={handleCancel}
               />
               <Button
                 isLoading={isLoading}
                 text={t(textSubmit || '') || t('components.form.modal.save')}
+                className="!bg-teal-900"
                 disabled={!firstChange}
                 onClick={handleOk}
               />
@@ -74,6 +76,7 @@ type Type = PropsWithChildren<{
   onCancel?: () => void;
   firstChange?: boolean;
   textSubmit?: string;
+  textCancel?: string;
   className?: string;
   footerCustom?: (handleOk: () => Promise<void>, handleCancel: () => void) => JSX.Element[] | JSX.Element;
 }>;

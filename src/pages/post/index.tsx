@@ -80,7 +80,7 @@ const Page = () => {
             {/*</div>*/}
           </div>
           <Spin spinning={postTypeFacade.isLoading}>
-            <div className="h-[calc(100vh-13rem)] overflow-y-auto relative scroll hidden sm:block">
+            <div className="h-[calc(100vh-12rem)] overflow-y-auto relative scroll hidden sm:block">
               {postTypeFacade.result?.data?.map((data, index) => (
                 <div
                   key={data.id}
@@ -150,7 +150,7 @@ const Page = () => {
       </div>
       <div className="col-span-12 md:col-span-8 lg:col-span-9 intro-x">
         <div className="shadow rounded-xl w-full overflow-auto bg-white">
-          <div className="sm:min-h-[calc(100vh-9.5rem)] overflow-y-auto p-3">
+          <div className="sm:min-h-[calc(100vh-8.5rem)] overflow-y-auto p-3">
             <DataTable
               facade={postFacade}
               ref={dataTableRef}

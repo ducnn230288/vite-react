@@ -1,7 +1,6 @@
 import React, { MouseEventHandler } from 'react';
 import classNames from 'classnames';
 import { Spinner } from '@svgs';
-import { TFunction } from 'i18next';
 
 export const Button = ({ text = '', icon, className, disabled, isLoading = false, title, ...props }: Type) => {
   return (

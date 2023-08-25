@@ -74,6 +74,8 @@
     "DayOff": "Day Off"
   },
   "pages": {
+    "ForgetPassword": "Forgot Password",
+    "SetPassword": "Reset Password",
     "User/List": "List User",
     "User/Add": "Add new User {{roleCode}}",
     "User/Edit": "Edit User {{roleCode}}",
@@ -145,8 +147,15 @@
         "Recovery Email": "Recovery Email",
         "Enter Recovery Email": "Enter Recovery Email",
         "title": "Reset Password",
-        "Submit": "Submit",
-        "Back To Login": "Submit"
+        "Submit": "Change Password",
+        "subTitle": "Please enter your email. An OTP verification code will be sent to you.",
+        "OTP": "Get OTP",
+        "Go back to login":"Go back to login",
+        "subEmail":"Please enter the OTP code that has been sent to your email.",
+        "Code OTP":"Code OTP",
+        "Send code":"Send code OTP",
+        "subReset":"Password requires 8 characters or more, with at least 1 uppercase letter, 1 lowercase letter,",
+        "subReset1":"1 digit and 1 special character."
       }
     },
     "admin": {
@@ -170,6 +179,7 @@
         "Pagination": "Show {{from}} - {{to}} /Total {{total}} categories",
         "DayOff": "Show {{from}} - {{to}} /Total {{total}} requests",
         "User": "Show {{from}} - {{to}} /Total {{total}} user",
+        "Change Password": "Change Password",
         "Day": "day"
       },
       "user": {
