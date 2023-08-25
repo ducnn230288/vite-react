@@ -11,11 +11,11 @@ const Layout = [
     permission: keyRole.P_USER_LISTED,
     queryParams: { filter: '{"roleCode":"staff"}' },
   },
-    {
-        icon: <Coffee className="h-8 w-8" />,
-        name: 'DayOff',
-        permission: keyRole.P_DAYOFF_LISTED,
-    },
+  {
+    icon: <Coffee className="h-8 w-8" />,
+    name: 'DayOff',
+    permission: keyRole.P_DAYOFF_LISTED,
+  },
   {
     icon: <Cog className="h-6 w-6" />,
     name: 'Setting',

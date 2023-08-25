@@ -1,5 +1,4 @@
 export { ReactComponent as Arrow } from './arrow.svg';
-export { ReactComponent as Arrows } from './move.svg';
 export { ReactComponent as Calendar } from './calendar.svg';
 export { ReactComponent as Check } from './check.svg';
 export { ReactComponent as CheckCircle } from './check-circle.svg';
@@ -22,7 +21,4 @@ export { ReactComponent as UploadSVG } from './upload.svg';
 export { ReactComponent as Key } from './key.svg';
 export { ReactComponent as Out } from './out.svg';
 export { ReactComponent as Logo } from './logo.svg';
-export { ReactComponent as Member } from './member.svg';
 export { ReactComponent as Coffee } from './coffee-solid.svg';
-export { ReactComponent as Facebook } from './facebook.svg';
-export { ReactComponent as UserSolid } from './users.svg';
