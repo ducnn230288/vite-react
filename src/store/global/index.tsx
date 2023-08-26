@@ -82,6 +82,7 @@ export class User extends CommonEntity {
     public role?: UserRole,
     public managers?: UserTeam[],
     public teams?: UserTeam[],
+    public teamsId?: string[],
     public managerId?: string,
     public manager?: User,
     public members?: User[],

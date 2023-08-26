@@ -9,12 +9,14 @@ export const action = {
   ...new Action<User>(name),
   post: createAsyncThunk(name + '/post', async (values: User) => {
     // if (values.avatar) values.avatar = values.avatar[0].url;
+    if (values.teams) values.teamsId = values.teams as string[];
     const { data, message } = await API.post<User>(routerLinks(name, 'api'), values);
     if (message) Message.success({ text: message });
     return data;
   }),
   put: createAsyncThunk(name + '/put', async ({ id, ...values }: User) => {
     // if (values.avatar) values.avatar = values.avatar[0].url;
+    if (values.teams) values.teamsId = values.teams as string[];
     const { data, message } = await API.put<User>(`${routerLinks(name, 'api')}/${id}`, values);
     if (message) Message.success({ text: message });
     return data;
