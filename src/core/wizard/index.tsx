@@ -11,8 +11,8 @@ export const Wizard = ({ steps = [], current = 0 }: { steps: { title: string }[]
         let width = 'w-full md:w-1/3 lg:w-1/5';
 
         if (index === current) {
-          border = 'border-l-blue-600';
-          bgRec = 'bg-blue-600';
+          border = 'border-l-teal-600';
+          bgRec = 'bg-teal-600';
         }
         if (index < current) {
           border = 'border-l-green-600';
@@ -20,7 +20,7 @@ export const Wizard = ({ steps = [], current = 0 }: { steps: { title: string }[]
           bgRec = 'bg-green-600';
         }
         if (index === current - 1) {
-          bg = 'bg-blue-600 lg:bg-blue-600';
+          bg = 'bg-teal-600 lg:bg-teal-600';
         }
         if (index === steps.length - 1) {
           bg = 'bg-white';

@@ -368,7 +368,7 @@ export const DataTable = forwardRef(
         if (!item?.render) item!.render = (text: string) => text && checkTextToShort(text);
         if (item && !item?.onCell)
           item.onCell = (record) => ({
-            className: record?.id && record?.id === (id || facade?.data?.id) ? '!bg-blue-100' : '',
+            className: record?.id && record?.id === (id || facade?.data?.id) ? '!bg-teal-100' : '',
           });
         // noinspection JSUnusedGlobalSymbols
         return {
