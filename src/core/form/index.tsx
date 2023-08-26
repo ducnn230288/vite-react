@@ -122,9 +122,9 @@ export const Form = ({
           <textarea
             disabled={!!formItem.disabled && formItem.disabled(values, form)}
             className={classNames(
-              'ant-input px-4 py-2.5 w-full rounded-xl text-gray-600 bg-white border border-solid input-description ',
+              'ant-input px-4 py-2.5 w-full rounded-xl text-gray-600 border border-solid input-description ',
               {
-                '!bg-white text-gray-400 !border-0': !!formItem.disabled && formItem.disabled(values, form),
+                'text-gray-400 !border-0': !!formItem.disabled && formItem.disabled(values, form),
               },
             )}
             rows={4}
@@ -589,7 +589,7 @@ export const Form = ({
         }
       }}
     >
-      <div className={'group-input group-input-profile p-5 bg-white '}>
+      <div className={'group-input group-input-profile p-5'}>
         <div className={'grid gap-x-5 grid-cols-12 group-input'}>
           {_columns.map(
             (column: any, index: number) =>
