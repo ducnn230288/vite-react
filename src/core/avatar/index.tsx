@@ -270,7 +270,7 @@ export const Avatar = ({
           >
             <div
               className={classNames(
-                'rounded-xl inline-block text-center border border-teal-900 text-blue-600 bg-teal-200 text-xs -ml-2',
+                'rounded-xl inline-block text-center border border-teal-900 text-teal-900 bg-teal-200 text-xs -ml-2',
                 'w-' + size,
                 'h-' + size,
                 'leading-' + size,
