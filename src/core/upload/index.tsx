@@ -265,10 +265,10 @@ export const Upload = ({
               <div
                 onClick={() => moverImage(index, index - 1)}
                 className={
-                  'absolute top-1 right-1 bg-gray-300 hover:bg-blue-500 text-white rounded-full cursor-pointer w-6 h-6 transition-all duration-300 flex items-center justify-center'
+                  'absolute top-1 right-1 bg-gray-300 hover:bg-teal-900 text-white rounded-full cursor-pointer w-6 h-6 transition-all duration-300 flex items-center justify-center'
                 }
               >
-                <Arrow className={'h-3 w-3 fill-blue-400 hover:fill-white rotate-180'} />
+                <Arrow className={'h-3 w-3 fill-teal-700 hover:fill-white rotate-180'} />
               </div>
             )}
 
@@ -276,14 +276,14 @@ export const Upload = ({
               <div
                 onClick={() => moverImage(index, index + 1)}
                 className={classNames(
-                  'absolute right-1 bg-gray-300 hover:bg-blue-500 text-white rounded-full cursor-pointer w-6 h-6 transition-all duration-300 flex items-center justify-center',
+                  'absolute right-1 bg-gray-300 hover:bg-teal-900 text-white rounded-full cursor-pointer w-6 h-6 transition-all duration-300 flex items-center justify-center',
                   {
                     'top-8': index > 0,
                     'top-1': index === 0,
                   },
                 )}
               >
-                <Arrow className={'h-3 w-3 fill-blue-400 hover:fill-white'} />
+                <Arrow className={'h-3 w-3 fill-teal-700 hover:fill-white'} />
               </div>
             )}
 

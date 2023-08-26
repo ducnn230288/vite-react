@@ -30,7 +30,7 @@ const Component = ({
       )}
     >
       {value.map((item: any, index: number) => (
-        <div key={index} className="bg-blue-100 rounded-xl py-1 px-2 relative mr-2.5 -left-2.5">
+        <div key={index} className="bg-teal-100 rounded-xl py-1 px-2 relative mr-2.5 -left-2.5">
           <Button
             icon={<Times className="h-5 w-5 fill-red-600" />}
             className="absolute rounded-full -top-1 -right-2 !bg-red-100 !text-red-600 leading-none z-auto"

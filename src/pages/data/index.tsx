@@ -84,7 +84,7 @@ const Page = () => {
                       request.filter.type = data.code;
                       dataTableRef?.current?.onChange(request);
                     }}
-                    className="truncate cursor-pointer flex-1 hover:text-blue-500 item-text px-4 py-2"
+                    className="truncate cursor-pointer flex-1 hover:text-teal-900 item-text px-4 py-2"
                   >
                     {index + 1}. {data.name}
                   </div>
@@ -202,7 +202,7 @@ const Page = () => {
                               title={t('routes.admin.Layout.Edit') || ''}
                               onClick={() => navigate(`/${lang}${routerLinks('Data')}/${data.type}/${data.id}/edit`)}
                             >
-                              <Edit className="icon-cud bg-blue-600 hover:bg-blue-400" />
+                              <Edit className="icon-cud bg-teal-900 hover:bg-teal-700" />
                             </button>
                           </Tooltip>
                         )}

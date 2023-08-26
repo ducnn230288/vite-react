@@ -218,9 +218,15 @@ export const Avatar = ({
         </div>
       ) : (
         <div
-          className={classNames('rounded-xl inline-block text-center', 'w-' + size, 'h-' + size, 'leading-' + size, {
-            '-ml-2': index > 0,
-          })}
+          className={classNames(
+            'rounded-xl inline-block text-center pt-0.5',
+            'w-' + size,
+            'h-' + size,
+            'leading-' + size,
+            {
+              '-ml-2': index > 0,
+            },
+          )}
           style={{
             color: pickTextColorBasedOnBgColorAdvanced(getColorByLetter(text as string)),
             backgroundColor: getColorByLetter(text as string),
@@ -264,7 +270,7 @@ export const Avatar = ({
           >
             <div
               className={classNames(
-                'rounded-xl inline-block text-center border border-blue-600 text-blue-600 bg-blue-200 text-xs -ml-2',
+                'rounded-xl inline-block text-center border border-teal-900 text-blue-600 bg-teal-200 text-xs -ml-2',
                 'w-' + size,
                 'h-' + size,
                 'leading-' + size,
