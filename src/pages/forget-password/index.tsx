@@ -31,7 +31,7 @@ const Page = () => {
         </h1>
         <h5 className="intro-x font-normal text-green-900 ">{t('routes.auth.reset-password.subTitle')}</h5>
       </div>
-      <div className="mx-auto w-3/4">
+      <div className="mx-auto lg:w-3/4">
         <Spin spinning={isLoading}>
           <Form
             values={{ ...data }}
