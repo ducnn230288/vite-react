@@ -2,7 +2,11 @@ import { CheckboxOptionType, FormInstance } from 'antd';
 import { TableGet } from '../data-table';
 
 export class FormModel {
-  constructor(public name: string, public title: string = '', public formItem?: FormItem) {}
+  constructor(
+    public name: string,
+    public title: string = '',
+    public formItem?: FormItem,
+  ) {}
 }
 
 export class FormItem {

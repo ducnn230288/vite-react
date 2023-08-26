@@ -178,16 +178,8 @@ export const Form = ({
         return (
           <DateAntDesign.RangePicker
             onCalendarChange={(date) => {
-              form.setFieldValue(
-                item.name,
-                date?.filter((i) => !!i),
-              );
-              formItem.onChange &&
-                formItem.onChange(
-                  date?.filter((i) => !!i),
-                  form,
-                  reRender,
-                );
+              form.setFieldValue(item.name, date?.filter((i) => !!i));
+              formItem.onChange && formItem.onChange(date?.filter((i) => !!i), form, reRender);
             }}
             onOpenChange={(open) => {
               if (!open && form.getFieldValue(item.name)?.length < 2) form.resetFields([item.name]);
