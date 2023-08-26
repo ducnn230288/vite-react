@@ -79,7 +79,7 @@ const Page = () => {
                       title={t('routes.admin.Layout.Edit') || ''}
                       onClick={() => navigate(`/${lang}${routerLinks('Team')}/${data.id}`)}
                     >
-                      <Edit className="icon-cud bg-blue-600 hover:bg-blue-400" />
+                      <Edit className="icon-cud bg-teal-900 hover:bg-teal-700" />
                     </button>
                   </Tooltip>
                 )}

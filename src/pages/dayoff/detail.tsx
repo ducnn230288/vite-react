@@ -189,7 +189,7 @@ const Page = () => {
                   cancelText={t('components.datatable.cancel')}
                 >
                   <Button
-                    className={'bg-blue-500 text-white md:min-w-[12rem] justify-center'}
+                    className={'bg-teal-900 text-white md:min-w-[12rem] justify-center'}
                     icon={<CheckCircle className="w-5 h-5" />}
                     text={t('routes.admin.dayoff.Approve')}
                   />
