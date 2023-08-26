@@ -161,7 +161,7 @@ const Page = () => {
                     <Times className="w-5 h-5 fill-red-500" />
                   )
                 ) : (
-                  <Spinner className="w-5 h-5 fill-teal-900 animate-spin" />
+                  <Spinner className="w-5 h-5 fill-blue-600 animate-spin" />
                 ),
             },
           },
