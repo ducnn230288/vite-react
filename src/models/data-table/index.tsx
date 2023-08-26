@@ -40,5 +40,8 @@ export class TableItemFilterList {
   value?: string | number;
 }
 export class TableRefObject {
-  constructor(public onChange: (request?: any) => void, public handleDelete: (id: string) => void) {}
+  constructor(
+    public onChange: (request?: any) => void,
+    public handleDelete: (id: string) => void,
+  ) {}
 }
