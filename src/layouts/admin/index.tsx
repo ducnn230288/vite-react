@@ -84,7 +84,7 @@ const Layout = ({ children }: PropsWithChildren) => {
         'bg-white w-full h-16 transition-all duration-300 ease-in-out top-0 block sm:bg-gray-100 z-20 fixed lg:relative',
         {
           'pl-64': !isCollapsed && isDesktop,
-          'pl-32': isCollapsed && isDesktop,
+          'pl-16': isCollapsed && isDesktop,
           'pl-28': !isDesktop,
         },
       )}
@@ -192,7 +192,7 @@ const Layout = ({ children }: PropsWithChildren) => {
       </div>
       <div
         className={classNames(
-          'flex items-center justify-between bg-white sm:bg-teal-900 text-gray-800 hover:text-gray-500 h-16 fixed top-0 left-0 pr-5 pl-[14px] font-bold transition-all duration-300 ease-in-out rounded-tr-3xl z-20',
+          'flex items-center justify-between bg-white sm:bg-teal-900 text-gray-800 hover:text-gray-500 h-16 fixed top-0 left-0 pr-5 pl-3 font-bold transition-all duration-300 ease-in-out rounded-tr-3xl z-20',
           {
             'w-64': !isCollapsed && isDesktop,
             'w-16': isCollapsed && isDesktop,
