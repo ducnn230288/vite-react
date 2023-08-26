@@ -53,7 +53,7 @@ const Page = () => {
   const navigate = useNavigate();
   const param = JSON.parse(dayoffFacade.queryParams || '{}');
   return (
-    <Fragment>
+    <div className={'container mx-auto'}>
       <DataTable
         facade={dayoffFacade}
         showSearch={false}
@@ -234,7 +234,7 @@ const Page = () => {
           </Fragment>
         }
       />
-    </Fragment>
+    </div>
   );
 };
 export default Page;
