@@ -13,9 +13,6 @@ main {
 }
 .hamburger {
   @apply inline-block right-5 absolute transition-all duration-300 ease-in-out z-10 cursor-pointer w-7;
-  @media (max-width: 767px) {
-    @apply -right-7;
-  }
 
   .line {
     @apply bg-gray-600 block transition-all duration-300 ease-in-out rounded-sm h-1 ~"my-1.5";
@@ -30,13 +27,9 @@ main {
   }
 
   &.is-active {
-    @apply -right-12;
-    @media (max-width: 767px) {
-      @apply -right-4;
-    }
 
     .line {
-      @apply bg-blue-600;
+      @apply bg-teal-900;
 
       &:nth-child(1),
       &:nth-child(3) {
