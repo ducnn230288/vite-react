@@ -15,7 +15,7 @@ export const API = {
       },
       redirect: 'follow',
       referrerPolicy: 'no-referrer',
-    } as RequestInit),
+    }) as RequestInit,
   responsible: async <T>(
     url: string,
     params: { [key: string]: string } = {},
@@ -50,7 +50,7 @@ export const API = {
 
     if (response.status === 401 && url !== `${routerLinks('Auth', 'api')}/login`) {
       localStorage.removeItem(keyUser);
-      window.location.href = routerLinks('Login');
+      window.location.hash = routerLinks('Login');
     }
     return {};
   },
