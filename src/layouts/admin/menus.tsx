@@ -34,6 +34,11 @@ const Layout = [
         permission: keyRole.P_POST_LISTED,
         queryParams: { filter: '{"type":"projects"}' },
       },
+      {
+        name: 'Parameter',
+        permission: keyRole.P_PARAMETER_LISTED,
+        queryParams: { code: 'phone' },
+      },
     ],
   },
 ];

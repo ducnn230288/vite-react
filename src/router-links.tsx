@@ -15,6 +15,7 @@ export const routerLinks = (name: string, type?: string) => {
     Post: '/setting/post',
     PostType: '/setting/post/type',
     Code: '/setting/code',
+    Parameter: '/setting/parameter',
   }; // 💬 generate link to here
 
   const apis: {
@@ -27,7 +28,8 @@ export const routerLinks = (name: string, type?: string) => {
     User: '/user',
     Data: '/data',
     DataType: '/data-type',
-    Post: '/post',
+    Post: '/parameter',
+    Parameter: '/parameter',
     PostType: '/post-type',
   }; // 💬 generate api to here
 

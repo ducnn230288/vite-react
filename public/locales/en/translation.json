@@ -67,7 +67,8 @@
     "Setting": "Setting",
     "Code": "Code",
     "Data": "Data",
-    "Post": "Post"
+    "Post": "Post",
+    "Parameter": "Parameter"
   },
   "pages": {
     "ForgetPassword": "Forgot Password",
@@ -88,7 +89,9 @@
     "Data/Edit": "Edit Data {{type}}",
     "Post": "List Post",
     "Post/Add": "Add new Post {{type}}",
-    "Post/Edit": "Edit Post {{type}}"
+    "Post/Edit": "Edit Post {{type}}",
+    "Parameter": "List Parameter",
+    "Parameter/Edit": "Edit Parameter {{type}}"
   },
   "columns": {
     "auth": {

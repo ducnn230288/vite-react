@@ -67,7 +67,8 @@
     "Setting": "Thiết lập",
     "Code": "Mã",
     "Data": "Dữ liệu",
-    "Post": "Post"
+    "Post": "Post",
+    "Parameter": "Tham số"
   },
   "pages": {
     "ForgetPassword": "Quên mật khẩu",
@@ -88,7 +89,9 @@
     "Data/Edit": "Chỉnh sửa dữ liệu {{type}}",
     "Post": "Danh sách post",
     "Post/Add": "Tạo mới post {{type}}",
-    "Post/Edit": "Chỉnh sửa post {{type}}"
+    "Post/Edit": "Chỉnh sửa post {{type}}",
+    "Parameter": "Danh sách tham số",
+    "Parameter/Edit": "Chỉnh sửa tham số {{type}}"
   },
   "columns": {
     "auth": {

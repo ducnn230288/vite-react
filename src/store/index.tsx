@@ -19,6 +19,7 @@ export * from './code';
 export * from './code/type';
 export * from './data';
 export * from './data/type';
+export * from './parameter';
 export * from './post';
 export * from './post/type';
 import {
@@ -31,6 +32,7 @@ import {
   dataTypeSlice,
   postSlice,
   postTypeSlice,
+  parameterSlice,
 } from './';
 const rootReducer = combineReducers({
   [globalSlice.name]: globalSlice.reducer,
@@ -40,6 +42,7 @@ const rootReducer = combineReducers({
   [codeTypeSlice.name]: codeTypeSlice.reducer,
   [dataSlice.name]: dataSlice.reducer,
   [dataTypeSlice.name]: dataTypeSlice.reducer,
+  [parameterSlice.name]: parameterSlice.reducer,
   [postSlice.name]: postSlice.reducer,
   [postTypeSlice.name]: postTypeSlice.reducer,
 });
