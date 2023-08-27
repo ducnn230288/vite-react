@@ -47,6 +47,11 @@ const pages = [
         title: 'MyProfile',
       },
       {
+        path: routerLinks('Parameter'),
+        component: React.lazy(() => import('@pages/parameter')),
+        title: 'Parameter',
+      },
+      {
         path: routerLinks('Code'),
         component: React.lazy(() => import('@pages/code')),
         title: 'Code',

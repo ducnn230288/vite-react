@@ -36,6 +36,11 @@ const Layout = [
         queryParams: { filter: '{"type":"projects"}' },
       },
       {
+        name: 'Parameter',
+        permission: keyRole.P_PARAMETER_LISTED,
+        queryParams: { code: 'phone' },
+      },
+      {
         name: 'Team',
         permission: keyRole.P_USER_TEAM_LISTED,
       },

@@ -29,7 +29,7 @@ const checkTextToShort = (text: string) => {
   );
 };
 
-const getQueryStringParams = (query: string) => {
+export const getQueryStringParams = (query: string) => {
   return query
     ? (/^[?#]/.test(query) ? query.slice(1) : query)
         .split('&')

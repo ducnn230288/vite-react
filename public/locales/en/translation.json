@@ -71,6 +71,7 @@
     "Code": "Code",
     "Data": "Data",
     "Post": "Post",
+    "Parameter": "Parameter",
     "DayOff": "Day Off"
   },
   "pages": {
@@ -98,6 +99,8 @@
     "Post": "List Post",
     "Post/Add": "Add new Post {{type}}",
     "Post/Edit": "Edit Post {{type}}",
+    "Parameter": "List Parameter",
+    "Parameter/Edit": "Edit Parameter {{type}}",
     "Team": "Team",
     "Team/Add": "Add new Team",
     "Team/Edit": "Edit Team"

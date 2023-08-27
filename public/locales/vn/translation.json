@@ -70,6 +70,7 @@
     "Team": "Nhóm",
     "Code": "Mã",
     "Data": "Dữ liệu",
+    "Parameter": "Tham số",
     "Post": "Post",
     "DayOff": "Nghỉ phép"
   },
@@ -95,6 +96,8 @@
     "Data": "Danh sách Dữ liệu",
     "Data/Add": "Tạo mới dữ liệu {{type}}",
     "Data/Edit": "Chỉnh sửa dữ liệu {{type}}",
+    "Parameter": "Danh sách tham số",
+    "Parameter/Edit": "Chỉnh sửa tham số {{type}}",
     "Post": "Danh sách post",
     "Post/Add": "Tạo mới post {{type}}",
     "Post/Edit": "Chỉnh sửa post {{type}}",

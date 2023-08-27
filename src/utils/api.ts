@@ -50,7 +50,7 @@ export const API = {
 
     if (response.status === 401 && url !== `${routerLinks('Auth', 'api')}/login`) {
       localStorage.removeItem(keyUser);
-      window.location.hash = routerLinks('Login');
+      window.location.hash = '/';
     }
     return {};
   },

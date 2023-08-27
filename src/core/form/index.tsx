@@ -559,7 +559,7 @@ export const Form = ({
 
   return (
     <AntForm
-      className={className}
+      className={classNames('p-2', className)}
       form={form}
       layout={!widthLabel ? 'vertical' : 'horizontal'}
       onFinishFailed={(failed) =>
@@ -581,7 +581,7 @@ export const Form = ({
         }
       }}
     >
-      <div className={'group-input group-input-profile p-5'}>
+      <div className={'group-input group-input-profile'}>
         <div className={'grid gap-x-5 grid-cols-12 group-input'}>
           {_columns.map(
             (column: any, index: number) =>
