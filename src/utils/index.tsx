@@ -5,6 +5,7 @@ import LazyLoad from 'vanilla-lazyload';
 import React, { Fragment } from 'react';
 // @ts-ignore
 import GLightbox from 'glightbox';
+import { io } from 'socket.io-client';
 
 export * from './init/reportWebVitals';
 export * from './api';
@@ -12,6 +13,7 @@ export * from './variable';
 export * from '../router-links';
 export * from './convertFormValue';
 
+export const socket = io(import.meta.env.VITE_URL_SOCKET, { autoConnect: false });
 export const cleanObjectKeyNull = (obj: { [selector: string]: any }) => {
   for (const propName in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, propName)) {

@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useEffect, useState, Fragment } from 'react';
-import { Dropdown } from 'antd';
+import { Dropdown, notification } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import classNames from 'classnames';
@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 import { Avatar } from '@core/avatar';
 import { GlobalFacade } from '@store';
 import { Key, Out, User, Arrow, Logo } from '@svgs';
-import { routerLinks, language, languages } from '@utils';
+import { routerLinks, language, languages, socket } from '@utils';
 import './index.less';
 import Menu from './menu';
 
@@ -22,6 +22,7 @@ const Layout = ({ children }: PropsWithChildren) => {
   const [isCollapsed, set_isCollapsed] = useState(window.innerWidth < 1025);
   const [isDesktop, set_isDesktop] = useState(window.innerWidth > 640);
   const lang = languages.indexOf(location.pathname.split('/')[1]) > -1 ? location.pathname.split('/')[1] : language;
+  const [api, contextHolder] = notification.useNotification();
 
   useEffect(() => {
     if (window.innerWidth < 1025 && !isCollapsed) {
@@ -39,29 +40,17 @@ const Layout = ({ children }: PropsWithChildren) => {
     }
     window.addEventListener('resize', handleResize, { passive: true });
 
-    // const init = async () => {
-    //   if (await isSupported()) {
-    //     try {
-    //       const defaultApp = initializeApp(firebaseConfig);
-    //       const messaging = getMessaging(defaultApp);
-    //       const firebaseToken = await getToken(messaging);
-    //       console.log(firebaseToken);
-    //       onMessage(messaging, async (payload) => {
-    //         antNoti.open({
-    //           message: <strong>{payload.notification.title}</strong>,
-    //           description: payload.notification.body,
-    //           icon: <i className="las la-info-circle text-4xl text-blue-600" />,
-    //           // onClick: () => {},
-    //         });
-    //       });
-    //     } catch (e) {
-    //       console.log(e);
-    //     }
-    //   }
-    // };
-    // init();
-
-    return () => window.removeEventListener('resize', handleResize, true);
+    socket.connect();
+    socket.on('error', (message) =>
+      api.error({
+        message,
+        placement: 'topRight',
+      }),
+    );
+    return () => {
+      window.removeEventListener('resize', handleResize, true);
+      socket.disconnect();
+    };
   }, []);
 
   useEffect(() => {
@@ -184,6 +173,7 @@ const Layout = ({ children }: PropsWithChildren) => {
   );
   return (
     <main>
+      {contextHolder}
       <div className="leading-5 leading-10" />
       <div className="h-16 relative">
         <div className="absolute top-0 left-0 right-0">
