@@ -40,16 +40,16 @@ const Layout = ({ children }: PropsWithChildren) => {
     }
     window.addEventListener('resize', handleResize, { passive: true });
 
-    socket.connect();
-    socket.on('error', (message) =>
-      api.error({
-        message,
-        placement: 'topRight',
-      }),
-    );
+    // socket.connect();
+    // socket.on('error', (message) =>
+    //   api.error({
+    //     message,
+    //     placement: 'topRight',
+    //   }),
+    // );
     return () => {
       window.removeEventListener('resize', handleResize, true);
-      socket.disconnect();
+      // socket.disconnect();
     };
   }, []);
 

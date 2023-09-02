@@ -3,12 +3,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { useNavigate, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { v4 } from 'uuid';
+import { createSearchParams } from 'react-router-dom';
 
 import { routerLinks, language, languages } from '@utils';
 import listMenu from '../menus';
 import './index.less';
-import { v4 } from 'uuid';
-import { createSearchParams, URLSearchParamsInit } from 'react-router-dom';
 
 const Layout = ({ isCollapsed = false, permission = [] }: { isCollapsed: boolean; permission?: string[] }) => {
   const { t } = useTranslation();
@@ -36,7 +36,7 @@ const Layout = ({ isCollapsed = false, permission = [] }: { isCollapsed: boolean
     }
   }, [isCollapsed]);
 
-  const subMenu = (child: { name: string; permission: string; queryParams?: URLSearchParamsInit }[]) => (
+  const subMenu = (child: any[]) => (
     <ul className={'menu'}>
       {child
         .filter((subItem) => !subItem.permission || permission?.includes(subItem.permission))

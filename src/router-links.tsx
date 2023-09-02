@@ -28,7 +28,7 @@ export const routerLinks = (name: string, type?: string) => {
     User: '/user',
     Data: '/data',
     DataType: '/data-type',
-    Post: '/parameter',
+    Post: '/post',
     Parameter: '/parameter',
     PostType: '/post-type',
   }; // 💬 generate api to here
