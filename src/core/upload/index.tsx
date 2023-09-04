@@ -17,7 +17,7 @@ export const Upload = ({
   method = 'post',
   maxSize = 40,
   multiple = true,
-  action = '/auth/upload',
+  action = '/file/add',
   keyImage = 'url',
   accept = 'image/*',
   validation = async () => true,
@@ -253,6 +253,7 @@ export const Upload = ({
           >
             <a href={file[keyImage] ? file[keyImage] : file} className="glightbox">
               <img
+                crossOrigin={'anonymous'}
                 className={classNames('object-cover object-center h-24', {
                   'w-full': multiple,
                   'w-24': !multiple,
