@@ -253,7 +253,6 @@ export const Upload = ({
           >
             <a href={file[keyImage] ? file[keyImage] : file} className="glightbox">
               <img
-                crossOrigin={'anonymous'}
                 className={classNames('object-cover object-center h-24', {
                   'w-full': multiple,
                   'w-24': !multiple,

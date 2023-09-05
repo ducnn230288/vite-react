@@ -209,7 +209,6 @@ export const Avatar = ({
       {!text || (src && src.indexOf('/defaultAvatar.png') === -1) ? (
         <div className={classNames({ '-ml-2': index > 0 })}>
           <img
-            crossOrigin={'anonymous'}
             className={classNames('rounded-full object-center', 'h-' + size, 'w-' + size, {
               'object-contain': !showName,
               'object-cover': showName,
