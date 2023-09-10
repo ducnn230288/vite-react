@@ -2,7 +2,7 @@ import React, { Suspense, useEffect } from 'react';
 import { HashRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
 
 import { Spin } from 'antd';
-import { keyUser, routerLinks, language, languages } from '@utils';
+import { keyUser, routerLinks, lang } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { GlobalFacade } from '@store';
 
@@ -177,7 +177,6 @@ const Layout = ({
   layout: React.LazyExoticComponent<({ children }: { children?: React.ReactNode }) => JSX.Element>;
   isPublic: boolean;
 }) => {
-  const lang = languages.indexOf(location.pathname.split('/')[1]) > -1 ? location.pathname.split('/')[1] : language;
   const { user } = GlobalFacade();
   if (isPublic || !!user?.email || !!JSON.parse(localStorage.getItem(keyUser) || '{}')?.email)
     return (
@@ -205,7 +204,6 @@ const Page = ({
   return <Comp />;
 };
 const Pages = () => {
-  const lang = languages.indexOf(location.pathname.split('/')[1]) > -1 ? location.pathname.split('/')[1] : language;
   return (
     <HashRouter>
       <Routes>

@@ -39,7 +39,6 @@ const Page = () => {
     }
   }, [parameterFacade.result]);
 
-  console.log(parameterFacade.data);
   const { t } = useTranslation();
   return (
     <div className={'container mx-auto grid grid-cols-12 gap-3 px-2.5 pt-2.5'}>

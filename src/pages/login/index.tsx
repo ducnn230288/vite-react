@@ -5,14 +5,13 @@ import { useNavigate } from 'react-router';
 import { Spin } from 'antd';
 import { Form } from '@core/form';
 import { GlobalFacade } from '@store';
-import { routerLinks, language, languages } from '@utils';
+import { routerLinks, lang } from '@utils';
 
 const Page = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const globalFacade = GlobalFacade();
   const { isLoading, status, user, data, login, profile } = globalFacade;
-  const lang = languages.indexOf(location.pathname.split('/')[1]) > -1 ? location.pathname.split('/')[1] : language;
 
   useEffect(() => {
     if (status === 'login.fulfilled' && user && Object.keys(user).length > 0) {

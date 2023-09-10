@@ -4,7 +4,7 @@ import enUS from 'antd/lib/locale/en_US';
 import dayjs from 'dayjs';
 import i18n from 'i18next';
 
-import { API, keyRefreshToken, keyToken, keyUser, routerLinks } from '@utils';
+import { API, keyRefreshToken, keyToken, keyUser, lang, routerLinks } from '@utils';
 import { Message } from '@core/message';
 import { useAppDispatch, useTypedSelector, UserRole, Code, UserTeam } from '@store';
 import { CommonEntity } from '@models';
@@ -44,25 +44,27 @@ const action = {
     return data!.user;
   }),
   forgottenPassword: createAsyncThunk(name + '/forgotten-password', async (values: { email: string }) => {
-    const { data, message } = await API.post(`${routerLinks(name, 'api')}/forgotten-password`, values);
+    const { message } = await API.post(`${routerLinks(name, 'api')}/forgotten-password`, values);
     if (message) Message.success({ text: message });
-    return !!data;
+    return true;
   }),
-  resetPassword: createAsyncThunk(name + '/reset-password', async ({ token, ...values }: resetPassword) => {
-    const { data, message } = await API.post(
-      `${routerLinks(name, 'api')}/reset-password`,
-      values,
-      {},
-      { authorization: 'Bearer ' + token },
-    );
+  otpConfirmation: createAsyncThunk(name + '/otp-confirmation', async (values: { email: string; otp: string }) => {
+    const { message } = await API.post(`${routerLinks(name, 'api')}/otp-confirmation`, values);
     if (message) Message.success({ text: message });
-    return !!data;
+    return true;
+  }),
+  resetPassword: createAsyncThunk(name + '/reset-password', async (values: resetPassword) => {
+    const { message } = await API.post(`${routerLinks(name, 'api')}/reset-password`, values);
+    if (message) Message.success({ text: message });
+    return true;
   }),
 };
 interface resetPassword {
-  password: string;
-  retypedPassword: string;
-  token: string;
+  password?: string;
+  retypedPassword?: string;
+  passwordOld?: string;
+  email?: string;
+  otp?: string;
 }
 interface Breadcrumb {
   title: string;
@@ -106,7 +108,7 @@ const checkLanguage = (language: TLanguage) => {
   return { language: language, formatDate, locale };
 };
 const initialState: State = {
-  data: {},
+  data: JSON.parse(localStorage.getItem(keyUser) || '{}'),
   routeLanguage: undefined,
   user: JSON.parse(localStorage.getItem(keyUser) || '{}'),
   isLoading: false,
@@ -115,9 +117,7 @@ const initialState: State = {
   title: '',
   pathname: '',
   breadcrumbs: [],
-  ...checkLanguage(
-    location.pathname.split('/')[1] || JSON.parse(JSON.stringify(localStorage.getItem('i18nextLng') || 'en')),
-  ),
+  ...checkLanguage(lang),
 };
 export const globalSlice = createSlice({
   name: action.name,
@@ -149,6 +149,7 @@ export const globalSlice = createSlice({
       // })
       .addCase(action.logout.fulfilled, (state) => {
         state.user = {};
+        state.data = {};
         localStorage.removeItem(keyUser);
         localStorage.removeItem(keyToken);
         localStorage.removeItem(keyRefreshToken);
@@ -163,6 +164,7 @@ export const globalSlice = createSlice({
       .addCase(action.profile.fulfilled, (state: State, action: PayloadAction<User>) => {
         if (action.payload) {
           state.user = action.payload;
+          state.data = action.payload;
           localStorage.setItem(keyUser, JSON.stringify(action.payload));
           state.status = 'profile.fulfilled';
         } else state.status = 'idle';
@@ -174,7 +176,7 @@ export const globalSlice = createSlice({
       })
 
       .addCase(action.putProfile.pending, (state: State, action) => {
-        state.data = action.meta.arg;
+        state.data = { ...state.data, ...action.meta.arg };
         state.isLoading = true;
         state.status = 'putProfile.pending';
       })
@@ -236,13 +238,38 @@ export const globalSlice = createSlice({
       )
       .addCase(action.forgottenPassword.fulfilled, (state: State, action: PayloadAction<boolean>) => {
         if (action.payload) {
-          state.data = {};
           state.status = 'forgottenPassword.fulfilled';
         } else state.status = 'idle';
         state.isLoading = false;
       })
       .addCase(action.forgottenPassword.rejected, (state: State) => {
         state.status = 'forgottenPassword.rejected';
+        state.isLoading = false;
+      })
+
+      .addCase(
+        action.otpConfirmation.pending,
+        (
+          state: State,
+          action: PayloadAction<
+            undefined,
+            string,
+            { arg: { email?: string; otp?: string }; requestId: string; requestStatus: 'pending' }
+          >,
+        ) => {
+          state.data = action.meta.arg;
+          state.isLoading = true;
+          state.status = 'otpConfirmation.pending';
+        },
+      )
+      .addCase(action.otpConfirmation.fulfilled, (state: State, action: PayloadAction<boolean>) => {
+        if (action.payload) {
+          state.status = 'otpConfirmation.fulfilled';
+        } else state.status = 'idle';
+        state.isLoading = false;
+      })
+      .addCase(action.otpConfirmation.rejected, (state: State) => {
+        state.status = 'otpConfirmation.rejected';
         state.isLoading = false;
       })
 
@@ -274,7 +301,7 @@ export type TLanguage = 'vn' | 'en';
 interface State {
   [selector: string]: any;
   user?: User;
-  data?: resetPassword | { email?: string } | { password?: string; email?: string };
+  data?: resetPassword;
   routeLanguage?: Record<string, string>;
   isLoading?: boolean;
   isVisible?: boolean;
@@ -297,6 +324,7 @@ export const GlobalFacade = () => {
     putProfile: (values: User) => dispatch(action.putProfile(values)),
     login: (values: { password: string; email: string }) => dispatch(action.login(values)),
     forgottenPassword: (values: { email: string }) => dispatch(action.forgottenPassword(values)),
+    otpConfirmation: (values: { email: string; otp: string }) => dispatch(action.otpConfirmation(values)),
     resetPassword: (values: resetPassword) => dispatch(action.resetPassword(values)),
     setLanguage: (value: TLanguage) => dispatch(globalSlice.actions.setLanguage(value)),
   };

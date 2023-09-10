@@ -5,22 +5,21 @@ import { t } from 'i18next';
 import { Spin } from 'antd';
 import { Form } from '@core/form';
 import { GlobalFacade } from '@store';
-import { routerLinks, language, languages } from '@utils';
+import { routerLinks, lang } from '@utils';
 
 const Page = () => {
   const navigate = useNavigate();
-  const globalFacade = GlobalFacade();
-  const { isLoading, status, data } = globalFacade;
-  const lang = languages.indexOf(location.pathname.split('/')[1]) > -1 ? location.pathname.split('/')[1] : language;
+  const { isLoading, status, data, otpConfirmation } = GlobalFacade();
 
   useEffect(() => {
-    console.log(status);
-    if (status === 'verifyForgotPassword.fulfilled') {
-      navigate(`/${lang}${routerLinks('SetPassword')}`);
+    if (status === 'otpConfirmation.fulfilled') {
+      navigate(`/${lang}${routerLinks('SetPassword')}`, { replace: true });
     }
   }, [status]);
 
-  console.log(data);
+  useEffect(() => {
+    if (!data?.email) navigate(`/${lang}${routerLinks('ForgetPassword')}`, { replace: true });
+  }, []);
 
   return (
     <Fragment>
@@ -45,13 +44,6 @@ const Page = () => {
               },
               {
                 title: '',
-                name: 'uuid',
-                formItem: {
-                  type: 'hidden',
-                },
-              },
-              {
-                title: '',
                 name: 'email',
                 formItem: {
                   type: 'hidden',
@@ -59,7 +51,7 @@ const Page = () => {
               },
             ]}
             textSubmit={'routes.auth.reset-password.Send code'}
-            handSubmit={(values) => 'verifyForgotPassword({ ...values })'}
+            handSubmit={(values) => otpConfirmation({ ...values })}
             disableSubmit={isLoading}
           />
         </Spin>

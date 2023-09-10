@@ -1,4 +1,4 @@
-import { keyRefreshToken, keyToken, keyUser, linkApi, routerLinks } from '@utils';
+import { keyRefreshToken, keyToken, keyUser, language, languages, linkApi, routerLinks } from '@utils';
 import { Message } from '@core/message';
 import { Responses } from '@models';
 
@@ -46,13 +46,13 @@ export const API = {
         const response = await fetch(linkApi + url + (linkParam && '?' + linkParam), config);
         return (await response.json()) as Responses<T>;
       }
-    } else if (res.message) Message.error({ text: res.message });
+    } else if (res.message) await Message.error({ text: res.message });
 
     if (response.status === 401 && url !== `${routerLinks('Auth', 'api')}/login`) {
       localStorage.removeItem(keyUser);
-      window.location.hash = '/';
+      location.reload();
     }
-    return {};
+    throw {};
   },
   get: <T>(url: string, params = {}, headers?: RequestInit['headers']) =>
     API.responsible<T>(url, params, { ...API.init(), method: 'GET' }, headers),

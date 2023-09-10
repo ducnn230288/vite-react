@@ -59,8 +59,7 @@ export const loopMapSelect = (array?: any[], label = 'name', value = 'id'): Chec
       }))
     : [];
 
-export const lang =
-  languages.indexOf(location.pathname.split('/')[1]) > -1 ? location.pathname.split('/')[1] : language;
+export const lang = languages.indexOf(location.hash.split('/')[1]) > -1 ? location.hash.split('/')[1] : language;
 
 export const animationSlide = (e: Element, delay: number) => {
   const tl = gsap.timeline({ delay, defaults: { duration: 1, ease: 'power1.inOut' } });

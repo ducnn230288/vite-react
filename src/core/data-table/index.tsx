@@ -1,5 +1,5 @@
 import React, { forwardRef, Fragment, Ref, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { v4 } from 'uuid';
+import { nanoid } from 'nanoid';
 import { Checkbox, CheckboxOptionType, DatePicker, Popover, Radio, Spin, Table } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
@@ -68,7 +68,7 @@ export const DataTable = forwardRef(
       pageSizeRender = (sizePage: number) => sizePage + ' / page',
       pageSizeWidth = '115px',
       paginationDescription = (from: number, to: number, total: number) => from + '-' + to + ' of ' + total + ' items',
-      idElement = 'temp-' + v4(),
+      idElement = 'temp-' + nanoid(),
       className = 'data-table',
       facade = {},
       data,
@@ -410,7 +410,11 @@ export const DataTable = forwardRef(
     if (!data) data = result?.data;
     const loopData = (array?: any[]): any[] =>
       array
-        ? array.map((item) => ({ ...item, key: item.id || v4(), children: item.children && loopData(item.children) }))
+        ? array.map((item) => ({
+            ...item,
+            key: item.id || nanoid(),
+            children: item.children && loopData(item.children),
+          }))
         : [];
     return (
       <div className={classNames(className, 'intro-x')}>

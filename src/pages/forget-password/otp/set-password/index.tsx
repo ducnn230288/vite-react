@@ -8,16 +8,18 @@ import { routerLinks, lang } from '@utils';
 import { GlobalFacade } from '@store';
 
 const Page = () => {
-  const { isLoading, status, resetPassword } = GlobalFacade();
+  const { isLoading, status, resetPassword, data } = GlobalFacade();
   const navigate = useNavigate();
   useEffect(() => {
     if (status === 'resetPassword.fulfilled') {
       navigate(`/${lang}${routerLinks('Login')}`, { replace: true });
     }
   }, [status]);
+  useEffect(() => {
+    if (!data?.email) navigate(`/${lang}${routerLinks('ForgetPassword')}`, { replace: true });
+  }, []);
 
   const { t } = useTranslation();
-  const { search } = useLocation();
   return (
     <Fragment>
       <div className="text-center mb-8 mx-auto">
@@ -35,7 +37,22 @@ const Page = () => {
       <Spin spinning={isLoading}>
         <Form
           className="intro-x form-login"
+          values={{ ...data }}
           columns={[
+            {
+              name: 'otp',
+              title: 'routes.auth.reset-password.Code OTP',
+              formItem: {
+                type: 'hidden',
+              },
+            },
+            {
+              title: '',
+              name: 'email',
+              formItem: {
+                type: 'hidden',
+              },
+            },
             {
               name: 'password',
               title: 'columns.auth.login.password',
@@ -71,7 +88,7 @@ const Page = () => {
             },
           ]}
           textSubmit={'routes.auth.reset-password.Submit'}
-          handSubmit={(values) => resetPassword({ ...values, token: new URLSearchParams(search).get('token') || '' })}
+          handSubmit={(values) => resetPassword({ ...values })}
           disableSubmit={isLoading}
         />
       </Spin>
