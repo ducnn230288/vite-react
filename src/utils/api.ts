@@ -52,7 +52,7 @@ export const API = {
       localStorage.removeItem(keyUser);
       location.reload();
     }
-    return {};
+    throw {};
   },
   get: <T>(url: string, params = {}, headers?: RequestInit['headers']) =>
     API.responsible<T>(url, params, { ...API.init(), method: 'GET' }, headers),

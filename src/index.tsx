@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { ConfigProvider } from 'antd';
 
 import { GlobalFacade, setupStore } from '@store';
-import { reportWebVitals, language, languages } from '@utils';
+import { reportWebVitals, lang } from '@utils';
 import Router from './router';
 
 const fallbackLng = localStorage.getItem('i18nextLng');
@@ -39,7 +39,7 @@ const Context = () => {
         localStorage.removeItem(localStorage.key(i) || '');
       }
     }
-    setLanguage(languages.indexOf(location.pathname.split('/')[1]) > -1 ? location.pathname.split('/')[1] : language);
+    setLanguage(lang);
   }, []);
 
   return (

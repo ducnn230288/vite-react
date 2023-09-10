@@ -9,7 +9,7 @@ export const action = {
   ...new Action<User>(name),
   post: createAsyncThunk(name + '/post', async (values: User) => {
     // if (values.avatar) values.avatar = values.avatar[0].url;
-    const { data, message } = await API.post<User>(routerLinks(name, 'api'), values);
+    const { data, message } = await API.post<User>(routerLinks(name, 'api') + '/add', values);
     if (message) Message.success({ text: message });
     return data;
   }),

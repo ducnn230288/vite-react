@@ -2,7 +2,7 @@ import React, { Fragment, PropsWithChildren, useEffect, useRef, useState } from 
 import { Popconfirm } from 'antd';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
-import { v4 } from 'uuid';
+import { nanoid } from 'nanoid';
 
 import { API, keyToken } from '@utils';
 import { Button } from '../button';
@@ -109,7 +109,7 @@ export const Upload = ({
         type: file.type,
         originFileObj: file,
         thumbUrl,
-        id: v4(),
+        id: nanoid(),
         percent: 0,
         status: 'uploading',
       };

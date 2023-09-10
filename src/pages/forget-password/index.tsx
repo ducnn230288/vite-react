@@ -5,17 +5,14 @@ import { useNavigate } from 'react-router';
 import { Spin } from 'antd';
 import { Form } from '@core/form';
 import { GlobalFacade } from '@store';
-import { routerLinks, language, languages } from '@utils';
+import { routerLinks, lang } from '@utils';
 
 const Page = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const globalFacade = GlobalFacade();
-  const lang = languages.indexOf(location.pathname.split('/')[1]) > -1 ? location.pathname.split('/')[1] : language;
-
-  const { isLoading, status, data } = globalFacade;
+  const { isLoading, status, data, forgottenPassword } = GlobalFacade();
   useEffect(() => {
-    if (status === 'forgotPassword.fulfilled') {
+    if (status === 'forgottenPassword.fulfilled') {
       navigate(`/${lang}${routerLinks('VerifyForotPassword')}`);
     }
   }, [status]);
@@ -47,7 +44,7 @@ const Page = () => {
               },
             ]}
             textSubmit={'routes.auth.reset-password.OTP'}
-            handSubmit={(values) => 'forgotPassword({ ...values })'}
+            handSubmit={(values) => forgottenPassword({ ...values })}
             disableSubmit={isLoading}
           />
         </Spin>

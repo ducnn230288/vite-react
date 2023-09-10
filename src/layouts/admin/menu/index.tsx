@@ -3,10 +3,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { useNavigate, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { v4 } from 'uuid';
+import { nanoid } from 'nanoid';
 import { createSearchParams } from 'react-router-dom';
 
-import { routerLinks, language, languages } from '@utils';
+import { routerLinks, lang } from '@utils';
 import listMenu from '../menus';
 import './index.less';
 
@@ -16,7 +16,6 @@ const Layout = ({ isCollapsed = false, permission = [] }: { isCollapsed: boolean
   const location = useLocation();
   const refMenu = useRef<HTMLUListElement>(null);
   const clearTime = useRef<NodeJS.Timeout>();
-  const lang = languages.indexOf(location.pathname.split('/')[1]) > -1 ? location.pathname.split('/')[1] : language;
 
   const [menuActive, set_menuActive] = useState<string[]>();
   useEffect(() => {
@@ -42,7 +41,7 @@ const Layout = ({ isCollapsed = false, permission = [] }: { isCollapsed: boolean
         .filter((subItem) => !subItem.permission || permission?.includes(subItem.permission))
         .map((subItem, index: number) => (
           <li
-            key={index + v4()}
+            key={index + nanoid()}
             className={classNames(
               'group flex items-center pl-9 py-2 cursor-pointer rounded-2xl text-gray-300 font-medium text-base',
               {
