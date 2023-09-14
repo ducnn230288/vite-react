@@ -70,7 +70,7 @@ const Page = () => {
   }, [postTypeFacade.result]);
   const { t } = useTranslation();
   return (
-    <div className={'max-w-3xl mx-auto bg-white p-4 shadow rounded-xl'}>
+    <div className={'max-w-3xl mx-auto bg-white p-4 shadow rounded-xl relative'}>
       <Spin spinning={postFacade.isLoading}>
         <Form
           values={{ ...postFacade.data }}
@@ -102,8 +102,8 @@ const Page = () => {
                   value: 'language',
                 },
                 list: [
-                  { label: 'Vietnam', value: 'vn' },
                   { label: 'English', value: 'en' },
+                  { label: 'Vietnam', value: 'vn' },
                 ],
                 column: [
                   { title: 'id', name: 'id', formItem: { type: 'hidden' } },
