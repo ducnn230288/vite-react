@@ -77,7 +77,7 @@ const Page = () => {
               title: 'Code',
               name: 'code',
               formItem: {
-                rules: [{ type: 'required' }],
+                rules: [{ type: 'required' }, { type: 'max', value: 100 }],
                 type: id ? 'hidden' : 'text',
               },
             },

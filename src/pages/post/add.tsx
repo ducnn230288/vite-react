@@ -125,7 +125,7 @@ const Page = () => {
                     name: 'slug',
                     formItem: {
                       col: 6,
-                      rules: [{ type: 'required' }],
+                      rules: [{ type: 'required' }, { type: 'max', value: 100 }],
                     },
                   },
                   {
