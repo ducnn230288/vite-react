@@ -6,7 +6,6 @@ import { DataTypeFacade, Data, DataFacade, GlobalFacade } from '@store';
 import { routerLinks, lang } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
-import slug from 'slug';
 import { Spin } from 'antd';
 const Page = () => {
   const { id, type } = useParams();
@@ -126,11 +125,6 @@ const Page = () => {
                           formItem: {
                             col: type === 'member' ? 6 : 12,
                             rules: [{ type: 'required' }],
-                            onBlur: (e, form, name) => {
-                              if (e.target.value && !form.getFieldValue(['translations', name[0], 'slug'])) {
-                                form.setFieldValue(['translations', name[0], 'slug'], slug(e.target.value));
-                              }
-                            },
                           },
                         },
 
