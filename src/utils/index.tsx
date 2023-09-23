@@ -1,11 +1,12 @@
 import { CheckboxOptionType } from 'antd';
-import { language, languages } from './variable';
+import { keyToken, language, languages, linkApi } from './variable';
 import { gsap } from 'gsap';
 import LazyLoad from 'vanilla-lazyload';
 import React, { Fragment } from 'react';
 // @ts-ignore
 import GLightbox from 'glightbox';
 import { io } from 'socket.io-client';
+import { saveAs } from 'file-saver';
 
 export * from './init/reportWebVitals';
 export * from './api';
@@ -119,4 +120,25 @@ export const arrayUnique = (array: any, key?: string) => {
     }
   }
   return a;
+};
+
+export const handleDownloadCSV = async (url: string, name: string = 'file-csv') => {
+  const res = await fetch(linkApi + url, {
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      authorization: 'Bearer ' + (localStorage.getItem(keyToken) || ''),
+      'Accept-Language': localStorage.getItem('i18nextLng') || '',
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+  });
+  if (res.status < 300) {
+    const text = await res.text();
+    const link = window.document.createElement('a');
+    link.setAttribute('href', 'data:text/csv;charset=utf-8,%EF%BB%BF' + encodeURI(text));
+    link.setAttribute('download', name + '.csv');
+    link.click();
+  }
 };

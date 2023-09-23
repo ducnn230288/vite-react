@@ -40,15 +40,6 @@ export const Upload = ({
       : value || [],
   );
 
-  // const handleDownload = async (file: any) => {
-  //   const response = await axios.get(file[keyImage], { responseType: 'blob' });
-  //   const link = document.createElement('a');
-  //   link.href = window.URL.createObjectURL(new Blob([response.data], { type: response.headers['content-type'] }));
-  //   link.target = '_blank';
-  //   link.download = file.fileName || file.name;
-  //   link.click();
-  // };
-
   useEffect(() => {
     const tempData =
       !multiple && value && typeof value === 'object'
