@@ -231,6 +231,24 @@ const Page = () => {
                 }
               />
             )}
+            {user?.role?.permissions?.includes(keyRole.P_DAYOFF_EXPORT_EXCEL) && (
+              <Button
+                icon={<Plus className="icon-cud !h-5 !w-5" />}
+                text={t('components.button.New')}
+                onClick={() =>
+                  navigate(`/${lang}${routerLinks('DayOff/Add')}?${new URLSearchParams(param).toString()}`)
+                }
+              />
+            )}
+            {user?.role?.permissions?.includes(keyRole.P_USER_UPDATE) && (
+              <Button
+                icon={<Plus className="icon-cud !h-5 !w-5" />}
+                text={t('components.button.New')}
+                onClick={() =>
+                  navigate(`/${lang}${routerLinks('DayOff/Add')}?${new URLSearchParams(param).toString()}`)
+                }
+              />
+            )}
           </Fragment>
         }
       />
