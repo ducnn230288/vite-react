@@ -290,7 +290,11 @@
           "Start Date": "Start Date",
           "End Date": "End Date",
           "Upload screenshot": "Upload screenshot"
-        }
+        },
+        "Export dayoff": "Export dayoff",
+        "Set date leave": "Set date leave",
+        "Reset date leave": "Reset date leave",
+        "Reset date leave for all users on the system": "Reset date leave for all users on the system"
       },
       "team": {
         "Name": "Name",

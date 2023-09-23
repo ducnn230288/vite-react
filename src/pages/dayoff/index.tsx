@@ -9,7 +9,8 @@ import { Button } from '@core/button';
 import { DataTable } from '@core/data-table';
 import { DayoffFacade, GlobalFacade } from '@store';
 import { CheckCircle, Plus, Spinner, Times, Trash } from '@svgs';
-import { lang, keyRole, routerLinks } from '@utils';
+import { lang, keyRole, routerLinks, handleDownloadCSV, API } from '@utils';
+import { Message } from '@core/message';
 
 const Page = () => {
   const { formatDate, user, set } = GlobalFacade();
@@ -221,7 +222,7 @@ const Page = () => {
           },
         ]}
         rightHeader={
-          <Fragment>
+          <div className={'flex gap-3'}>
             {user?.role?.permissions?.includes(keyRole.P_DAYOFF_CREATE) && user.managerId && (
               <Button
                 icon={<Plus className="icon-cud !h-5 !w-5" />}
@@ -233,23 +234,26 @@ const Page = () => {
             )}
             {user?.role?.permissions?.includes(keyRole.P_DAYOFF_EXPORT_EXCEL) && (
               <Button
-                icon={<Plus className="icon-cud !h-5 !w-5" />}
-                text={t('components.button.New')}
-                onClick={() =>
-                  navigate(`/${lang}${routerLinks('DayOff/Add')}?${new URLSearchParams(param).toString()}`)
-                }
+                text={t('routes.admin.dayoff.Export dayoff')}
+                onClick={() => handleDownloadCSV(routerLinks('User', 'api') + '/export-dayoff', 'export-dayoff')}
               />
             )}
             {user?.role?.permissions?.includes(keyRole.P_USER_UPDATE) && (
               <Button
                 icon={<Plus className="icon-cud !h-5 !w-5" />}
-                text={t('components.button.New')}
-                onClick={() =>
-                  navigate(`/${lang}${routerLinks('DayOff/Add')}?${new URLSearchParams(param).toString()}`)
+                text={t('routes.admin.dayoff.Set date leave')}
+                onClick={async () =>
+                  await Message.confirm({
+                    text: t('routes.admin.dayoff.Reset date leave for all users on the system'),
+                    title: t('routes.admin.dayoff.Reset date leave'),
+                    input: 'number',
+                    preConfirm: async (dateLeave) =>
+                      await API.put(routerLinks('User', 'api') + '/date-leave/' + dateLeave, {}, {}, {}, true),
+                  })
                 }
               />
             )}
-          </Fragment>
+          </div>
         }
       />
     </div>

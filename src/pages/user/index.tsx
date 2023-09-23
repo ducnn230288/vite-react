@@ -242,7 +242,7 @@ const Page = () => {
                         }),
                       },
                     },
-                    render: (data, item) => item.teams.map((i: any) => i.name).join(','),
+                    render: (data, item) => item.teams?.map((i: any) => i.name).join(','),
                   },
                 },
                 {

@@ -289,7 +289,11 @@
           "Start Date": "Ngày bắt đầu",
           "End Date": "Ngày kết thúc",
           "Upload screenshot": "Tải ảnh lên"
-        }
+        },
+        "Export dayoff": "Xuất ngày nghỉ",
+        "Set date leave": "Đặt ngày nghỉ phép",
+        "Reset date leave": "Đặt lại ngày nghỉ",
+        "Reset date leave for all users on the system": "Đặt lại ngày nghỉ cho toàn bộ người dùng trên hệ thống"
       },
       "team": {
         "Name": "Tên Nhóm",
