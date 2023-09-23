@@ -9,7 +9,7 @@
     "build:staging": "tsc && vite build --mode staging",
     "build:prod": "tsc && vite build --mode prod",
     "preview": "vite preview",
-    "format": "prettier --write \"{src,public}/**/*.{tsx,jsx,less}\"",
+    "format": "prettier --write \"{src,public}/**/*.{tsx,jsx}\"",
     "lint": "eslint \"{src,public}/**/*.{tsx,jsx}\" --fix",
     "update-all": "npx -p npm-check-updates ncu -u && npm install"
   },
