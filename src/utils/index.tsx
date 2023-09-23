@@ -6,7 +6,6 @@ import React, { Fragment } from 'react';
 // @ts-ignore
 import GLightbox from 'glightbox';
 import { io } from 'socket.io-client';
-import { saveAs } from 'file-saver';
 
 export * from './init/reportWebVitals';
 export * from './api';
