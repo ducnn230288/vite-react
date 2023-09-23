@@ -51,7 +51,7 @@ export const Form = ({
         _columns.map(({ name, formItem }: FormModel) => ({
           name,
           formItem: {
-            list: formItem?.list,
+            list: formItem?.list?.map((e) => e.value),
             disabled: formItem?.disabled ? formItem?.disabled(values, form) : false,
           },
         })),
@@ -60,7 +60,7 @@ export const Form = ({
         columns.map(({ name, formItem }: FormModel) => ({
           name,
           formItem: {
-            list: formItem?.list,
+            list: formItem?.list?.map((e) => e.value),
             disabled: formItem?.disabled ? formItem?.disabled(values, form) : false,
           },
         })),
