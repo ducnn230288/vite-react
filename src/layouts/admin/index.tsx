@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 import { Avatar } from '@core/avatar';
 import { GlobalFacade } from '@store';
 import { Key, Out, User, Arrow, Logo } from '@svgs';
-import { routerLinks, socket, lang } from '@utils';
+import { routerLinks, lang } from '@utils';
 import './index.less';
 import Menu from './menu';
 
@@ -21,7 +21,7 @@ const Layout = ({ children }: PropsWithChildren) => {
 
   const [isCollapsed, set_isCollapsed] = useState(window.innerWidth < 1025);
   const [isDesktop, set_isDesktop] = useState(window.innerWidth > 640);
-  const [api, contextHolder] = notification.useNotification();
+  const [, contextHolder] = notification.useNotification();
 
   useEffect(() => {
     if (window.innerWidth < 1025 && !isCollapsed) {
