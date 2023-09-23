@@ -4,10 +4,10 @@
 
 @import '/src/core';
 .button {
-  @apply px-4 py-2 rounded-lg bg-teal-900 text-white hover:bg-teal-700 inline-flex items-center gap-1 border border-transparent font-medium;
+@apply px-4 py-2 rounded-lg bg-teal-900 text-white hover:bg-teal-700 inline-flex items-center gap-1 border border-transparent font-medium;
 
   &.icon {
-    @apply p-0 border border-gray-300;
+  @apply p-0 border border-gray-300;
     > i { @apply text-xl; }
   }
   &:disabled,
@@ -27,7 +27,7 @@ body {
     Droid Sans,
     Helvetica Neue,
     sans-serif;
-  @apply text-sm overflow-x-hidden text-gray-700 bg-gray-100;
+@apply text-sm overflow-x-hidden text-gray-700 bg-gray-100;
 }
 
 * > {
@@ -39,14 +39,14 @@ body {
   .-intro-x:nth-child(@{counter}) { @apply -translate-x-12; }
   .-intro-x:nth-child(@{counter}),
   .intro-x:nth-child(@{counter}) {
-    @apply opacity-0 animate-intro-x-animation;
+  @apply opacity-0 animate-intro-x-animation;
     z-index: (10 - @counter);
     animation-delay: ~'0.@{counter}s';
   }
 }
 
 .ant-btn {
-  @apply border border-gray-300 text-sm rounded-lg mr-2 px-2;
+@apply border border-gray-300 text-sm rounded-lg mr-2 px-2;
 
   &.ant-btn-primary { @apply bg-teal-900 text-white; }
 }
@@ -55,20 +55,20 @@ svg { fill: currentColor; }
 
 .image-shine,
 .glightbox {
-  @apply relative overflow-hidden flex;
+@apply relative overflow-hidden flex;
 
   &:before {
-    @apply absolute top-0 -left-3/4 block w-1/2 h-full z-10 bg-gradient-to-r from-white/80 skew-x-[-25deg];
+  @apply absolute top-0 -left-3/4 block w-1/2 h-full z-10 bg-gradient-to-r from-white/80 skew-x-[-25deg];
     content: '';
   }
   &:hover:before { @apply animate-shine; }
 }
 
 .slide-zoom {
-  @apply overflow-visible;
+@apply overflow-visible;
 
   .swiper-slide {
-    @apply opacity-0 duration-500 transition-all ease-in-out !scale-110;
+  @apply opacity-0 duration-500 transition-all ease-in-out !scale-110;
 
     &.swiper-slide-next,
     &.swiper-slide-active,
@@ -87,10 +87,10 @@ svg { fill: currentColor; }
   &-close:focus { @apply !shadow-none; }
 }
 .html-render {
-  @apply text-justify;
+@apply text-justify;
 
   .image {
-    @apply inline-block text-center w-full py-5;
+  @apply inline-block text-center w-full py-5;
     .caption { @apply bg-teal-50 border border-teal-200 mt-1 py-1 px-2 inline-block; }
   }
   p { @apply mb-3; }
