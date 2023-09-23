@@ -25,9 +25,6 @@ export const Message = {
         confirmButtonColor,
         cancelButtonColor,
         padding,
-        customClass: {
-          cancelButton: '!border !border-solid !border-teal-900 !bg-white !text-teal-900 hover:!bg-none',
-        },
       }),
     ),
   warning: ({
@@ -51,9 +48,6 @@ export const Message = {
         showCancelButton,
         showConfirmButton,
         padding,
-        customClass: {
-          cancelButton: '!border !border-solid !border-black-900 !rounded-lg !text-teal-900 !bg-white',
-        },
       }),
     ),
   error: ({
@@ -77,18 +71,17 @@ export const Message = {
         padding,
         focusCancel: showCancelButton,
         timer: 6000,
-        customClass: {
-          cancelButton: '!border !border-solid !border-black-900 !rounded-lg !text-teal-900 !bg-white',
-        },
       }),
     ),
   confirm: ({
     text = '',
     title = '',
+    input,
     cancelButtonText = t('components.message.Close'),
     confirmButtonText = t('components.message.Ok'),
     onConfirm = () => null,
     onDenied = () => null,
+    preConfirm = () => null,
     confirmButtonColor = '#3b82f6',
     cancelButtonColor = '#ef4444',
     showCloseButton = true,
@@ -109,6 +102,17 @@ export const Message = {
         showConfirmButton,
         showCloseButton,
         padding,
+        input,
+        inputAttributes: {
+          autocapitalize: 'off',
+        },
+        preConfirm: async (value) => {
+          try {
+            await preConfirm(value);
+          } catch (error) {
+            Swal.showValidationMessage(error!.toString());
+          }
+        },
       }).then((result) => {
         if (result.isConfirmed) {
           onConfirm();
@@ -121,8 +125,10 @@ export const Message = {
 type Type = {
   text: string;
   title?: any;
+  input?: 'text' | 'number';
   cancelButtonText?: any;
   confirmButtonText?: any;
+  preConfirm?: (value: string) => void;
   onConfirm?: () => void;
   onDenied?: () => void;
   confirmButtonColor?: string;

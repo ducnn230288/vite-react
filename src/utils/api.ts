@@ -21,6 +21,7 @@ export const API = {
     params: { [key: string]: string } = {},
     config: RequestInit,
     headers: RequestInit['headers'] = {},
+    throwText: boolean = false,
   ) => {
     config.headers = { ...config.headers, ...headers };
 
@@ -33,7 +34,6 @@ export const API = {
     const response = await fetch(linkApi + url + (linkParam && '?' + linkParam), config);
     const res: Responses<T> = await response.json();
     if (response.ok) return res;
-
     if (
       response.status === 401 &&
       url !== `${routerLinks('Auth', 'api')}/refresh` &&
@@ -46,7 +46,10 @@ export const API = {
         const response = await fetch(linkApi + url + (linkParam && '?' + linkParam), config);
         return (await response.json()) as Responses<T>;
       }
-    } else if (res.message) await Message.error({ text: res.message });
+    } else if (res.message) {
+      if (!throwText) await Message.error({ text: res.message });
+      else throw new Error(res.message);
+    }
 
     if (response.status === 401 && url !== `${routerLinks('Auth', 'api')}/login`) {
       localStorage.removeItem(keyUser);
@@ -54,14 +57,14 @@ export const API = {
     }
     throw {};
   },
-  get: <T>(url: string, params = {}, headers?: RequestInit['headers']) =>
-    API.responsible<T>(url, params, { ...API.init(), method: 'GET' }, headers),
-  post: <T>(url: string, data = {}, params = {}, headers?: RequestInit['headers']) =>
-    API.responsible<T>(url, params, { ...API.init(), method: 'POST', body: JSON.stringify(data) }, headers),
-  put: <T>(url: string, data = {}, params = {}, headers?: RequestInit['headers']) =>
-    API.responsible<T>(url, params, { ...API.init(), method: 'PUT', body: JSON.stringify(data) }, headers),
-  delete: <T>(url: string, params = {}, headers?: RequestInit['headers']) =>
-    API.responsible<T>(url, params, { ...API.init(), method: 'DELETE' }, headers),
+  get: <T>(url: string, params = {}, headers?: RequestInit['headers'], throwText: boolean = false) =>
+    API.responsible<T>(url, params, { ...API.init(), method: 'GET' }, headers, throwText),
+  post: <T>(url: string, data = {}, params = {}, headers?: RequestInit['headers'], throwText: boolean = false) =>
+    API.responsible<T>(url, params, { ...API.init(), method: 'POST', body: JSON.stringify(data) }, headers, throwText),
+  put: <T>(url: string, data = {}, params = {}, headers?: RequestInit['headers'], throwText: boolean = false) =>
+    API.responsible<T>(url, params, { ...API.init(), method: 'PUT', body: JSON.stringify(data) }, headers, throwText),
+  delete: <T>(url: string, params = {}, headers?: RequestInit['headers'], throwText: boolean = false) =>
+    API.responsible<T>(url, params, { ...API.init(), method: 'DELETE' }, headers, throwText),
   refresh: async () => {
     const res = await API.get<{ accessToken: string; refreshToken: null }>(
       `${routerLinks('Auth', 'api')}/refresh`,
