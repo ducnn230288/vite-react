@@ -2,7 +2,7 @@ import React from 'react';
 
 import { keyRole } from '@utils';
 import './index.less';
-import { Cog, User, Coffee } from '@svgs';
+import { Cog, User, Coffee, Booking } from '@svgs';
 
 const Layout = [
   {
@@ -14,6 +14,11 @@ const Layout = [
   {
     icon: <Coffee className="h-8 w-8" />,
     name: 'DayOff',
+    permission: keyRole.P_DAYOFF_LISTED,
+  },
+  {
+    icon: <Booking className="h-8 w-8" />,
+    name: 'Booking',
     permission: keyRole.P_DAYOFF_LISTED,
   },
   {

@@ -23,6 +23,7 @@ export const routerLinks = (name: string, type?: string) => {
     'DayOff/List': '/dayoff/list',
     'DayOff/Add': '/dayoff/add',
     'DayOff/Detail': '/dayoff/detail',
+    Booking: '/booking',
   }; // 💬 generate link to here
 
   const apis: {
@@ -41,6 +42,7 @@ export const routerLinks = (name: string, type?: string) => {
     UserTeam: '/user-team',
     DayOff: '/dayoff',
     UserManager: '/user',
+    Booking: '/booking',
   }; // 💬 generate api to here
 
   switch (type) {

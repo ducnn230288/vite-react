@@ -1,4 +1,5 @@
 export { ReactComponent as Arrow } from './arrow.svg';
+export { ReactComponent as Booking } from './booking.svg';
 export { ReactComponent as Calendar } from './calendar.svg';
 export { ReactComponent as Check } from './check.svg';
 export { ReactComponent as CheckCircle } from './check-circle.svg';

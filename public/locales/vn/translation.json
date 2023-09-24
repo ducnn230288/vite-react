@@ -72,7 +72,8 @@
     "Data": "Dữ liệu",
     "Parameter": "Tham số",
     "Post": "Post",
-    "DayOff": "Nghỉ phép"
+    "DayOff": "Nghỉ phép",
+    "Booking": "Đặt trước"
   },
   "pages": {
     "ForgetPassword": "Quên mật khẩu",
@@ -103,7 +104,8 @@
     "Post/Edit": "Chỉnh sửa post {{type}}",
     "Team": "Nhóm",
     "Team/Add": "Thêm mới nhóm",
-    "Team/Edit": "Chỉnh sửa nhóm"
+    "Team/Edit": "Chỉnh sửa nhóm",
+    "Booking": "Đặt trước"
   },
   "columns": {
     "auth": {

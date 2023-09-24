@@ -240,7 +240,6 @@ const Page = () => {
             )}
             {user?.role?.permissions?.includes(keyRole.P_USER_UPDATE) && (
               <Button
-                icon={<Plus className="icon-cud !h-5 !w-5" />}
                 text={t('routes.admin.dayoff.Set date leave')}
                 onClick={async () =>
                   await Message.confirm({

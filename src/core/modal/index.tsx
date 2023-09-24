@@ -71,7 +71,7 @@ type Type = PropsWithChildren<{
   facade: any;
   keyState?: string;
   title?: (data: any) => string;
-  widthModal: number;
+  widthModal?: number;
   onOk?: () => any;
   onCancel?: () => void;
   firstChange?: boolean;
