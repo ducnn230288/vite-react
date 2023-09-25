@@ -26,6 +26,8 @@ export class FormItem {
     | 'slider_number'
     | 'date'
     | 'date_range'
+    | 'time'
+    | 'time_range'
     | 'checkbox'
     | 'radio'
     | 'tag'

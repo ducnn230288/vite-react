@@ -59,10 +59,9 @@ const Page = () => {
       });
       if (!userRoleFacade?.result?.data?.filter((item) => item.code === roleCode).length) {
         navigate({
-          pathname: location.pathname.replace(
-            `/${roleCode}/`,
-            id && userFacade.data?.roleCode ? `/${userFacade.data?.roleCode}/` : '/staff/',
-          ),
+          pathname: location.hash
+            .substring(1)
+            .replace(`/${roleCode}/`, id && userFacade.data?.roleCode ? `/${userFacade.data?.roleCode}/` : '/staff/'),
         });
       }
     }
