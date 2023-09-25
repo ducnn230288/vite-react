@@ -73,7 +73,9 @@
     "Parameter": "Tham số",
     "Post": "Post",
     "DayOff": "Nghỉ phép",
-    "Booking": "Đặt trước"
+    "Booking": "Đặt trước",
+    "Booking/List": "Danh sách",
+    "Booking/Add": "Tạo mới"
   },
   "pages": {
     "ForgetPassword": "Quên mật khẩu",
@@ -105,7 +107,9 @@
     "Team": "Nhóm",
     "Team/Add": "Thêm mới nhóm",
     "Team/Edit": "Chỉnh sửa nhóm",
-    "Booking": "Đặt trước"
+    "Booking": "Đặt trước",
+    "Booking/Detail": "Đặt trước {{date}}",
+    "Booking/Add": "Thêm mới đặt trước {{type}} {{date}}"
   },
   "columns": {
     "auth": {

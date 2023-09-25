@@ -73,7 +73,9 @@
     "Parameter": "Parameter",
     "Post": "Post",
     "DayOff": "Day Off",
-    "Booking": "Booking"
+    "Booking": "Booking",
+    "Booking/List": "List",
+    "Booking/Add": "Add"
   },
   "pages": {
     "ForgetPassword": "Forgot Password",
@@ -105,7 +107,9 @@
     "Team": "Team",
     "Team/Add": "Add new Team",
     "Team/Edit": "Edit Team",
-    "Booking": "Booking"
+    "Booking": "Booking",
+    "Booking/Detail": "Booking {{date}}",
+    "Booking/Add": "Add booking {{type}} {{date}}"
   },
   "columns": {
     "auth": {

@@ -3,253 +3,142 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { Spin } from 'antd';
 
+import { Booking, GlobalFacade, BookingFacade, CodeFacade, CodeTypeFacade } from '@store';
+import { routerLinks, lang } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
-import { GlobalFacade, DayoffFacade } from '@store';
-import { routerLinks, lang } from '@utils';
-
 const Page = () => {
-  const { id } = useParams();
-  const dayoffFacade = DayoffFacade();
-  const { user, profile, set } = GlobalFacade();
-  const isBack = useRef(true);
-  const param = JSON.parse(dayoffFacade.queryParams || '{}');
+  const { id, date, type } = useParams();
+  const bookingFacade = BookingFacade();
+  const { set } = GlobalFacade();
+  const isReload = useRef(false);
+  const param = JSON.parse(bookingFacade.queryParams || '{}');
   useEffect(() => {
-    if (id) dayoffFacade.getById({ id });
-    else dayoffFacade.set({ data: undefined });
-    profile();
+    if (id) bookingFacade.getById({ id });
+    else bookingFacade.set({ data: undefined });
     set({
       breadcrumbs: [
-        { title: 'titles.DayOff', link: '' },
-        { title: 'titles.DayOff/List', link: '' },
-        { title: id ? 'pages.DayOff/Edit' : 'pages.DayOff/Add', link: '' },
+        { title: 'titles.Booking', link: '' },
+        { title: 'titles.Booking/List', link: '' },
+        { title: 'pages.Booking/Detail', link: '' },
+        { title: id ? 'pages.Booking/Edit' : 'pages.Booking/Add', link: '' },
       ],
+      titleOption: { date },
     });
+    return () => {
+      isReload.current && bookingFacade.get(param);
+    };
   }, [id]);
 
   const navigate = useNavigate();
+  const isBack = useRef(true);
   useEffect(() => {
-    switch (dayoffFacade.status) {
-      case 'put.fulfilled':
+    switch (bookingFacade.status) {
       case 'post.fulfilled':
+      case 'put.fulfilled':
+        bookingFacade.get(JSON.parse(bookingFacade.queryParams || '{}'));
+        if (Object.keys(param).length > 0) isReload.current = true;
+
         if (isBack.current) handleBack();
         else {
           isBack.current = true;
-          if (id) navigate(`/${lang}${routerLinks('DayOff/Add')}`);
-          else dayoffFacade.set({ data: undefined });
+          navigate(`/${lang}${routerLinks('Booking')}/${date}/add`);
         }
-        profile();
         break;
     }
-  }, [dayoffFacade.status]);
+  }, [bookingFacade.status]);
 
-  const handleBack = () => {
-    dayoffFacade.set({ status: 'idle' });
-    navigate(`/${lang}${routerLinks('DayOff/List')}?${new URLSearchParams(param).toString()}`);
-  };
-  const handleSubmit = (values: any) => {
-    if (id) dayoffFacade.put(values);
-    else dayoffFacade.post(values);
+  const codeTypeFacade = CodeTypeFacade();
+  useEffect(() => {
+    if (!codeTypeFacade.result?.data?.length) codeTypeFacade.get({});
+  }, []);
+  useEffect(() => {
+    if (codeTypeFacade.result?.data?.length) {
+      set({ titleOption: { date, type: codeTypeFacade.result?.data?.filter((item) => item.code === type)[0]?.name } });
+      if (!codeTypeFacade?.result?.data?.filter((item) => item.code === type).length) {
+        navigate({
+          pathname: location.hash
+            .substring(1)
+            .replace(`/${type}/`, id && bookingFacade.data?.type ? `/${bookingFacade.data?.type}/` : '/room/'),
+        });
+      }
+    }
+  }, [codeTypeFacade.result]);
+  const handleBack = () => navigate(`/${lang}${routerLinks('Booking')}/${date}`);
+  const handleSubmit = (values: Booking) => {
+    if (id) bookingFacade.put({ ...values, id });
+    else bookingFacade.post(values);
   };
 
   const { t } = useTranslation();
-  const listType = [
-    {
-      value: 1,
-      label: t('routes.admin.dayoff.register.Annual Leave'),
-      disabled: user!.dateLeave! - user!.dateOff! <= 0,
-    },
-    { value: 2, label: t('routes.admin.dayoff.register.Leave without Pay') },
-    { value: 3, label: t('routes.admin.dayoff.register.Remote') },
-  ];
-  const listTime = [
-    { value: 0, label: t('routes.admin.dayoff.register.All day'), disabled: false },
-    { value: 1, label: t('routes.admin.dayoff.register.Morning') },
-    { value: 2, label: t('routes.admin.dayoff.register.Afternoon') },
-  ];
   return (
-    <div className={'max-w-2xl mx-auto bg-white p-4 shadow rounded-xl'}>
-      {!!user && (
-        <Spin spinning={dayoffFacade.isLoading}>
-          <div className="text-xl font-bold hidden sm:block mb-5">
-            {!id
-              ? t('routes.admin.Layout.Apply for leave') +
-                ' ( ' +
-                (user!.dateLeave! - user!.dateOff! > 0 ? user!.dateLeave! - user!.dateOff! : 0) +
-                ' ' +
-                t('routes.admin.Layout.Day') +
-                ') '
-              : ''}
-          </div>
-          <Form
-            values={{ ...dayoffFacade.data }}
-            className="intro-x"
-            columns={[
-              {
-                name: 'type',
-                title: 'routes.admin.dayoff.register.Leave Type',
-                formItem: {
-                  type: 'select',
-                  col: 6,
-                  rules: [{ type: 'required' }],
-                  list: listType || [],
-                  onChange: (value: number, form: any) => {
-                    const dateLeave = form.getFieldValue('dateLeave');
-                    if (
-                      value === 1 &&
-                      dateLeave &&
-                      user.dateLeave! > user.dateOff! &&
-                      dateLeave[1].diff(dateLeave[0], 'days') > user.dateLeave! - user.dateOff!
-                    ) {
-                      listTime[0].disabled = value === 1 ? user.dateLeave! - user.dateOff! < 1 : false;
-                      form.resetFields(['dateLeave', 'time']);
-                    }
-                  },
+    <div className={'max-w-3xl mx-auto bg-white p-4 shadow rounded-xl'}>
+      <Spin spinning={bookingFacade.isLoading}>
+        <Form
+          values={{ ...bookingFacade.data }}
+          className="intro-x"
+          columns={[
+            {
+              title: 'Time',
+              name: 'time',
+              formItem: {
+                type: 'time_range',
+                rules: [{ type: 'required' }],
+                col: 6,
+              },
+            },
+            {
+              title: 'Code',
+              name: 'itemCode',
+              formItem: {
+                type: 'select',
+                rules: [{ type: 'required' }],
+                col: 6,
+                get: {
+                  facade: CodeFacade,
+                  params: (fullTextSearch: string) => ({
+                    fullTextSearch,
+                    filter: { type },
+                    extend: {},
+                  }),
+                  format: (item) => ({
+                    label: item.name,
+                    value: item.code,
+                  }),
                 },
               },
-              {
-                name: 'time',
-                title: 'routes.admin.dayoff.register.Time',
-                formItem: {
-                  type: 'select',
-                  col: 6,
-                  rules: [{ type: 'required' }],
-                  disabled: (values: any, form: any) =>
-                    form.getFieldValue('date') &&
-                    form.getFieldValue('date')[1].diff(form.getFieldValue('date')[0], 'days') > 0,
-                  onChange: (value: number, form: any) => {
-                    form.resetFields(['dateLeave']);
-                  },
-                  list: listTime || [],
-                },
+            },
+            {
+              title: 'Name',
+              name: 'name',
+              formItem: {
+                rules: [{ type: 'required' }],
               },
-              {
-                title: 'routes.admin.dayoff.Leave Date',
-                name: 'dateLeave',
-                formItem: {
-                  type: 'date_range',
-                  rules: [{ type: 'required' }],
-                  disabledDate: (current, form) => {
-                    if (
-                      current.startOf('day').toString() !== current.startOf('week').toString() &&
-                      current.endOf('day').toString() !== current.endOf('week').toString()
-                    ) {
-                      const dateLeave = form.getFieldValue('dateLeave');
-                      if (dateLeave && !dateLeave[0]) {
-                        return false;
-                      }
-                      const type = form.getFieldValue('type');
-                      if (dateLeave && (!type || type === 1)) {
-                        let number;
-                        const floorLeave = Math.floor(user.dateLeave! - user.dateOff!);
+            },
 
-                        if (floorLeave < 7 && dateLeave[0].get('day') + floorLeave < 7) number = -1;
-                        else number = Math.floor((dateLeave[0].get('day') + 1 + floorLeave) / 7);
-                        if (number > 1) {
-                          number = number - 1 + (number - 1) * 2;
-                        }
-                        const day = dateLeave[0].add(floorLeave + number, 'days').get('day');
-                        if (day === 6 || day === 0) {
-                          number += day === 6 ? 2 : 1;
-                        }
-
-                        if (floorLeave > 12 && floorLeave < 15 && dateLeave[0].get('day') === 5) {
-                          number += 1;
-                        }
-                        if (floorLeave > 13 && floorLeave < 15 && dateLeave[0].get('day') === 5) {
-                          number += 1;
-                        }
-                        if (floorLeave > 14 && floorLeave < 17 && dateLeave[0].get('day') === 5) {
-                          number -= 1;
-                        }
-
-                        if (floorLeave > 13 && floorLeave < 16 && dateLeave[0].get('day') === 4) {
-                          number += 1;
-                        }
-                        if (floorLeave > 14 && floorLeave < 16 && dateLeave[0].get('day') === 4) {
-                          number += 1;
-                        }
-                        if (floorLeave > 15 && dateLeave[0].get('day') === 4) {
-                          number -= 1;
-                        }
-                        if (floorLeave > 16 && dateLeave[0].get('day') === 4) {
-                          number -= 1;
-                        }
-
-                        if (floorLeave > 14 && floorLeave < 17 && dateLeave[0].get('day') === 3) {
-                          number += 1;
-                        }
-                        if (floorLeave > 15 && floorLeave < 17 && dateLeave[0].get('day') === 3) {
-                          number += 1;
-                        }
-                        if (floorLeave > 16 && dateLeave[0].get('day') === 3) {
-                          number -= 1;
-                        }
-
-                        if (floorLeave > 15 && dateLeave[0].get('day') === 2) {
-                          number += 1;
-                        }
-                        if (floorLeave > 16 && dateLeave[0].get('day') === 2) {
-                          number += 1;
-                        }
-
-                        if (floorLeave > 16 && dateLeave[0].get('day') === 1) {
-                          number += 1;
-                        }
-
-                        return dateLeave[0] && current.diff(dateLeave[0], 'days') > floorLeave + number;
-                      }
-                      return false;
-                    }
-                    return true;
-                  },
-                  onChange: (value: any[], form) => {
-                    if (value && value.length === 2 && value[1].diff(value[0], 'days') > 0) {
-                      form.setFieldValue('time', 0);
-                    }
-                  },
-                },
+            {
+              name: 'description',
+              title: 'Description',
+              formItem: {
+                type: 'textarea',
               },
-              {
-                name: 'reason',
-                title: 'routes.admin.dayoff.Reason',
-                formItem: {
-                  // col: 8,
-                  type: 'textarea',
-                  rules: [{ type: 'required' }],
-                },
-              },
-              // {
-              //   name: 'image',
-              //   title: 'dayoff.register.Upload screenshot',
-              //   formItem: {
-              //     col: 4,
-              //     type: 'upload',
-              //   },
-              // },
-            ]}
-            extendButton={(form) => (
-              <div className="flex">
-                <Button
-                  text={t('components.form.modal.cancel')}
-                  className="md:min-w-[12rem] !bg-red-600 w-full justify-center mr-2"
-                  onClick={handleBack}
-                />
-                <Button
-                  text={t('components.button.Save and Add new')}
-                  className={'md:min-w-[12rem] w-full justify-center out-line'}
-                  onClick={() => {
-                    form.submit();
-                    isBack.current = false;
-                  }}
-                />
-              </div>
-            )}
-            handSubmit={handleSubmit}
-            disableSubmit={dayoffFacade.isLoading}
-          />
-        </Spin>
-      )}
+            },
+          ]}
+          extendButton={(form) => (
+            <Button
+              text={t('components.button.Save and Add new')}
+              className={'md:min-w-[12rem] justify-center out-line'}
+              onClick={() => {
+                form.submit();
+                isBack.current = false;
+              }}
+            />
+          )}
+          handSubmit={handleSubmit}
+          disableSubmit={bookingFacade.isLoading}
+          handCancel={handleBack}
+        />
+      </Spin>
     </div>
   );
 };

@@ -171,6 +171,16 @@ const pages = [
         component: React.lazy(() => import('@pages/booking')),
         title: 'Booking',
       },
+      {
+        path: routerLinks('Booking') + '/:date',
+        component: React.lazy(() => import('@pages/booking/detail')),
+        title: 'Booking/Detail',
+      },
+      {
+        path: routerLinks('Booking') + '/:date/:type/add',
+        component: React.lazy(() => import('@pages/booking/add')),
+        title: 'Booking/Add',
+      },
     ], // 💬 generate link to here
   },
 ];

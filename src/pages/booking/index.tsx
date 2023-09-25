@@ -5,6 +5,8 @@ import type { Dayjs } from 'dayjs';
 import { Badge, Calendar } from 'antd';
 import type { BadgeProps, CalendarProps } from 'antd';
 import { Modal } from '@core/modal';
+import { keyRole, lang, routerLinks } from '@utils';
+import { useNavigate } from 'react-router';
 const getListData = (value: Dayjs) => {
   let listData;
   switch (value.date()) {
@@ -38,15 +40,15 @@ const getMonthData = (value: Dayjs) => {
 };
 
 const Page = () => {
-  const { set } = GlobalFacade();
+  const { set, user } = GlobalFacade();
   const bookingFacade = BookingFacade();
 
   useEffect(() => {
     // if (!parameterFacade.result?.data) parameterFacade.get({});
     set({
       breadcrumbs: [
-        { title: 'titles.Setting', link: '' },
-        { title: 'titles.Parameter', link: '' },
+        { title: 'titles.Booking', link: '' },
+        { title: 'titles.Booking/List', link: '' },
       ],
     });
     // parameterFacade.getById({ id: request.code });
@@ -79,14 +81,18 @@ const Page = () => {
     if (info.type === 'month') return monthCellRender(current);
     return info.originNode;
   };
-
+  const navigate = useNavigate();
   return (
     <div className={'p-5'}>
       <Calendar
         className={'calendar-booking py-2 px-5'}
         cellRender={cellRender}
         onSelect={(date, info) => {
-          console.log(date, info.source);
+          // P_BOOKING_DETAIL
+          user?.role?.permissions?.includes(keyRole.P_BOOKING_DETAIL) &&
+            navigate(
+              `/${lang}${routerLinks('Booking')}/${date.format('YYYY-MM' + (info.source === 'date' ? '-DD' : ''))}`,
+            );
         }}
       />
       <Modal facade={bookingFacade} />

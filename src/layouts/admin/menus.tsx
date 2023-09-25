@@ -19,7 +19,7 @@ const Layout = [
   {
     icon: <Booking className="h-8 w-8" />,
     name: 'Booking',
-    permission: keyRole.P_DAYOFF_LISTED,
+    permission: keyRole.P_BOOKING_LISTED,
   },
   {
     icon: <Cog className="h-6 w-6" />,
