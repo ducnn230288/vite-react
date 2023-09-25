@@ -59,10 +59,9 @@ const Page = () => {
       set({ titleOption: { type: dataTypeFacade.result?.data?.filter((item) => item.code === type)[0]?.name } });
       if (!dataTypeFacade?.result?.data?.filter((item) => item.code === type).length) {
         navigate({
-          pathname: location.pathname.replace(
-            `/${type}/`,
-            id && dataFacade.data?.type ? `/${dataFacade.data?.type}/` : '/partner/',
-          ),
+          pathname: location.hash
+            .substring(1)
+            .replace(`/${type}/`, id && dataFacade.data?.type ? `/${dataFacade.data?.type}/` : '/partner/'),
         });
       }
     }

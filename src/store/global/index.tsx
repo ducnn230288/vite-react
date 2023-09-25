@@ -307,7 +307,7 @@ interface State {
   isVisible?: boolean;
   status?: string;
   title?: string;
-  titleOption?: object;
+  titleOption?: Record<string, string>;
   pathname?: string;
   formatDate?: string;
   language?: TLanguage;

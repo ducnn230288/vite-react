@@ -1,10 +1,11 @@
 import React from 'react';
+import { URLSearchParamsInit } from 'react-router-dom/dist/dom';
 
 import { keyRole } from '@utils';
 import './index.less';
 import { Cog, User, Coffee, Booking } from '@svgs';
 
-const Layout = [
+const Layout: IMenu[] = [
   {
     icon: <User className="h-6 w-6" />,
     name: 'User',
@@ -54,3 +55,11 @@ const Layout = [
 ];
 
 export default Layout;
+
+interface IMenu {
+  name: string;
+  icon?: React.JSX.Element;
+  permission?: keyRole;
+  queryParams?: URLSearchParamsInit;
+  child?: IMenu[];
+}

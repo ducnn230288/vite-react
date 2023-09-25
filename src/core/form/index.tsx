@@ -1,5 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Form as AntForm, Checkbox, Radio, Switch, Slider, DatePicker as DateAntDesign, FormInstance } from 'antd';
+import {
+  Form as AntForm,
+  Checkbox,
+  Radio,
+  Switch,
+  Slider,
+  DatePicker as DateAntDesign,
+  FormInstance,
+  TimePicker,
+} from 'antd';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
@@ -190,6 +199,37 @@ export const Form = ({
               formItem.initialValues && [dayjs(formItem.initialValues.start), dayjs(formItem.initialValues.end)]
             }
             showTime={formItem.showTime}
+            disabled={!!formItem.disabled && formItem.disabled(values, form)}
+          />
+        );
+      case 'time':
+        return (
+          <TimePicker
+            minuteStep={10}
+            format={'HH:mm'}
+            onChange={(date: any) => formItem.onChange && formItem.onChange(date, form, reRender)}
+            disabledDate={(current: any) => (formItem.disabledDate ? formItem.disabledDate(current, form) : false)}
+            disabled={!!formItem.disabled && formItem.disabled(values, form)}
+            name={item.name}
+            placeholder={t(formItem.placeholder || '') || t('components.form.Select Date') || ''}
+          />
+        );
+      case 'time_range':
+        return (
+          <TimePicker.RangePicker
+            minuteStep={10}
+            onCalendarChange={(date) => {
+              form.setFieldValue(item.name, date?.filter((i) => !!i));
+              formItem.onChange && formItem.onChange(date?.filter((i) => !!i), form, reRender);
+            }}
+            onOpenChange={(open) => {
+              if (!open && form.getFieldValue(item.name)?.length < 2) form.resetFields([item.name]);
+            }}
+            format={'HH:mm'}
+            disabledDate={(current) => (formItem.disabledDate ? formItem.disabledDate(current, form) : false)}
+            defaultValue={
+              formItem.initialValues && [dayjs(formItem.initialValues.start), dayjs(formItem.initialValues.end)]
+            }
             disabled={!!formItem.disabled && formItem.disabled(values, form)}
           />
         );
