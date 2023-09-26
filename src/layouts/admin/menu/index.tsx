@@ -22,12 +22,12 @@ const Layout = ({ isCollapsed = false, permission = [] }: { isCollapsed: boolean
     clearTimeout(clearTime.current);
     let linkActive = '';
     listMenu.forEach((item) => {
-      if (!linkActive && !!item.child && location.pathname.indexOf(`/${lang}${routerLinks(item.name)}`) > -1) {
+      if (!linkActive && !!item.child && location.hash.substring(1).indexOf(`/${lang}${routerLinks(item.name)}`) > -1) {
         linkActive = `/${lang}${routerLinks(item.name)}`;
       }
     });
     clearTime.current = setTimeout(() => set_menuActive([linkActive]), 200);
-  }, [location.pathname]);
+  }, [location.hash]);
 
   useEffect(() => {
     if (isCollapsed) {
