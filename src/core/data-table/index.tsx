@@ -140,7 +140,9 @@ export const DataTable = forwardRef(
           if (request.sorts && typeof request.sorts === 'object') request.sorts = JSON.stringify(request.sorts);
           if (request.filter && typeof request.filter === 'object') request.filter = JSON.stringify(request.filter);
           changeNavigate &&
-            navigate(location.pathname + '?' + new URLSearchParams(request as Record<string, string>).toString());
+            navigate(
+              location.hash.substring(1) + '?' + new URLSearchParams(request as Record<string, string>).toString(),
+            );
         }
       } else if (localStorage.getItem(idTable.current))
         params = JSON.parse(localStorage.getItem(idTable.current) || '{}');

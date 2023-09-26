@@ -58,7 +58,7 @@ const Layout = ({ children }: PropsWithChildren) => {
     }
   }, [location]);
   useEffect(() => {
-    if (globalFacade.pathname && globalFacade.pathname !== location.pathname) {
+    if (globalFacade.pathname && globalFacade.pathname !== location.hash.substring(1)) {
       globalFacade.set({ pathname: '' });
       navigate(globalFacade.pathname);
     }

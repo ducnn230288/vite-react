@@ -120,7 +120,8 @@ export const globalSlice = createSlice({
         state.formatDate = formatDate;
         state.locale = locale;
         if (state.routeLanguage) state.pathname = state.routeLanguage[language];
-        else state.pathname = location.pathname.replace('/' + state.language + '/', '/' + action.payload + '/');
+        else
+          state.pathname = location.hash.substring(1).replace('/' + state.language + '/', '/' + action.payload + '/');
         state.language = language;
       }
     },
