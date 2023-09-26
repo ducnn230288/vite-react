@@ -11,6 +11,7 @@ export class FormModel {
 
 export class FormItem {
   type?:
+    | 'only_number'
     | 'hidden'
     | 'number'
     | 'text'
@@ -88,7 +89,17 @@ export class FormItemList {
 }
 
 export class FormItemRule {
-  type?: string;
+  type?:
+    | 'required'
+    | 'email'
+    | 'phone'
+    | 'min'
+    | 'max'
+    | 'url'
+    | 'only_text'
+    | 'only_text_space'
+    | 'textarea'
+    | 'custom';
   message?: string;
   value?: any;
   validator?: ({ getFieldValue }: any) => { validator(rule: any, value: string): Promise<void> };
