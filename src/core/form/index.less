@@ -1,201 +1,70 @@
-.ant-input {
-  @apply border-gray-300;
-
-  &:focus {
-    @apply border-teal-200 shadow shadow-teal-600/30 outline-0;
-  }
+.ant-input { @apply border-gray-300;
+  &:focus { @apply border-teal-200 shadow shadow-teal-600/30 outline-0; }
 }
 
 .ant-select {
-  &:not(.ant-select-customize-input) .ant-select-selector {
-    @apply rounded-xl border px-4 border-solid border-gray-300~'py-1.5 min-h-[2.5rem]' items-center h-10;
-  }
-
-  &-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
-    @apply border-teal-300;
-  }
-
+  &:not(.ant-select-customize-input) .ant-select-selector { @apply rounded-xl border px-4 border-solid border-gray-300~'py-1.5 min-h-[2.5rem]' items-center h-10; }
+  &-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector { @apply border-teal-300; }
   &-single {
-    &.ant-select-show-arrow .ant-select-selection-item {
-      @apply pr-4 h-7;
-    }
-
-    &:not(.ant-select-customize-input) .ant-select-selector .ant-select-selection-search-input {
-      @apply h-9;
-    }
+    &.ant-select-show-arrow .ant-select-selection-item { @apply pr-4 h-7; }
+    &:not(.ant-select-customize-input) .ant-select-selector .ant-select-selection-search-input { @apply h-9; }
   }
-
-  &-clear .anticon {
-    @apply relative~'-top-0.5';
-  }
-
-  &-multiple .ant-select-selection-item {
-    @apply bg-teal-100 rounded-xl py-1 px-2 my-0 -ml-1~'min-h-[1.88rem]';
-  }
+  &-clear .anticon { @apply relative~'-top-0.5'; }
+  &-multiple .ant-select-selection-item { @apply bg-teal-100 rounded-xl py-1 px-2 my-0 -ml-1~'min-h-[1.88rem]'; }
 }
 
 .ant-form {
-  input[type='file'] {
-    @apply hidden;
-  }
-
-  .ant-form-item {
-    @apply mb-4;
-
-    &-label {
-      @apply overflow-visible pr-2;
-
-      > label {
-        @apply font-medium text-gray-600;
-
+  input[type='file'] { @apply hidden; }
+  &-item-has-error .ant-input { @apply border-red-400; }
+  .ant-form-item { @apply mb-4;
+    &-label { @apply overflow-visible pr-2;
+      > label { @apply font-medium text-gray-600;
         &.ant-form-item-required:not(.ant-form-item-required-mark-optional) {
-          &::before {
-            content: none;
-          }
-
-          &::after {
+          &::before { content: none; }
+          &::after { @apply contents text-red-600;
             content: ' *' !important;
-            @apply contents text-red-600;
           }
         }
       }
     }
   }
-
   .ant-checkbox-inner,
-  .ant-checkbox-checked:after {
-    @apply w-5 h-5 rounded border-2;
-  }
-
-  .ant-checkbox {
-    @apply top-1;
-  }
-
-  .table .ant-form-item {
-    @apply mb-0;
-
+  .ant-checkbox-checked:after {  @apply w-5 h-5 rounded border-2; }
+  .ant-checkbox { @apply top-1; }
+  .table .ant-form-item { @apply mb-0;
     .ant-input,
     .ant-picker,
-    .ant-select:not(.ant-select-customize-input) .ant-select-selector {
-      @apply border-0 rounded-none;
+    .ant-select:not(.ant-select-customize-input) .ant-select-selector { @apply border-0 rounded-none; }
+  }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button { @apply m-0;
+    -webkit-appearance: none;
+  }
+}
+
+.ant-picker { @apply rounded-xl border px-4 border-solid border-gray-300 h-10 items-center w-full; }
+
+.ant-tabs {
+  .ant-tabs-ink-bar { @apply bg-teal-900; }
+  &.ant-tabs-top >.ant-tabs-nav:before { @apply border-b border-stone-300;}
+  .ant-tabs-tab { @apply !bg-transparent py-2.5;
+    &:hover { @apply !text-teal-900; }
+    .ant-tabs-tab-btn { @apply text-base !text-gray-600 font-normal uppercase; }
+    &-active {
+      .ant-tabs-tab-btn { @apply !text-teal-900 !bg-white !opacity-100 font-bold; }
     }
   }
-
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
 }
 
-.ant-picker {
-  @apply rounded-xl border px-4 border-solid border-gray-300 h-10 items-center w-full;
+.ant-switch { @apply bg-gray-400;
+  &:hover { @apply !bg-gray-400; }
 }
 
-.ant-form-item-has-error .ant-input {
-  border-color: #ff7875;
+.ant-switch-checked { @apply !bg-green-600;
+  &:hover { @apply !bg-green-600; }
 }
 
-.ant-tabs-tab {
-  @apply !bg-transparent;
-
-  &:hover {
-    @apply !text-teal-900;
-  }
-
-  .ant-tabs-tab-btn {
-    @apply text-xl !text-teal-900 font-semibold;
-  }
-}
-
-.ant-tabs-tab-active {
-  @apply !text-teal-900 !bg-white !opacity-100;
-}
-
-.ant-tabs .ant-tabs-ink-bar {
-  background-color: #0b8d21;
-}
-
-.ant-switch {
-  @apply bg-gray-400;
-
-  &:hover {
-    @apply !bg-gray-400;
-  }
-}
-
-.ant-switch-checked {
-  @apply !bg-green-600;
-
-  &:hover {
-    @apply !bg-green-600;
-  }
-}
-
-.tab-wrapper {
-  .ant-tabs-tab {
-    @apply opacity-80;
-  }
-}
-
-// .ant-upload-list-item {
-//   width: 300px;
-//   height: 30px;
-//   border-color: a4afa6;
-// }
-
-// @media only screen and (max-width: 376px) {
-//   .ant-upload-list-item {
-//     width: 200px;
-//     height: 50px;
-//   }
-// }
-
-.ant-upload-wrapper .ant-upload-list .ant-upload-list-picture .ant-upload-list-item-error {
-  border-color: a4afa6;
-}
-
-.ant-upload-wrapper .ant-upload-drag {
-  background: white;
-}
-
-.ant-upload-wrapper .ant-upload-list .ant-upload-list-item-error .ant-upload-list-item-name {
-  color: black;
-}
-.ant-upload-wrapper .ant-upload-list .ant-upload-list-item-container {
-  @apply w-72 sm:w-2/5 px-1 sm:px-1.5;
-}
-.ant-upload-wrapper .ant-upload-list.ant-upload-list-picture {
-  @apply flex flex-col items-center;
-  .ant-upload-list-item {
-    @apply rounded-none border-gray-300;
-  }
-}
-
-// .ant-upload-wrapper .ant-upload-list.ant-upload-list-picture .ant-upload-list-item .ant-upload-list-item-thumbnail {
-//   width: 20px;
-//   height: 20px;
-// }
-.ant-upload-wrapper .ant-upload-list .ant-upload-list-item-error .ant-upload-list-item-actions .anticon {
-  color: #515551;
-}
-
-.ant-upload .ant-upload-btn {
-  background-color: white;
-}
-.text-color {
-  input {
-    @apply text-gray-600;
-  }
-  .ant-select-selector {
-    @apply text-gray-600 !border-0;
-  }
-  .ant-select-selection-item {
-    @apply text-gray-600;
-  }
-}
-.form-mechandise {
-  .ant-select-in-form-item {
-    @apply !w-64;
-  }
+.ant-upload-wrapper .ant-upload-list .ant-upload-list-item-container { @apply w-72 sm:w-2/5 px-1 sm:px-1.5; }
+.ant-upload-wrapper .ant-upload-list.ant-upload-list-picture { @apply flex flex-col items-center;
+  .ant-upload-list-item { @apply rounded-none border-gray-300; }
 }
