@@ -35,6 +35,7 @@ export class FormItem {
     | 'chips'
     | 'select'
     | 'tree_select'
+    | 'input-otp'
     | 'switch';
   col?: number;
   condition?: (value: string, form: FormInstance, index: number, values: any) => boolean;
