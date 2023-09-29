@@ -1,44 +1,11 @@
-import React, { useEffect } from 'react';
-import { t } from 'i18next';
+import React, { useEffect, useState } from 'react';
 import { BookingFacade, GlobalFacade } from '@store';
 import type { Dayjs } from 'dayjs';
-import { Badge, Calendar } from 'antd';
-import type { BadgeProps, CalendarProps } from 'antd';
-import { Modal } from '@core/modal';
+import { Calendar, Spin } from 'antd';
+import type { CalendarProps } from 'antd';
 import { keyRole, lang, routerLinks } from '@utils';
 import { useNavigate } from 'react-router';
-const getListData = (value: Dayjs) => {
-  let listData;
-  switch (value.date()) {
-    case 8:
-      listData = [
-        { type: 'room', content: 'This is warning event.' },
-        { type: 'room', content: 'This is usual event.' },
-      ];
-      break;
-    case 10:
-      listData = [
-        { type: 'room', content: 'This is warning event.' },
-        { type: 'room', content: 'This is usual event.' },
-      ];
-      break;
-    case 15:
-      listData = [
-        { type: 'room', content: 'This is warning event' },
-        { type: 'room', content: 'This is very long usual event' },
-      ];
-      break;
-    default:
-  }
-  return listData || [];
-};
-
-const getMonthData = (value: Dayjs) => {
-  if (value.month() === 8) {
-    return 1394;
-  }
-};
-
+import dayjs from 'dayjs';
 const Page = () => {
   const { set, user } = GlobalFacade();
   const bookingFacade = BookingFacade();
@@ -51,28 +18,39 @@ const Page = () => {
         { title: 'titles.Booking/List', link: '' },
       ],
     });
-    // parameterFacade.getById({ id: request.code });
+    bookingFacade.get({
+      perPage: 1000,
+      filter: JSON.stringify({
+        startTime: [dayjs().startOf('month').toISOString(), dayjs().endOf('month').toISOString()],
+      }),
+    });
   }, []);
-  const monthCellRender = (value: Dayjs) => {
-    const num = getMonthData(value);
-    return num ? (
-      <div className="notes-month">
-        <section>{num}</section>
-        <span>Backlog number</span>
+  const monthCellRender = (date: Dayjs) => {
+    const startDate = dayjs(date).startOf('month');
+    const endDate = dayjs(date).endOf('month');
+    const listData = bookingFacade.result?.data?.filter(
+      (item) => dayjs(item.startTime) > startDate && dayjs(item.startTime) < endDate,
+    );
+    return listData?.length ? (
+      <div className={'text-center'}>
+        <h1 className={'text-2xl font-bold'}>{listData?.length}</h1>
+        <p>Booking number</p>
       </div>
     ) : null;
   };
 
-  const dateCellRender = (value: Dayjs) => {
-    const listData = getListData(value);
+  const dateCellRender = (date: Dayjs) => {
+    const startDate = dayjs(date).startOf('date');
+    const endDate = dayjs(date).endOf('date');
+    const listData = bookingFacade.result?.data?.filter(
+      (item) => dayjs(item.startTime) > startDate && dayjs(item.startTime) < endDate,
+    );
     return (
-      <ul className="events">
-        {listData.map((item) => (
-          <li key={item.content}>
-            <Badge status={item.type as BadgeProps['status']} text={item.content} />
-          </li>
-        ))}
-      </ul>
+      <span>
+        {listData
+          ?.map((item) => dayjs(item.startTime).format('HH:mm') + ' - ' + dayjs(item.endTime).format('HH:mm'))
+          .join(' |')}
+      </span>
     );
   };
 
@@ -82,20 +60,41 @@ const Page = () => {
     return info.originNode;
   };
   const navigate = useNavigate();
+  const [mode, set_mode] = useState<'month' | 'year'>('month');
   return (
     <div className={'p-5'}>
-      <Calendar
-        className={'calendar-booking py-2 px-5'}
-        cellRender={cellRender}
-        onSelect={(date, info) => {
-          // P_BOOKING_DETAIL
-          user?.role?.permissions?.includes(keyRole.P_BOOKING_DETAIL) &&
-            navigate(
-              `/${lang}${routerLinks('Booking')}/${date.format('YYYY-MM' + (info.source === 'date' ? '-DD' : ''))}`,
-            );
-        }}
-      />
-      <Modal facade={bookingFacade} />
+      <Spin spinning={bookingFacade.isLoading}>
+        <Calendar
+          className={'calendar-booking py-2 px-5'}
+          cellRender={cellRender}
+          onPanelChange={(date, mode) => {
+            set_mode(mode);
+            bookingFacade.get({
+              perPage: 1000,
+              filter: JSON.stringify({
+                startTime: [dayjs(date).startOf(mode).toISOString(), dayjs(date).endOf(mode).toISOString()],
+              }),
+            });
+          }}
+          mode={mode}
+          onSelect={(date, info) => {
+            if (info.source === 'date') {
+              user?.role?.permissions?.includes(keyRole.P_BOOKING_DETAIL) &&
+                navigate(
+                  `/${lang}${routerLinks('Booking')}/${date.format('YYYY-MM' + (info.source === 'date' ? '-DD' : ''))}`,
+                );
+            } else {
+              set_mode('month');
+              bookingFacade.get({
+                perPage: 1000,
+                filter: JSON.stringify({
+                  startTime: [dayjs(date).startOf('month').toISOString(), dayjs(date).endOf('month').toISOString()],
+                }),
+              });
+            }
+          }}
+        />
+      </Spin>
     </div>
   );
 };

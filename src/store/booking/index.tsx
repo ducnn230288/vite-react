@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { useAppDispatch, useTypedSelector, Action, Slice, State, User, CodeType, Code } from '@store';
 import { CommonEntity, PaginationQuery } from '@models';
+import { type Dayjs } from 'dayjs';
 
 const name = 'Booking';
 const action = new Action<Booking>(name);
@@ -25,6 +26,7 @@ export class Booking extends CommonEntity {
     public name?: string,
     public description?: string,
     public startTime?: string,
+    public time?: Dayjs[],
     public endTime?: string,
     public userId?: string,
     public user?: User,

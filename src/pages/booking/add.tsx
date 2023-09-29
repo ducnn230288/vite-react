@@ -2,13 +2,14 @@ import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { Spin } from 'antd';
+import dayjs from 'dayjs';
 
 import { Booking, GlobalFacade, BookingFacade, CodeFacade, CodeTypeFacade } from '@store';
 import { routerLinks, lang } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
 const Page = () => {
-  const { id, date, type } = useParams();
+  const { id, date, typeCode } = useParams();
   const bookingFacade = BookingFacade();
   const { set } = GlobalFacade();
   const isReload = useRef(false);
@@ -54,20 +55,25 @@ const Page = () => {
   }, []);
   useEffect(() => {
     if (codeTypeFacade.result?.data?.length) {
-      set({ titleOption: { date, type: codeTypeFacade.result?.data?.filter((item) => item.code === type)[0]?.name } });
-      if (!codeTypeFacade?.result?.data?.filter((item) => item.code === type).length) {
+      set({
+        titleOption: { date, type: codeTypeFacade.result?.data?.filter((item) => item.code === typeCode)[0]?.name },
+      });
+      if (!codeTypeFacade?.result?.data?.filter((item) => item.code === typeCode).length) {
         navigate({
           pathname: location.hash
             .substring(1)
-            .replace(`/${type}/`, id && bookingFacade.data?.type ? `/${bookingFacade.data?.type}/` : '/room/'),
+            .replace(`/${typeCode}/`, id && bookingFacade.data?.type ? `/${bookingFacade.data?.type}/` : '/room/'),
         });
       }
     }
   }, [codeTypeFacade.result]);
   const handleBack = () => navigate(`/${lang}${routerLinks('Booking')}/${date}`);
   const handleSubmit = (values: Booking) => {
-    if (id) bookingFacade.put({ ...values, id });
-    else bookingFacade.post(values);
+    values.startTime = dayjs(values.time![0].format('HH:mm') + ' ' + date).toISOString();
+    values.endTime = dayjs(values.time![1].format('HH:mm') + ' ' + date).toISOString();
+    delete values.time;
+    if (id) bookingFacade.put({ ...values, typeCode, id });
+    else bookingFacade.post({ ...values, typeCode });
   };
 
   const { t } = useTranslation();
@@ -88,7 +94,7 @@ const Page = () => {
               },
             },
             {
-              title: 'Code',
+              title: 'Room',
               name: 'itemCode',
               formItem: {
                 type: 'select',
@@ -98,7 +104,7 @@ const Page = () => {
                   facade: CodeFacade,
                   params: (fullTextSearch: string) => ({
                     fullTextSearch,
-                    filter: { type },
+                    filter: { type: typeCode },
                     extend: {},
                   }),
                   format: (item) => ({

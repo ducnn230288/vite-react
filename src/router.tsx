@@ -177,7 +177,7 @@ const pages = [
         title: 'Booking/Detail',
       },
       {
-        path: routerLinks('Booking') + '/:date/:type/add',
+        path: routerLinks('Booking') + '/:date/:typeCode/add',
         component: React.lazy(() => import('@pages/booking/add')),
         title: 'Booking/Add',
       },
