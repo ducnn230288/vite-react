@@ -655,7 +655,8 @@ export const Form = ({
                 <div
                   className={classNames(
                     column?.formItem?.classItem,
-                    'col-span-12 col-store' +
+                    'col-span-12 ' +
+                      (column?.formItem?.type || 'text') +
                       (' sm:col-span-' +
                         (column?.formItem?.colTablet
                           ? column?.formItem?.colTablet
