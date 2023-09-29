@@ -9,6 +9,7 @@ import {
   FormInstance,
   TimePicker,
 } from 'antd';
+import { InputOTP } from 'antd-input-otp';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
@@ -313,6 +314,14 @@ export const Form = ({
             defaultChecked={!!values && values[item.name || ''] === 1}
           />
         );
+      case 'input-otp':
+        return (
+          <InputOTP
+            __EXPERIMENTAL_autoSubmit={form} // If you want to auto submit when all fields is filled, use this, otherwise, don't use it!
+            inputType="numeric"
+            length={formItem.maxLength || 5}
+          />
+        );
       default:
         // @ts-ignore
         return (
@@ -365,9 +374,15 @@ export const Form = ({
                   default:
                     rules.push({
                       required: true,
-                      message: t(rule.message || 'components.form.ruleRequiredSelect', {
-                        title: t(item.title).toLowerCase(),
-                      }),
+                      message: t(
+                        rule.message ||
+                          (item.formItem.type !== 'input-otp'
+                            ? 'components.form.ruleRequiredSelect'
+                            : 'components.form.ruleRequired'),
+                        {
+                          title: t(item.title).toLowerCase(),
+                        },
+                      ),
                     });
                     break;
                 }
@@ -555,6 +570,16 @@ export const Form = ({
               },
             }));
             break;
+          case 'input-otp':
+            rules.push(() => ({
+              validator(_: any, value: any) {
+                if (value && value.length < (item.formItem.maxLength || 5)) {
+                  return Promise.reject(t('components.form.ruleMinLength', { min: item.formItem.maxLength || 5 }));
+                }
+                return Promise.resolve();
+              },
+            }));
+            break;
           default:
         }
 
@@ -630,7 +655,8 @@ export const Form = ({
                 <div
                   className={classNames(
                     column?.formItem?.classItem,
-                    'col-span-12 col-store' +
+                    'col-span-12 ' +
+                      (column?.formItem?.type || 'text') +
                       (' sm:col-span-' +
                         (column?.formItem?.colTablet
                           ? column?.formItem?.colTablet
