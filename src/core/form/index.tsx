@@ -704,7 +704,6 @@ export const Form = ({
             onClick={() => form && form.submit()}
             disabled={disableSubmit}
             className={'sm:min-w-[8rem] justify-center w-3/5 sm:w-auto '}
-            type={'submit'}
           />
         )}
       </div>
