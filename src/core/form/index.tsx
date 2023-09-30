@@ -315,13 +315,7 @@ export const Form = ({
           />
         );
       case 'input-otp':
-        return (
-          <InputOTP
-            __EXPERIMENTAL_autoSubmit={form} // If you want to auto submit when all fields is filled, use this, otherwise, don't use it!
-            inputType="numeric"
-            length={formItem.maxLength || 5}
-          />
-        );
+        return <InputOTP inputType="numeric" length={formItem.maxLength || 5} />;
       default:
         // @ts-ignore
         return (
