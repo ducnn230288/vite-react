@@ -50,8 +50,19 @@ export const convertFormValue = (columns: FormModel[], values: { [selector: stri
             break;
           case 'tab':
             if (!exportData) {
+              item?.formItem?.list?.sort((a: any, b: any) =>
+                a[item!.formItem!.tab!] < b[item!.formItem!.tab!]
+                  ? -1
+                  : a[item!.formItem!.tab!] > b[item!.formItem!.tab!]
+                  ? 1
+                  : 0,
+              );
               values[item.name] = item?.formItem?.list?.map((subItem, i) => {
-                const result: { [selector: string]: any } = { [item!.formItem!.tab!.label!]: subItem.value };
+                const result: { [selector: string]: any } = {
+                  [item!.formItem!.tab!]: values[item.name]
+                    ? values[item.name][i][item!.formItem!.tab!]
+                    : subItem.value,
+                };
                 item!
                   .formItem!.column!.filter((col) => !!col.formItem)
                   .forEach((col) => {
@@ -69,6 +80,15 @@ export const convertFormValue = (columns: FormModel[], values: { [selector: stri
                   });
                 return result;
               });
+              if (values[item.name]?.length) {
+                values[item.name]?.sort((a: any, b: any) =>
+                  a[item!.formItem!.tab!] < b[item!.formItem!.tab!]
+                    ? -1
+                    : a[item!.formItem!.tab!] > b[item!.formItem!.tab!]
+                    ? 1
+                    : 0,
+                );
+              }
             }
             break;
           case 'select':

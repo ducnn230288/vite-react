@@ -9,29 +9,31 @@ export const Editor = forwardRef(({ value, onChange }: { value?: any; onChange?:
     setTimeout(() => {
       if (document.getElementById('editorjs' + id.current)) {
         import('@editorjs/editorjs').then(({ default: EditorJS }) => {
-          const editor = new EditorJS({
-            holder: 'editorjs' + id.current,
-            onChange: async (api: any) => onChange(await api.saver.save()),
-            ...editorjsConfig,
-          });
-          if (value) {
-            setTimeout(() => {
-              editor?.blocks.render(
-                value.blocks
-                  ? value
-                  : {
-                      blocks: [
-                        {
-                          id: 'r3s9SCBudq',
-                          type: 'paragraph',
-                          data: {
-                            text: '',
+          if (document.getElementById('editorjs' + id.current)) {
+            const editor = new EditorJS({
+              holder: 'editorjs' + id.current,
+              onChange: async (api: any) => onChange(await api.saver.save()),
+              ...editorjsConfig,
+            });
+            if (value) {
+              setTimeout(() => {
+                editor?.blocks.render(
+                  value.blocks
+                    ? value
+                    : {
+                        blocks: [
+                          {
+                            id: 'r3s9SCBudq',
+                            type: 'paragraph',
+                            data: {
+                              text: '',
+                            },
                           },
-                        },
-                      ],
-                    },
-              );
-            }, 1000);
+                        ],
+                      },
+                );
+              }, 1000);
+            }
           }
         });
       }

@@ -108,10 +108,7 @@ const Page = () => {
                   ? undefined
                   : {
                       type: 'tab',
-                      tab: {
-                        label: 'language',
-                        value: 'language',
-                      },
+                      tab: 'language',
                       list: [
                         { label: 'English', value: 'en' },
                         { label: 'Vietnam', value: 'vn' },

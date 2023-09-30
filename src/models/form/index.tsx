@@ -42,7 +42,7 @@ export class FormItem {
   list?: CheckboxOptionType[];
   rules?: FormItemRule[];
   mode?: 'multiple' | 'tags';
-  tab?: FormItemTab;
+  tab?: string;
   column?: FormModel[];
   disabled?: (values: any, form?: FormInstance) => boolean;
   placeholder?: string;
