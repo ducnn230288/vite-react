@@ -24,12 +24,16 @@ const action = {
     return data || {};
   }),
   putProfile: createAsyncThunk(name + '/putProfile', async (values: User) => {
-    // if (values.avatar && typeof values.avatar === 'object') {
-    //   values.avatar = values.avatar[0].url;
-    // }
-    const { data, message } = await API.put<User>(`${routerLinks(name, 'api')}/profile`, values);
-    if (message) Message.success({ text: message });
-    return data || {};
+    const { data, message } = await API.put<{ user: User; accessToken: string; refreshToken: string }>(
+      `${routerLinks(name, 'api')}/profile`,
+      values,
+    );
+    if (data) {
+      if (message) Message.success({ text: message });
+      localStorage.setItem(keyToken, data?.accessToken);
+      localStorage.setItem(keyRefreshToken, data?.refreshToken);
+    }
+    return data!.user;
   }),
   login: createAsyncThunk(name + '/login', async (values: { password: string; email: string }) => {
     const { data, message } = await API.post<{ user: User; accessToken: string; refreshToken: string }>(
@@ -183,6 +187,7 @@ export const globalSlice = createSlice({
       })
       .addCase(action.putProfile.fulfilled, (state: State, action: PayloadAction<User>) => {
         if (action.payload) {
+          localStorage.setItem(keyUser, JSON.stringify(action.payload));
           state.user = action.payload;
           state.status = 'putProfile.fulfilled';
         } else state.status = 'idle';
