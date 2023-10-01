@@ -17,7 +17,7 @@ export const Upload = ({
   method = 'post',
   maxSize = 40,
   multiple = true,
-  action = '/file/add',
+  action = '/file',
   keyImage = 'url',
   accept = 'image/*',
   validation = async () => true,

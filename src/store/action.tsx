@@ -23,7 +23,7 @@ export class Action<T extends CommonEntity> {
     this.set = createAsyncThunk(name + '/set', async (values: State<T>) => values);
     this.get = createAsyncThunk(
       name + '/get',
-      async (params: PaginationQuery<T>) => await API.get(`${routerLinks(name, 'api')}/list`, params),
+      async (params: PaginationQuery<T>) => await API.get(`${routerLinks(name, 'api')}`, params),
     );
     this.getById = createAsyncThunk(
       name + '/getById',
@@ -33,7 +33,7 @@ export class Action<T extends CommonEntity> {
       },
     );
     this.post = createAsyncThunk(name + '/post', async (values: T) => {
-      const { data, message } = await API.post<T>(`${routerLinks(name, 'api')}/add`, values);
+      const { data, message } = await API.post<T>(`${routerLinks(name, 'api')}`, values);
       if (message) Message.success({ text: message });
       return data;
     });
