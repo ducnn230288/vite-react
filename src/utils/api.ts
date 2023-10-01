@@ -1,4 +1,4 @@
-import { keyRefreshToken, keyToken, keyUser, language, languages, linkApi, routerLinks } from '@utils';
+import { keyRefreshToken, keyToken, keyUser, linkApi, routerLinks } from '@utils';
 import { Message } from '@core/message';
 import { Responses } from '@models';
 
@@ -10,7 +10,7 @@ export const API = {
       credentials: 'same-origin',
       headers: {
         'Content-Type': 'application/json',
-        authorization: 'Bearer ' + (localStorage.getItem(keyToken) || ''),
+        authorization: localStorage.getItem(keyToken) ? 'Bearer ' + localStorage.getItem(keyToken) : '',
         'Accept-Language': localStorage.getItem('i18nextLng') || '',
       },
       redirect: 'follow',
