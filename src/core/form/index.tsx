@@ -314,7 +314,7 @@ export const Form = ({
             defaultChecked={!!values && values[item.name || ''] === 1}
           />
         );
-      case 'input-otp':
+      case 'otp':
         return <InputOTP inputType="numeric" length={formItem.maxLength || 5} />;
       default:
         // @ts-ignore
@@ -370,7 +370,7 @@ export const Form = ({
                       required: true,
                       message: t(
                         rule.message ||
-                          (item.formItem.type !== 'input-otp'
+                          (item.formItem.type !== 'otp'
                             ? 'components.form.ruleRequiredSelect'
                             : 'components.form.ruleRequired'),
                         {
@@ -564,7 +564,7 @@ export const Form = ({
               },
             }));
             break;
-          case 'input-otp':
+          case 'otp':
             rules.push(() => ({
               validator(_: any, value: any) {
                 if (value && value.length < (item.formItem.maxLength || 5)) {
@@ -597,6 +597,7 @@ export const Form = ({
           break;
         case 'select':
         case 'upload':
+        case 'otp':
           otherProps.validateTrigger = 'onChange';
           break;
         default:

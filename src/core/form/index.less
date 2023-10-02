@@ -40,7 +40,8 @@
   input::-webkit-inner-spin-button { @apply m-0;
     -webkit-appearance: none;
   }
-  .input-otp { @apply justify-between px-3;
+  .input-otp {
+    @media (min-width: 640px) { @apply justify-between px-3; }
     &__field { @apply h-12 w-12 rounded-xl max-w-none; }
   }
 }
