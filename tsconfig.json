@@ -27,4 +27,7 @@
     "outDir": "./dist/out-tsc"
   },
   "include": ["./src/**/*"],
+  "watchOptions": {
+    "watchFile": "fixedPollingInterval"
+  }
 }
