@@ -36,7 +36,7 @@ export const API = {
     if (response.ok) return res;
     if (
       response.status === 401 &&
-      url !== `${routerLinks('Auth', 'api')}/refresh` &&
+      url !== `${routerLinks('Auth', 'api')}/refresh-token` &&
       url !== `${routerLinks('Auth', 'api')}/login` &&
       url !== `${routerLinks('Auth', 'api')}/logout`
     ) {
@@ -67,7 +67,7 @@ export const API = {
     API.responsible<T>(url, params, { ...API.init(), method: 'DELETE' }, headers, throwText),
   refresh: async () => {
     const res = await API.get<{ accessToken: string; refreshToken: null }>(
-      `${routerLinks('Auth', 'api')}/refresh`,
+      `${routerLinks('Auth', 'api')}/refresh-token`,
       {},
       { authorization: 'Bearer ' + localStorage.getItem(keyRefreshToken) },
     );
