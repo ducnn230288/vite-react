@@ -2,7 +2,7 @@ import React, { Suspense, useEffect } from 'react';
 import { HashRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
 
 import { Spin } from 'antd';
-import { keyUser, routerLinks, lang } from '@utils';
+import { routerLinks, lang, keyToken } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { GlobalFacade } from '@store';
 
@@ -192,8 +192,7 @@ const Layout = ({
   layout: React.LazyExoticComponent<({ children }: { children?: React.ReactNode }) => JSX.Element>;
   isPublic: boolean;
 }) => {
-  const { user } = GlobalFacade();
-  if (isPublic || !!user?.email || !!JSON.parse(localStorage.getItem(keyUser) || '{}')?.email)
+  if (isPublic || !!localStorage.getItem(keyToken))
     return (
       <Layout>
         <Outlet />
