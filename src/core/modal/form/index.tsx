@@ -20,17 +20,17 @@ export const ModalForm = forwardRef(
       keyState = 'isVisible',
       keyPost = 'post',
       keyPut = 'put',
+      keyData = 'data',
       ...propForm
     }: Type,
     ref: Ref<FormModalRefObject>,
   ) => {
     useImperativeHandle(ref, () => ({ handleEdit, handleDelete, form }));
-    const { data } = facade;
     const [form] = FormAnt.useForm();
 
     const handleEdit = async (item: { id?: string } = {}, isGet = true) => {
       if (item.id && isGet) facade.getById({ id: item.id, keyState });
-      else facade.set({ [keyState]: true, data: item });
+      else facade.set({ [keyState]: true, [keyData]: item });
     };
     const handleDelete = async (id: string) => facade.delete(id);
 
@@ -43,20 +43,20 @@ export const ModalForm = forwardRef(
         textCancel={textCancel}
         className={className}
         footerCustom={footerCustom}
-        title={() => title(data)}
+        title={() => title(facade[keyData])}
         onOk={async () => {
           return form
             .validateFields()
             .then(async (values) => {
               values = convertFormValue(columns, values);
-              if (data?.id) facade[keyPut]({ ...values, id: data.id });
+              if (facade[keyData]?.id) facade[keyPut]({ ...values, id: facade[keyData].id });
               else facade[keyPost]({ ...values });
               return true;
             })
             .catch(() => false);
         }}
       >
-        <Form {...propForm} values={{ ...data }} formAnt={form} columns={columns} />
+        <Form {...propForm} values={{ ...facade[keyData] }} formAnt={form} columns={columns} />
       </Modal>
     );
   },
@@ -67,6 +67,7 @@ type Type = {
   keyState?: string;
   keyPost?: string;
   keyPut?: string;
+  keyData?: string;
   title: (data: any) => string;
   widthModal?: number;
   columns: FormModel[];
