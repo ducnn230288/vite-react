@@ -82,14 +82,58 @@ svg { fill: currentColor; }
   .image { @apply inline-block text-center w-full py-5;
     .caption { @apply bg-teal-50 border border-teal-200 mt-1 py-1 px-2 inline-block; }
   }
-  p { @apply mb-3; }
+  p { @apply mb-7;
+    &:has(code) { @apply bg-gray-100 text-red-500 p-4 rounded font-medium; }
+  }
   img { @apply mx-auto; }
-  h1 { @apply text-5xl text-teal-900 mb-7; }
-  h2 { @apply text-4xl text-teal-900 mb-6; }
+  h1 { @apply text-5xl text-teal-900 mb-5; }
+  h2 { @apply text-4xl text-teal-900 mb-5; }
   h3 { @apply text-3xl text-teal-900 mb-5; }
-  h4 { @apply text-2xl text-teal-900 mb-4; }
-  h5 { @apply text-xl text-teal-900 mb-4; }
-  h6 { @apply text-lg text-teal-900 mb-4; }
+  h4 { @apply text-2xl text-teal-900 mb-5; }
+  h5 { @apply text-xl text-teal-900 mb-5; }
+  h6 { @apply text-lg text-teal-900 mb-5; }
+  .delimiter { @apply ~'h-0.5' w-52 mx-auto my-14 bg-white; }
+  .caption-img { @apply border border-gray-100 px-3 py-2 mt-1 rounded overflow-hidden; }
+  .with-background { @apply bg-gray-500 p-10 rounded overflow-hidden;
+
+    img { @apply ~'w-3/4' mx-auto; }
+  }
+  .border-img { @apply border border-gray-100; }
+  .stretched { @apply max-w-none;
+
+    > img { @apply w-screen; }
+  }
+  table { @apply w-full my-3;
+
+    th,
+    td { @apply text-left border border-gray-200 px-2 py-1; }
+  }
+  .blockquote { @apply mx-auto flex;
+
+    blockquote { @apply mb-7 mx-auto relative table text-justify p-4;
+      background: linear-gradient(to right, theme('textColor.indigo.500') 2px, transparent 1px)
+      0 100%, linear-gradient(to left, theme('textColor.indigo.500') 2px, transparent 1px)
+      100% 0, linear-gradient(to bottom, theme('textColor.indigo.500') 2px, transparent 1px)
+      100% 0, linear-gradient(to top, theme('textColor.indigo.500') 2px, transparent 1px)
+      0 100%;
+      background-size: 20px 20px;
+      background-repeat: no-repeat;
+
+      &:before,
+      &:after { @apply font-black absolute text-indigo-500 text-xl;
+        font-family: Line Awesome Free, serif;
+      }
+
+      &:before { @apply -top-3 right-full -mr-3;
+        content: '\f10d';
+      }
+
+      &:after { @apply -bottom-3 left-full top-auto -ml-3;
+        content: '\f10e';
+      }
+    }
+    small { @apply -mt-9 font-bold block text-right; }
+  }
 }
 
 .truncate-3 {
