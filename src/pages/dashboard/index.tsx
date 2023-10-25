@@ -55,69 +55,96 @@ const Page = () => {
     <Fragment>
       <div className="h-full pb-10">
         <h1 className="text-3xl text-teal-900 font-bold text-center mb-14 ">{t('routes.auth.login.Welcome')}</h1>
-        <div className={'w-full flex relative'}>
-          <div id={'left'} className={'overflow-auto'} style={{ flexBasis: '50%' }}>
-            <table className={'w-full min-w-[600px]'}>
-              <thead>
-                <tr>
-                  <th align={'left'}>Product Release</th>
-                  <th align={'left'}>Assignee</th>
-                  <th align={'left'}>Status</th>
-                  <th align={'left'}>Priority</th>
-                  <th align={'left'}>Planned Hours</th>
-                  <th align={'left'}>Work Log</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Q-1 Release</td>
-                  <td></td>
-                  <td>In Progress</td>
-                  <td></td>
-                  <td>2</td>
-                  <td>71 days</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div id={'drag'} className={'w-1 h-16 bg-gray-300 cursor-ew-resize hover:bg-red-500 absolute left-1/2'}></div>
-          <div id={'right'} className={'overflow-auto'} style={{ flexBasis: '50%' }}>
-            <table className={'w-full min-w-[600px]'} style={{ width: date.total * 30 + 'px' }}>
-              <thead>
-                <tr>
-                  {Object.keys(date.obj).map((year) =>
-                    Object.keys(date.obj[year]).map((month, index) => (
-                      <th
-                        key={index}
-                        align={'left'}
-                        className={'capitalize border text-center'}
-                        style={{ width: date.obj[year][month].length * 30 + 'px' }}
-                      >
-                        {dayjs().month(parseInt(month)).format('MMMM')}
-                      </th>
-                    )),
-                  )}
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-            <table className={'w-full min-w-[600px]'} style={{ width: date.total * 30 + 'px' }}>
-              <thead>
-                <tr>
-                  {Object.keys(date.obj).map((year) =>
-                    Object.keys(date.obj[year]).map((month) =>
-                      date.obj[year][month].map((day: number, index: number) => (
-                        <th key={index} align={'left'} className={'capitalize border text-center'}>
-                          {day < 10 ? 0 : ''}
-                          {day}
+        <div className="relative">
+          <div
+            id={'drag'}
+            className={'w-1 h-full bg-gray-300 cursor-ew-resize hover:bg-red-500 absolute left-1/2 -ml-0.5'}
+          ></div>
+          <div className={'w-full flex gap-0.5'}>
+            <div id={'left'} className={'overflow-auto'} style={{ flexBasis: '50%' }}>
+              <table className={'w-full min-w-[600px]'}>
+                <thead>
+                  <tr>
+                    <th align={'left'} className="capitalize border px-4 h-[calc(3.5rem+1px)]">
+                      Product Release
+                    </th>
+                    <th align={'left'} className="capitalize border px-4 h-[calc(3.5rem+1px)]">
+                      Assignee
+                    </th>
+                    <th align={'left'} className="capitalize border px-4 h-[calc(3.5rem+1px)]">
+                      Status
+                    </th>
+                    <th align={'left'} className="capitalize border px-4 h-[calc(3.5rem+1px)]">
+                      Priority
+                    </th>
+                    <th align={'left'} className="capitalize border px-4 h-[calc(3.5rem+1px)]">
+                      Planned Hours
+                    </th>
+                    <th align={'left'} className="capitalize border px-4 h-[calc(3.5rem+1px)]">
+                      Work Log
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="border px-4 h-6">Q-1 Release</td>
+                    <td className="border px-4 h-6"></td>
+                    <td className="border px-4 h-6">In Progress</td>
+                    <td className="border px-4 h-6"></td>
+                    <td className="border px-4 h-6">2</td>
+                    <td className="border px-4 h-6">71 days</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div id={'right'} className={'overflow-auto'} style={{ flexBasis: '50%' }}>
+              <table className={'w-full min-w-[600px]'} style={{ width: date.total * 35 + 'px' }}>
+                <thead>
+                  <tr>
+                    {Object.keys(date.obj).map((year) =>
+                      Object.keys(date.obj[year]).map((month, index) => (
+                        <th
+                          key={index}
+                          align={'left'}
+                          className={'capitalize border-l border-r border-t px-4 h-6'}
+                          style={{ width: date.obj[year][month].length * 35 + 'px' }}
+                        >
+                          {dayjs().month(parseInt(month)).format('MMMM')} {year}
                         </th>
                       )),
-                    ),
-                  )}
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
+                    )}
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+              <table className={'w-full min-w-[600px]'} style={{ width: date.total * 35 + 'px' }}>
+                <thead>
+                  <tr>
+                    {Object.keys(date.obj).map((year) =>
+                      Object.keys(date.obj[year]).map((month) =>
+                        date.obj[year][month].map((day: number, index: number) => (
+                          <th key={index} className={'capitalize border font-normal h-8'}>
+                            {day < 10 ? 0 : ''}
+                            {day}
+                          </th>
+                        )),
+                      ),
+                    )}
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    {Object.keys(date.obj).map((year) =>
+                      Object.keys(date.obj[year]).map((month) =>
+                        date.obj[year][month].map((day: number, index: number) => (
+                          <td key={index} className={'capitalize border font-normal h-6'}></td>
+                        )),
+                      ),
+                    )}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
