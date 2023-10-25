@@ -7,8 +7,8 @@ import { Avatar } from '@core/avatar';
 import { Button } from '@core/button';
 import { DataTable } from '@core/data-table';
 
-import { ETableAlign, ETableFilterType, TableRefObject } from '@models';
-import { CodeFacade, EStatusState, GlobalFacade, UserFacade, UserRoleFacade } from '@store';
+import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
+import { CodeFacade, GlobalFacade, UserFacade, UserRoleFacade } from '@store';
 import { Check, Disable, Edit, Plus, Trash } from '@svgs';
 import { keyRole, lang, routerLinks } from '@utils';
 import classNames from 'classnames';

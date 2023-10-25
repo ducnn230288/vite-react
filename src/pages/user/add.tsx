@@ -3,11 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { Spin } from 'antd';
 
-import { CodeFacade, EStatusState, GlobalFacade, User, UserFacade, UserRoleFacade } from '@store';
+import { CodeFacade, GlobalFacade, User, UserFacade, UserRoleFacade } from '@store';
 import { lang, routerLinks } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
-import { EFormRuleType, EFormType } from '@models';
+import { EStatusState, EFormRuleType, EFormType } from '@models';
 
 const Page = () => {
   const { id, roleCode } = useParams();

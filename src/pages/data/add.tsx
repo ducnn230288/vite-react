@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
+import { Spin } from 'antd';
 
-import { Data, DataFacade, DataTypeFacade, EStatusState, GlobalFacade } from '@store';
+import { Data, DataFacade, DataTypeFacade, GlobalFacade } from '@store';
 import { lang, routerLinks } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
-import { Spin } from 'antd';
-import { EFormRuleType, EFormType } from '@models';
+import { EStatusState, EFormRuleType, EFormType } from '@models';
 
 const Page = () => {
   const { id, type } = useParams();
