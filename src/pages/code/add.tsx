@@ -1,13 +1,14 @@
-import React, { useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router';
+import React, {useEffect, useRef} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useNavigate, useParams} from 'react-router';
 import slug from 'slug';
 
-import { CodeFacade, Code, CodeTypeFacade, GlobalFacade } from '@store';
-import { routerLinks, lang } from '@utils';
-import { Button } from '@core/button';
-import { Form } from '@core/form';
-import { Spin } from 'antd';
+import {Code, CodeFacade, CodeTypeFacade, GlobalFacade} from '@store';
+import {lang, routerLinks} from '@utils';
+import {Button} from '@core/button';
+import {Form} from '@core/form';
+import {Spin} from 'antd';
+import {EFormRuleType, EFormType} from "@models";
 
 const Page = () => {
   const { id, type } = useParams();
@@ -81,7 +82,7 @@ const Page = () => {
               name: 'name',
               formItem: {
                 col: 6,
-                rules: [{ type: 'required' }],
+                rules: [{ type: EFormRuleType.required }],
                 onBlur: (e, form) => {
                   if (e.target.value && !form.getFieldValue('code')) {
                     form.setFieldValue('code', slug(e.target.value).toUpperCase());
@@ -94,14 +95,14 @@ const Page = () => {
               name: 'code',
               formItem: {
                 col: 6,
-                rules: [{ type: 'required' }, { type: 'max', value: 100 }],
+                rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.max, value: 100 }],
               },
             },
             {
               title: 'routes.admin.user.Description',
               name: 'description',
               formItem: {
-                type: 'textarea',
+                type: EFormType.textarea,
               },
             },
           ]}

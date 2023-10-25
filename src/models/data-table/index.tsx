@@ -1,5 +1,16 @@
 import { CheckboxOptionType } from 'antd';
 
+export enum ETableAlign {
+  left = 'left',
+  right = 'right',
+  center = 'center',
+}
+export enum ETableFilterType {
+  search = 'search',
+  checkbox = 'checkbox',
+  radio = 'radio',
+  date = 'date',
+}
 export class DataTableModel {
   name?: string;
   title?: any;
@@ -12,7 +23,7 @@ export class TableItem {
   fixed?: string;
   sorter?: boolean;
   onCell?: (record: any) => { style?: any; onClick?: any; className?: string };
-  align?: 'left' | 'right' | 'center' | null;
+  align?: ETableAlign;
   onClick?: any;
   render?: (text: any, item: any) => JSX.Element | string;
   defaultSortOrder?: string;
@@ -20,7 +31,7 @@ export class TableItem {
 }
 
 export class TableItemFilter {
-  type?: 'search' | 'checkbox' | 'radio' | 'date';
+  type?: ETableFilterType;
   list?: TableItemFilterList[];
   get?: TableGet;
   name?: string;

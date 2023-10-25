@@ -1,14 +1,15 @@
-import React, { Fragment, useEffect, useState, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router';
-import { Form as AntForm, Tabs } from 'antd';
+import React, {Fragment, useEffect, useRef, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useNavigate} from 'react-router';
+import {Form as AntForm, Tabs} from 'antd';
 
-import { User } from '@svgs';
-import { Form } from '@core/form';
-import { Button } from '@core/button';
-import { CodeFacade, GlobalFacade } from '@store';
-import { routerLinks, lang } from '@utils';
-import { useSearchParams } from 'react-router-dom';
+import {User} from '@svgs';
+import {Form} from '@core/form';
+import {Button} from '@core/button';
+import {CodeFacade, GlobalFacade} from '@store';
+import {lang, routerLinks} from '@utils';
+import {useSearchParams} from 'react-router-dom';
+import {EFormRuleType, EFormType} from "@models";
 
 const Page = () => {
   const { user, isLoading, profile, status, putProfile, set, data } = GlobalFacade();
@@ -60,7 +61,7 @@ const Page = () => {
                 title: '',
                 name: 'avatar',
                 formItem: {
-                  type: 'upload',
+                  type: EFormType.upload,
                 },
               },
               {
@@ -102,7 +103,7 @@ const Page = () => {
                           name: 'name',
                           formItem: {
                             col: 12,
-                            rules: [{ type: 'required' }],
+                            rules: [{ type: EFormRuleType.required }],
                           },
                         },
                         {
@@ -110,7 +111,7 @@ const Page = () => {
                           name: 'email',
                           formItem: {
                             col: 6,
-                            rules: [{ type: 'required' }, { type: 'email' }, { type: 'min', value: 6 }],
+                            rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.email }, { type: EFormRuleType.min, value: 6 }],
                           },
                         },
                         {
@@ -118,7 +119,7 @@ const Page = () => {
                           name: 'phoneNumber',
                           formItem: {
                             col: 6,
-                            rules: [{ type: 'required' }, { type: 'phone', min: 10, max: 15 }],
+                            rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.phone, min: 10, max: 15 }],
                           },
                         },
                         {
@@ -126,8 +127,8 @@ const Page = () => {
                           name: 'dob',
                           formItem: {
                             col: 6,
-                            type: 'date',
-                            rules: [{ type: 'required' }],
+                            type: EFormType.date,
+                            rules: [{ type: EFormRuleType.required }],
                           },
                         },
                         {
@@ -135,8 +136,8 @@ const Page = () => {
                           name: 'positionCode',
                           formItem: {
                             col: 6,
-                            type: 'select',
-                            rules: [{ type: 'required' }],
+                            type: EFormType.select,
+                            rules: [{ type: EFormRuleType.required }],
                             convert: (data) =>
                               data?.map
                                 ? data.map((_item: any) => (_item?.id !== undefined ? +_item.id : _item))
@@ -159,7 +160,7 @@ const Page = () => {
                           title: 'routes.admin.user.Description',
                           name: 'description',
                           formItem: {
-                            type: 'textarea',
+                            type: EFormType.textarea,
                           },
                         },
                       ]}
@@ -192,8 +193,8 @@ const Page = () => {
                           formItem: {
                             notDefaultValid: true,
                             col: 12,
-                            type: 'password',
-                            rules: [{ type: 'required' }],
+                            type: EFormType.password,
+                            rules: [{ type: EFormRuleType.required }],
                           },
                         },
                         {
@@ -201,8 +202,8 @@ const Page = () => {
                           name: 'password',
                           formItem: {
                             col: 12,
-                            type: 'password',
-                            rules: [{ type: 'required' }],
+                            type: EFormType.password,
+                            rules: [{ type: EFormRuleType.required }],
                           },
                         },
                         {
@@ -211,10 +212,10 @@ const Page = () => {
                           formItem: {
                             notDefaultValid: true,
                             col: 12,
-                            type: 'password',
+                            type: EFormType.password,
                             rules: [
                               {
-                                type: 'custom',
+                                type: EFormRuleType.custom,
                                 validator: ({ getFieldValue }) => ({
                                   validator(rule, value: string) {
                                     const errorMsg = t('components.form.ruleConfirmPassword');
@@ -225,7 +226,7 @@ const Page = () => {
                                   },
                                 }),
                               },
-                              { type: 'required' },
+                              { type: EFormRuleType.required },
                             ],
                           },
                         },

@@ -1,11 +1,12 @@
-import React, { Fragment, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router';
+import React, {Fragment, useEffect} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useNavigate} from 'react-router';
 
-import { Spin } from 'antd';
-import { Form } from '@core/form';
-import { GlobalFacade } from '@store';
-import { routerLinks, lang } from '@utils';
+import {Spin} from 'antd';
+import {Form} from '@core/form';
+import {GlobalFacade} from '@store';
+import {lang, routerLinks} from '@utils';
+import {EFormRuleType, EFormType} from "@models";
 
 const Page = () => {
   const { t } = useTranslation();
@@ -42,7 +43,7 @@ const Page = () => {
                 title: t('columns.auth.login.Username'),
                 formItem: {
                   placeholder: 'columns.auth.login.Enter Username',
-                  rules: [{ type: 'required' }, { type: 'email' }],
+                  rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.email }],
                 },
               },
               {
@@ -50,9 +51,9 @@ const Page = () => {
                 title: t('columns.auth.login.password'),
                 formItem: {
                   placeholder: 'columns.auth.login.Enter Password',
-                  type: 'password',
+                  type: EFormType.password,
                   notDefaultValid: true,
-                  rules: [{ type: 'required' }],
+                  rules: [{ type: EFormRuleType.required }],
                 },
               },
             ]}

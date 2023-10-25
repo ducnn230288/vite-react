@@ -1,12 +1,14 @@
-import React, { useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router';
-import { Spin } from 'antd';
+import React, {useEffect, useRef} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useNavigate, useParams} from 'react-router';
+import {Spin} from 'antd';
 
-import { DataTypeFacade, DataType, GlobalFacade } from '@store';
-import { routerLinks, lang } from '@utils';
-import { Button } from '@core/button';
-import { Form } from '@core/form';
+import {DataType, DataTypeFacade, GlobalFacade} from '@store';
+import {lang, routerLinks} from '@utils';
+import {Button} from '@core/button';
+import {Form} from '@core/form';
+import {EFormRuleType} from "@models";
+
 const Page = () => {
   const { id } = useParams();
   const dataTypeFacade = DataTypeFacade();
@@ -65,14 +67,14 @@ const Page = () => {
               title: 'Name',
               name: 'name',
               formItem: {
-                rules: [{ type: 'required' }],
+                rules: [{ type: EFormRuleType.required }],
               },
             },
             {
               title: 'Code',
               name: 'code',
               formItem: {
-                rules: [{ type: 'required' }],
+                rules: [{ type: EFormRuleType.required }],
               },
             },
           ]}

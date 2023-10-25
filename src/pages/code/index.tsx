@@ -1,16 +1,16 @@
-import React, { useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Popconfirm, Select, Spin, Tooltip } from 'antd';
-import { useNavigate } from 'react-router';
+import React, {useEffect, useRef} from 'react';
+import {useTranslation} from 'react-i18next';
+import {Popconfirm, Select, Spin, Tooltip} from 'antd';
+import {useNavigate} from 'react-router';
 import classNames from 'classnames';
 
-import { Button } from '@core/button';
-import { DataTable } from '@core/data-table';
-import { lang, keyRole, routerLinks } from '@utils';
-import { GlobalFacade, CodeFacade, CodeTypeFacade } from '@store';
-import { Check, Disable, Edit, Plus, Trash } from '@svgs';
-import { TableRefObject } from '@models';
-import { createSearchParams } from 'react-router-dom';
+import {Button} from '@core/button';
+import {DataTable} from '@core/data-table';
+import {keyRole, lang, routerLinks} from '@utils';
+import {CodeFacade, CodeTypeFacade, GlobalFacade} from '@store';
+import {Check, Disable, Edit, Plus, Trash} from '@svgs';
+import {ETableAlign, ETableFilterType, TableRefObject} from '@models';
+import {createSearchParams} from 'react-router-dom';
 import dayjs from 'dayjs';
 
 const Page = () => {
@@ -117,7 +117,7 @@ const Page = () => {
                   name: 'code',
                   tableItem: {
                     width: 100,
-                    filter: { type: 'search' },
+                    filter: { type: ETableFilterType.search },
                     sorter: true,
                   },
                 },
@@ -125,7 +125,7 @@ const Page = () => {
                   title: 'routes.admin.Code.Name',
                   name: 'name',
                   tableItem: {
-                    filter: { type: 'search' },
+                    filter: { type: ETableFilterType.search },
                     sorter: true,
                   },
                 },
@@ -134,7 +134,7 @@ const Page = () => {
                   name: 'createdAt',
                   tableItem: {
                     width: 120,
-                    filter: { type: 'date' },
+                    filter: { type: ETableFilterType.date },
                     sorter: true,
                     render: (text) => dayjs(text).format(formatDate),
                   },
@@ -143,7 +143,7 @@ const Page = () => {
                   title: 'routes.admin.user.Action',
                   tableItem: {
                     width: 100,
-                    align: 'center',
+                    align: ETableAlign.center,
                     render: (text: string, data) => (
                       <div className={'flex gap-2'}>
                         {user?.role?.permissions?.includes(keyRole.P_CODE_UPDATE) && (

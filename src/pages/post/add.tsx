@@ -1,13 +1,15 @@
-import React, { useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router';
+import React, {useEffect, useRef} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useNavigate, useParams} from 'react-router';
 
-import { PostTypeFacade, Post, PostFacade, GlobalFacade } from '@store';
-import { routerLinks, lang } from '@utils';
-import { Button } from '@core/button';
-import { Form } from '@core/form';
+import {GlobalFacade, Post, PostFacade, PostTypeFacade} from '@store';
+import {lang, routerLinks} from '@utils';
+import {Button} from '@core/button';
+import {Form} from '@core/form';
 import slug from 'slug';
-import { Spin } from 'antd';
+import {Spin} from 'antd';
+import {EFormRuleType, EFormType} from "@models";
+
 const Page = () => {
   const { id, type } = useParams();
   const postFacade = PostFacade();
@@ -80,7 +82,7 @@ const Page = () => {
               name: 'createdAt',
               formItem: {
                 col: 6,
-                type: 'date',
+                type: EFormType.date,
               },
             },
             {
@@ -88,27 +90,27 @@ const Page = () => {
               name: 'thumbnailUrl',
               formItem: {
                 col: 6,
-                type: 'upload',
+                type: EFormType.upload
               },
             },
             {
               name: 'translations',
               title: '',
               formItem: {
-                type: 'tab',
+                type: EFormType.tab,
                 tab: 'language',
                 list: [
                   { label: 'English', value: 'en' },
                   { label: 'Vietnam', value: 'vn' },
                 ],
                 column: [
-                  { title: 'id', name: 'id', formItem: { type: 'hidden' } },
+                  { title: 'id', name: 'id', formItem: { type: EFormType.hidden } },
                   {
                     title: 'Name',
                     name: 'name',
                     formItem: {
                       col: 6,
-                      rules: [{ type: 'required' }],
+                      rules: [{ type: EFormRuleType.required }],
                       onBlur: (e, form, name) => {
                         if (e.target.value && !form.getFieldValue(['translations', name[0], 'slug'])) {
                           form.setFieldValue(['translations', name[0], 'slug'], slug(e.target.value));
@@ -121,21 +123,21 @@ const Page = () => {
                     name: 'slug',
                     formItem: {
                       col: 6,
-                      rules: [{ type: 'required' }, { type: 'max', value: 100 }],
+                      rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.max, value: 100 }],
                     },
                   },
                   {
                     title: 'Description',
                     name: 'description',
                     formItem: {
-                      type: 'textarea',
+                      type: EFormType.textarea,
                     },
                   },
                   {
                     title: 'Content',
                     name: 'content',
                     formItem: {
-                      type: 'editor',
+                      type: EFormType.editor,
                     },
                   },
                 ],

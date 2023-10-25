@@ -1,18 +1,18 @@
-import React, { useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router';
-import { Popconfirm, Spin, Tooltip, Select } from 'antd';
+import React, {useEffect, useRef} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useNavigate} from 'react-router';
+import {Popconfirm, Select, Spin, Tooltip} from 'antd';
 
-import { Avatar } from '@core/avatar';
-import { Button } from '@core/button';
-import { DataTable } from '@core/data-table';
+import {Avatar} from '@core/avatar';
+import {Button} from '@core/button';
+import {DataTable} from '@core/data-table';
 
-import { TableRefObject } from '@models';
-import { UserFacade, GlobalFacade, CodeFacade, UserRoleFacade } from '@store';
-import { Check, Disable, Edit, Plus, Trash } from '@svgs';
-import { keyRole, routerLinks, lang } from '@utils';
+import {ETableAlign, ETableFilterType, TableRefObject} from '@models';
+import {CodeFacade, GlobalFacade, UserFacade, UserRoleFacade} from '@store';
+import {Check, Disable, Edit, Plus, Trash} from '@svgs';
+import {keyRole, lang, routerLinks} from '@utils';
 import classNames from 'classnames';
-import { createSearchParams } from 'react-router-dom';
+import {createSearchParams} from 'react-router-dom';
 import dayjs from 'dayjs';
 
 const Page = () => {
@@ -158,7 +158,7 @@ const Page = () => {
                   title: `routes.admin.user.Full name`,
                   name: 'name',
                   tableItem: {
-                    filter: { type: 'search' },
+                    filter: { type: ETableFilterType.search },
                     width: 210,
                     fixed: window.innerWidth > 767 ? 'left' : '',
                     sorter: true,
@@ -171,7 +171,7 @@ const Page = () => {
                   tableItem: {
                     width: 200,
                     filter: {
-                      type: 'checkbox',
+                      type: ETableFilterType.checkbox,
                       name: 'positionCode',
                       get: {
                         facade: CodeFacade,
@@ -203,7 +203,7 @@ const Page = () => {
                   title: 'Email',
                   name: 'email',
                   tableItem: {
-                    filter: { type: 'search' },
+                    filter: { type: ETableFilterType.search },
                     sorter: true,
                   },
                 },
@@ -211,34 +211,16 @@ const Page = () => {
                   title: 'routes.admin.user.Phone Number',
                   name: 'phoneNumber',
                   tableItem: {
-                    filter: { type: 'search' },
+                    filter: { type: ETableFilterType.search },
                     sorter: true,
                   },
                 },
-                // {
-                //   title: 'routes.admin.user.Date of birth',
-                //   name: 'dob',
-                //   tableItem: {
-                //     filter: { type: 'date' },
-                //     sorter: true,
-                //     render: (text: string) => dayjs(text).format(formatDate),
-                //   },
-                // },
-                // {
-                //   title: 'routes.admin.user.Start Date',
-                //   name: 'startDate',
-                //   tableItem: {
-                //     filter: { type: 'search' },
-                //     sorter: true,
-                //     render: (text: string) => dayjs(text).format(formatDate),
-                //   },
-                // },
                 {
                   title: 'Created',
                   name: 'createdAt',
                   tableItem: {
                     width: 120,
-                    filter: { type: 'date' },
+                    filter: { type: ETableFilterType.date },
                     sorter: true,
                     render: (text) => dayjs(text).format(formatDate),
                   },
@@ -247,7 +229,7 @@ const Page = () => {
                   title: 'routes.admin.user.Action',
                   tableItem: {
                     width: 90,
-                    align: 'center',
+                    align: ETableAlign.center,
                     render: (text: string, data) => (
                       <div className={'flex gap-2'}>
                         {user?.role?.permissions?.includes(keyRole.P_USER_UPDATE) && (
