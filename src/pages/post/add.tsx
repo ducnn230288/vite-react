@@ -2,7 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useNavigate, useParams} from 'react-router';
 
-import {GlobalFacade, Post, PostFacade, PostTypeFacade} from '@store';
+import {EStatusState, GlobalFacade, Post, PostFacade, PostTypeFacade} from '@store';
 import {lang, routerLinks} from '@utils';
 import {Button} from '@core/button';
 import {Form} from '@core/form';
@@ -31,8 +31,8 @@ const Page = () => {
   const isBack = useRef(true);
   useEffect(() => {
     switch (postFacade.status) {
-      case 'post.fulfilled':
-      case 'put.fulfilled':
+      case EStatusState.postFulfilled:
+      case EStatusState.putFulfilled:
         if (isBack.current) handleBack();
         else {
           isBack.current = true;
@@ -44,7 +44,7 @@ const Page = () => {
   }, [postFacade.status]);
 
   const handleBack = () => {
-    postFacade.set({ status: 'idle' });
+    postFacade.set({ status: EStatusState.idle });
     navigate(`/${lang}${routerLinks('Post')}?${new URLSearchParams(param).toString()}`);
   };
 

@@ -3,7 +3,7 @@ import {useTranslation} from 'react-i18next';
 import {useNavigate, useParams} from 'react-router';
 import {Spin} from 'antd';
 
-import {GlobalFacade, PostType, PostTypeFacade} from '@store';
+import {EStatusState, GlobalFacade, PostType, PostTypeFacade} from '@store';
 import {lang, routerLinks} from '@utils';
 import {Button} from '@core/button';
 import {Form} from '@core/form';
@@ -35,8 +35,8 @@ const Page = () => {
   const isBack = useRef(true);
   useEffect(() => {
     switch (postTypeFacade.status) {
-      case 'post.fulfilled':
-      case 'put.fulfilled':
+      case EStatusState.postFulfilled:
+      case EStatusState.putFulfilled:
         postTypeFacade.get(JSON.parse(postTypeFacade.queryParams || '{}'));
         if (Object.keys(param).length > 0) isReload.current = true;
 

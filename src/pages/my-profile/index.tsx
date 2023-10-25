@@ -6,7 +6,7 @@ import {Form as AntForm, Tabs} from 'antd';
 import {User} from '@svgs';
 import {Form} from '@core/form';
 import {Button} from '@core/button';
-import {CodeFacade, GlobalFacade} from '@store';
+import {CodeFacade, EStatusGlobal, GlobalFacade} from '@store';
 import {lang, routerLinks} from '@utils';
 import {useSearchParams} from 'react-router-dom';
 import {EFormRuleType, EFormType} from "@models";
@@ -19,7 +19,7 @@ const Page = () => {
   }, []);
   useEffect(() => {
     switch (status) {
-      case 'putProfile.fulfilled':
+      case EStatusGlobal.putProfileFulfilled:
         profile();
         break;
     }

@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import {Button} from '@core/button';
 import {DataTable} from '@core/data-table';
 import {keyRole, lang, routerLinks} from '@utils';
-import {CodeFacade, CodeTypeFacade, GlobalFacade} from '@store';
+import {CodeFacade, CodeTypeFacade, EStatusState, GlobalFacade} from '@store';
 import {Check, Disable, Edit, Plus, Trash} from '@svgs';
 import {ETableAlign, ETableFilterType, TableRefObject} from '@models';
 import {createSearchParams} from 'react-router-dom';
@@ -44,10 +44,10 @@ const Page = () => {
   const codeFacade = CodeFacade();
   useEffect(() => {
     switch (codeFacade.status) {
-      case 'put.fulfilled':
-      case 'putDisable.fulfilled':
-      case 'post.fulfilled':
-      case 'delete.fulfilled':
+      case EStatusState.putFulfilled:
+      case EStatusState.putDisableFulfilled:
+      case EStatusState.postFulfilled:
+      case EStatusState.deleteFulfilled:
         dataTableRef?.current?.onChange(request);
         break;
     }

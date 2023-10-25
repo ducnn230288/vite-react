@@ -4,7 +4,7 @@ import {useNavigate} from 'react-router';
 
 import {Spin} from 'antd';
 import {Form} from '@core/form';
-import {GlobalFacade} from '@store';
+import {EStatusGlobal, GlobalFacade} from '@store';
 import {lang, routerLinks} from '@utils';
 import {EFormRuleType, EFormType} from "@models";
 
@@ -15,7 +15,7 @@ const Page = () => {
   const { isLoading, status, user, data, login, profile } = globalFacade;
 
   useEffect(() => {
-    if (status === 'login.fulfilled' && user && Object.keys(user).length > 0) {
+    if (status === EStatusGlobal.loginFulfilled && user && Object.keys(user).length > 0) {
       navigate('/' + lang + '/dashboard', { replace: true });
       profile();
     }

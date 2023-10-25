@@ -3,7 +3,7 @@ import {useTranslation} from 'react-i18next';
 import {useNavigate, useParams} from 'react-router';
 import {Spin} from 'antd';
 
-import {CodeFacade, GlobalFacade, User, UserFacade, UserRoleFacade} from '@store';
+import {CodeFacade, EStatusState, GlobalFacade, User, UserFacade, UserRoleFacade} from '@store';
 import {lang, routerLinks} from '@utils';
 import {Button} from '@core/button';
 import {Form} from '@core/form';
@@ -29,8 +29,8 @@ const Page = () => {
   const isBack = useRef(true);
   useEffect(() => {
     switch (userFacade.status) {
-      case 'post.fulfilled':
-      case 'put.fulfilled':
+      case EStatusState.postFulfilled:
+      case EStatusState.putFulfilled:
         if (isBack.current) handleBack();
         else {
           isBack.current = true;
@@ -42,7 +42,7 @@ const Page = () => {
   }, [userFacade.status]);
 
   const handleBack = () => {
-    userFacade.set({ status: 'idle' });
+    userFacade.set({ status: EStatusState.idle });
     navigate(`/${lang}${routerLinks('User')}?${new URLSearchParams(param).toString()}`);
   };
   const handleSubmit = (values: User) => {

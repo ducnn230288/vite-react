@@ -2,7 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useNavigate, useParams} from 'react-router';
 
-import {Data, DataFacade, DataTypeFacade, GlobalFacade} from '@store';
+import {Data, DataFacade, DataTypeFacade, EStatusState, GlobalFacade} from '@store';
 import {lang, routerLinks} from '@utils';
 import {Button} from '@core/button';
 import {Form} from '@core/form';
@@ -30,8 +30,8 @@ const Page = () => {
   const isBack = useRef(true);
   useEffect(() => {
     switch (dataFacade.status) {
-      case 'post.fulfilled':
-      case 'put.fulfilled':
+      case EStatusState.postFulfilled:
+      case EStatusState.putFulfilled:
         if (isBack.current) handleBack();
         else {
           isBack.current = true;
@@ -43,7 +43,7 @@ const Page = () => {
   }, [dataFacade.status]);
 
   const handleBack = () => {
-    dataFacade.set({ status: 'idle' });
+    dataFacade.set({ status: EStatusState.idle });
     navigate(`/${lang}${routerLinks('Data')}?${new URLSearchParams(param).toString()}`);
   };
 

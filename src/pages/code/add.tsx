@@ -3,7 +3,7 @@ import {useTranslation} from 'react-i18next';
 import {useNavigate, useParams} from 'react-router';
 import slug from 'slug';
 
-import {Code, CodeFacade, CodeTypeFacade, GlobalFacade} from '@store';
+import {Code, CodeFacade, CodeTypeFacade, EStatusState, GlobalFacade} from '@store';
 import {lang, routerLinks} from '@utils';
 import {Button} from '@core/button';
 import {Form} from '@core/form';
@@ -31,8 +31,8 @@ const Page = () => {
   const isBack = useRef(true);
   useEffect(() => {
     switch (codeFacade.status) {
-      case 'post.fulfilled':
-      case 'put.fulfilled':
+      case EStatusState.postFulfilled:
+      case EStatusState.putFulfilled:
         if (isBack.current) handleBack();
         else {
           isBack.current = true;
@@ -44,7 +44,7 @@ const Page = () => {
   }, [codeFacade.status]);
 
   const handleBack = () => {
-    codeFacade.set({ status: 'idle' });
+    codeFacade.set({ status: EStatusState.idle });
     navigate(`/${lang}${routerLinks('Code')}?${new URLSearchParams(param).toString()}`);
   };
   const handleSubmit = (values: Code) => {

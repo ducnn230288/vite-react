@@ -8,7 +8,7 @@ import {Button} from '@core/button';
 import {DataTable} from '@core/data-table';
 
 import {ETableAlign, ETableFilterType, TableRefObject} from '@models';
-import {CodeFacade, GlobalFacade, UserFacade, UserRoleFacade} from '@store';
+import {CodeFacade, EStatusState, GlobalFacade, UserFacade, UserRoleFacade} from '@store';
 import {Check, Disable, Edit, Plus, Trash} from '@svgs';
 import {keyRole, lang, routerLinks} from '@utils';
 import classNames from 'classnames';
@@ -46,8 +46,8 @@ const Page = () => {
   const userFacade = UserFacade();
   useEffect(() => {
     switch (userFacade.status) {
-      case 'delete.fulfilled':
-      case 'putDisable.fulfilled':
+      case EStatusState.deleteFulfilled:
+      case EStatusState.putDisableFulfilled:
         dataTableRef?.current?.onChange(request);
         break;
     }

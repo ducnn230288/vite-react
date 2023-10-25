@@ -4,7 +4,7 @@ import {useNavigate} from 'react-router';
 
 import {Spin} from 'antd';
 import {Form} from '@core/form';
-import {GlobalFacade} from '@store';
+import {EStatusGlobal, GlobalFacade} from '@store';
 import {lang, routerLinks} from '@utils';
 import {EFormRuleType} from "@models";
 
@@ -13,7 +13,7 @@ const Page = () => {
   const navigate = useNavigate();
   const { isLoading, status, data, forgottenPassword } = GlobalFacade();
   useEffect(() => {
-    if (status === 'forgottenPassword.fulfilled') {
+    if (status === EStatusGlobal.forgottenPasswordFulfilled) {
       navigate(`/${lang}${routerLinks('VerifyForotPassword')}`);
     }
   }, [status]);

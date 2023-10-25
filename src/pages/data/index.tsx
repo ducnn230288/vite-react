@@ -4,7 +4,7 @@ import {useTranslation} from 'react-i18next';
 import {Button} from '@core/button';
 import {DataTable} from '@core/data-table';
 import {keyRole, lang, routerLinks} from '@utils';
-import {DataFacade, DataTypeFacade, GlobalFacade} from '@store';
+import {DataFacade, DataTypeFacade, EStatusState, GlobalFacade} from '@store';
 import {Check, Disable, Edit, Plus, Trash} from '@svgs';
 import {ETableAlign, ETableFilterType, TableRefObject} from '@models';
 import {Popconfirm, Select, Spin, Tooltip} from 'antd';
@@ -30,7 +30,7 @@ const Page = () => {
   const navigate = useNavigate();
   useEffect(() => {
     switch (dataTypeFacade.status) {
-      case 'get.fulfilled':
+      case EStatusState.getFulfilled:
         if (
           dataTypeFacade?.result?.data?.length &&
           !dataTypeFacade?.result?.data?.filter((item) => item.code === request.filter.type).length
@@ -49,10 +49,10 @@ const Page = () => {
   const dataFacade = DataFacade();
   useEffect(() => {
     switch (dataFacade.status) {
-      case 'put.fulfilled':
-      case 'putDisable.fulfilled':
-      case 'post.fulfilled':
-      case 'delete.fulfilled':
+      case EStatusState.putFulfilled:
+      case EStatusState.putDisableFulfilled:
+      case EStatusState.postFulfilled:
+      case EStatusState.deleteFulfilled:
         dataTableRef?.current?.onChange(request);
         break;
     }

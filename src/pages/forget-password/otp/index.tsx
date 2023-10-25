@@ -4,7 +4,7 @@ import {t} from 'i18next';
 
 import {Spin} from 'antd';
 import {Form} from '@core/form';
-import {GlobalFacade} from '@store';
+import {EStatusGlobal, GlobalFacade} from '@store';
 import {lang, routerLinks} from '@utils';
 import {EFormRuleType, EFormType} from "@models";
 
@@ -13,7 +13,7 @@ const Page = () => {
   const { isLoading, status, data, otpConfirmation } = GlobalFacade();
 
   useEffect(() => {
-    if (status === 'otpConfirmation.fulfilled') {
+    if (status === EStatusGlobal.otpConfirmationFulfilled) {
       navigate(`/${lang}${routerLinks('SetPassword')}`, { replace: true });
     }
   }, [status]);
