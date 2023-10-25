@@ -1,15 +1,15 @@
-import React, {Fragment, useEffect, useRef, useState} from 'react';
-import {useTranslation} from 'react-i18next';
-import {useNavigate} from 'react-router';
-import {Form as AntForm, Tabs} from 'antd';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
+import { Form as AntForm, Tabs } from 'antd';
 
-import {User} from '@svgs';
-import {Form} from '@core/form';
-import {Button} from '@core/button';
-import {CodeFacade, EStatusGlobal, GlobalFacade} from '@store';
-import {lang, routerLinks} from '@utils';
-import {useSearchParams} from 'react-router-dom';
-import {EFormRuleType, EFormType} from "@models";
+import { User } from '@svgs';
+import { Form } from '@core/form';
+import { Button } from '@core/button';
+import { CodeFacade, EStatusGlobal, GlobalFacade } from '@store';
+import { lang, routerLinks } from '@utils';
+import { useSearchParams } from 'react-router-dom';
+import { EFormRuleType, EFormType } from '@models';
 
 const Page = () => {
   const { user, isLoading, profile, status, putProfile, set, data } = GlobalFacade();
@@ -111,7 +111,11 @@ const Page = () => {
                           name: 'email',
                           formItem: {
                             col: 6,
-                            rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.email }, { type: EFormRuleType.min, value: 6 }],
+                            rules: [
+                              { type: EFormRuleType.required },
+                              { type: EFormRuleType.email },
+                              { type: EFormRuleType.min, value: 6 },
+                            ],
                           },
                         },
                         {

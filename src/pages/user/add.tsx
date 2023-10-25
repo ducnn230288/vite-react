@@ -1,13 +1,13 @@
-import React, {useEffect, useRef} from 'react';
-import {useTranslation} from 'react-i18next';
-import {useNavigate, useParams} from 'react-router';
-import {Spin} from 'antd';
+import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router';
+import { Spin } from 'antd';
 
-import {CodeFacade, EStatusState, GlobalFacade, User, UserFacade, UserRoleFacade} from '@store';
-import {lang, routerLinks} from '@utils';
-import {Button} from '@core/button';
-import {Form} from '@core/form';
-import {EFormRuleType, EFormType} from "@models";
+import { CodeFacade, EStatusState, GlobalFacade, User, UserFacade, UserRoleFacade } from '@store';
+import { lang, routerLinks } from '@utils';
+import { Button } from '@core/button';
+import { Form } from '@core/form';
+import { EFormRuleType, EFormType } from '@models';
 
 const Page = () => {
   const { id, roleCode } = useParams();
@@ -88,7 +88,11 @@ const Page = () => {
               name: 'email',
               formItem: {
                 col: 6,
-                rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.email }, { type: EFormRuleType.min, value: 6 }],
+                rules: [
+                  { type: EFormRuleType.required },
+                  { type: EFormRuleType.email },
+                  { type: EFormRuleType.min, value: 6 },
+                ],
               },
             },
             {

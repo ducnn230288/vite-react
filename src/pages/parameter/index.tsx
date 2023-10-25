@@ -1,15 +1,15 @@
-import React, {useEffect} from 'react';
-import {useTranslation} from 'react-i18next';
-import {Select, Spin} from 'antd';
-import {useLocation, useNavigate} from 'react-router';
+import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Select, Spin } from 'antd';
+import { useLocation, useNavigate } from 'react-router';
 import classNames from 'classnames';
 
-import {lang, routerLinks} from '@utils';
-import {GlobalFacade, ParameterFacade} from '@store';
-import {createSearchParams} from 'react-router-dom';
-import {Form} from '@core/form';
-import {getQueryStringParams} from '@core/data-table';
-import {EFormType} from "@models";
+import { lang, routerLinks } from '@utils';
+import { GlobalFacade, ParameterFacade } from '@store';
+import { createSearchParams } from 'react-router-dom';
+import { Form } from '@core/form';
+import { getQueryStringParams } from '@core/data-table';
+import { EFormType } from '@models';
 
 const Page = () => {
   const { set } = GlobalFacade();

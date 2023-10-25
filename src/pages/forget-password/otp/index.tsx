@@ -1,12 +1,12 @@
-import React, {Fragment, useEffect} from 'react';
-import {useNavigate} from 'react-router';
-import {t} from 'i18next';
+import React, { Fragment, useEffect } from 'react';
+import { useNavigate } from 'react-router';
+import { t } from 'i18next';
 
-import {Spin} from 'antd';
-import {Form} from '@core/form';
-import {EStatusGlobal, GlobalFacade} from '@store';
-import {lang, routerLinks} from '@utils';
-import {EFormRuleType, EFormType} from "@models";
+import { Spin } from 'antd';
+import { Form } from '@core/form';
+import { EStatusGlobal, GlobalFacade } from '@store';
+import { lang, routerLinks } from '@utils';
+import { EFormRuleType, EFormType } from '@models';
 
 const Page = () => {
   const navigate = useNavigate();
@@ -40,7 +40,11 @@ const Page = () => {
                 name: 'otp',
                 title: 'routes.auth.reset-password.Code OTP',
                 formItem: {
-                  rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.min, value: 6 }, { type: EFormRuleType.max, value: 6 }],
+                  rules: [
+                    { type: EFormRuleType.required },
+                    { type: EFormRuleType.min, value: 6 },
+                    { type: EFormRuleType.max, value: 6 },
+                  ],
                 },
               },
               {

@@ -1,14 +1,14 @@
-import React, {useEffect, useRef} from 'react';
-import {useTranslation} from 'react-i18next';
-import {useNavigate, useParams} from 'react-router';
+import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router';
 
-import {EStatusState, GlobalFacade, Post, PostFacade, PostTypeFacade} from '@store';
-import {lang, routerLinks} from '@utils';
-import {Button} from '@core/button';
-import {Form} from '@core/form';
+import { EStatusState, GlobalFacade, Post, PostFacade, PostTypeFacade } from '@store';
+import { lang, routerLinks } from '@utils';
+import { Button } from '@core/button';
+import { Form } from '@core/form';
 import slug from 'slug';
-import {Spin} from 'antd';
-import {EFormRuleType, EFormType} from "@models";
+import { Spin } from 'antd';
+import { EFormRuleType, EFormType } from '@models';
 
 const Page = () => {
   const { id, type } = useParams();
@@ -90,7 +90,7 @@ const Page = () => {
               name: 'thumbnailUrl',
               formItem: {
                 col: 6,
-                type: EFormType.upload
+                type: EFormType.upload,
               },
             },
             {

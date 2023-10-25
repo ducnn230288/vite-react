@@ -9,8 +9,6 @@ import { Message } from '@core/message';
 import { useAppDispatch, useTypedSelector, UserRole } from '@store';
 import { CommonEntity } from '@models';
 
-
-
 const name = 'Auth';
 const action = {
   name,

@@ -1,14 +1,14 @@
-import React, {useEffect, useRef} from 'react';
-import {useTranslation} from 'react-i18next';
-import {useNavigate, useParams} from 'react-router';
-import {Spin} from 'antd';
+import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router';
+import { Spin } from 'antd';
 
-import {EStatusState, GlobalFacade, PostType, PostTypeFacade} from '@store';
-import {lang, routerLinks} from '@utils';
-import {Button} from '@core/button';
-import {Form} from '@core/form';
+import { EStatusState, GlobalFacade, PostType, PostTypeFacade } from '@store';
+import { lang, routerLinks } from '@utils';
+import { Button } from '@core/button';
+import { Form } from '@core/form';
 import slug from 'slug';
-import {EFormRuleType, EFormType} from "@models";
+import { EFormRuleType, EFormType } from '@models';
 
 const Page = () => {
   const { id } = useParams();

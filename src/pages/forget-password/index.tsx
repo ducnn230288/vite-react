@@ -1,12 +1,12 @@
-import React, {Fragment, useEffect} from 'react';
-import {useTranslation} from 'react-i18next';
-import {useNavigate} from 'react-router';
+import React, { Fragment, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 
-import {Spin} from 'antd';
-import {Form} from '@core/form';
-import {EStatusGlobal, GlobalFacade} from '@store';
-import {lang, routerLinks} from '@utils';
-import {EFormRuleType} from "@models";
+import { Spin } from 'antd';
+import { Form } from '@core/form';
+import { EStatusGlobal, GlobalFacade } from '@store';
+import { lang, routerLinks } from '@utils';
+import { EFormRuleType } from '@models';
 
 const Page = () => {
   const { t } = useTranslation();

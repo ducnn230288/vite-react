@@ -1,12 +1,12 @@
-import React, {Fragment, useEffect} from 'react';
-import {useTranslation} from 'react-i18next';
-import {useNavigate} from 'react-router';
-import {Spin} from 'antd';
+import React, { Fragment, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
+import { Spin } from 'antd';
 
-import {Form} from '@core/form';
-import {lang, routerLinks} from '@utils';
-import {EStatusGlobal, GlobalFacade} from '@store';
-import {EFormRuleType, EFormType} from "@models";
+import { Form } from '@core/form';
+import { lang, routerLinks } from '@utils';
+import { EStatusGlobal, GlobalFacade } from '@store';
+import { EFormRuleType, EFormType } from '@models';
 
 const Page = () => {
   const { isLoading, status, resetPassword, data } = GlobalFacade();
