@@ -1,18 +1,18 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import { Button } from '@core/button';
-import { DataTable } from '@core/data-table';
-import { lang, keyRole, routerLinks } from '@utils';
-import { GlobalFacade, PostFacade, PostTypeFacade } from '@store';
-import { Check, Disable, Edit, Plus, Trash } from '@svgs';
-import { TableRefObject } from '@models';
 import { Popconfirm, Select, Spin, Tooltip } from 'antd';
 import { useNavigate } from 'react-router';
 import classNames from 'classnames';
 import { createSearchParams } from 'react-router-dom';
-import { Avatar } from '@core/avatar';
 import dayjs from 'dayjs';
+
+import { Button } from '@core/button';
+import { DataTable } from '@core/data-table';
+import { keyRole, lang, routerLinks } from '@utils';
+import { GlobalFacade, PostFacade, PostTypeFacade } from '@store';
+import { Check, Disable, Edit, Plus, Trash } from '@svgs';
+import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
+import { Avatar } from '@core/avatar';
 
 const Page = () => {
   const { user, set, formatDate } = GlobalFacade();
@@ -45,17 +45,17 @@ const Page = () => {
   const postFacade = PostFacade();
   useEffect(() => {
     switch (postFacade.status) {
-      case 'put.fulfilled':
-      case 'putDisable.fulfilled':
-      case 'post.fulfilled':
-      case 'delete.fulfilled':
+      case EStatusState.putFulfilled:
+      case EStatusState.putDisableFulfilled:
+      case EStatusState.postFulfilled:
+      case EStatusState.deleteFulfilled:
         dataTableRef?.current?.onChange(request);
         break;
     }
   }, [postFacade.status]);
   useEffect(() => {
     switch (postTypeFacade.status) {
-      case 'delete.fulfilled':
+      case EStatusState.deleteFulfilled:
         postTypeFacade.get({});
         break;
     }
@@ -164,7 +164,7 @@ const Page = () => {
                   title: 'routes.admin.Post.Name',
                   name: 'translations',
                   tableItem: {
-                    filter: { type: 'search' },
+                    filter: { type: ETableFilterType.search },
                     sorter: true,
                     render: (text: string, item: any) => (
                       <Avatar
@@ -184,7 +184,7 @@ const Page = () => {
                   title: 'Slug',
                   name: 'translations',
                   tableItem: {
-                    filter: { type: 'search' },
+                    filter: { type: ETableFilterType.search },
                     sorter: true,
                     render: (text) =>
                       text?.filter((item: any) => item?.language === localStorage.getItem('i18nextLng'))[0].slug || '',
@@ -195,7 +195,7 @@ const Page = () => {
                   name: 'createdAt',
                   tableItem: {
                     width: 120,
-                    filter: { type: 'date' },
+                    filter: { type: ETableFilterType.date },
                     sorter: true,
                     render: (text) => dayjs(text).format(formatDate),
                   },
@@ -204,7 +204,7 @@ const Page = () => {
                   title: 'routes.admin.user.Action',
                   tableItem: {
                     width: 100,
-                    align: 'center',
+                    align: ETableAlign.center,
                     render: (text: string, data) => (
                       <div className={'flex gap-2'}>
                         {user?.role?.permissions?.includes(keyRole.P_POST_UPDATE) && (

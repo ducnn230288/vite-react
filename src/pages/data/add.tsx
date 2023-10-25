@@ -1,12 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
+import { Spin } from 'antd';
 
-import { DataTypeFacade, Data, DataFacade, GlobalFacade } from '@store';
-import { routerLinks, lang } from '@utils';
+import { Data, DataFacade, DataTypeFacade, GlobalFacade } from '@store';
+import { lang, routerLinks } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
-import { Spin } from 'antd';
+import { EStatusState, EFormRuleType, EFormType } from '@models';
+
 const Page = () => {
   const { id, type } = useParams();
   const dataFacade = DataFacade();
@@ -28,8 +30,8 @@ const Page = () => {
   const isBack = useRef(true);
   useEffect(() => {
     switch (dataFacade.status) {
-      case 'post.fulfilled':
-      case 'put.fulfilled':
+      case EStatusState.postFulfilled:
+      case EStatusState.putFulfilled:
         if (isBack.current) handleBack();
         else {
           isBack.current = true;
@@ -41,7 +43,7 @@ const Page = () => {
   }, [dataFacade.status]);
 
   const handleBack = () => {
-    dataFacade.set({ status: 'idle' });
+    dataFacade.set({ status: EStatusState.idle });
     navigate(`/${lang}${routerLinks('Data')}?${new URLSearchParams(param).toString()}`);
   };
 
@@ -89,7 +91,7 @@ const Page = () => {
               name: 'order',
               formItem: {
                 col: 6,
-                type: 'number',
+                type: EFormType.number,
               },
             },
             {
@@ -97,7 +99,7 @@ const Page = () => {
               name: 'image',
               formItem: {
                 col: 6,
-                type: 'upload',
+                type: EFormType.upload,
               },
             },
             {
@@ -107,20 +109,20 @@ const Page = () => {
                 type === 'partner' || type === 'tech'
                   ? undefined
                   : {
-                      type: 'tab',
+                      type: EFormType.tab,
                       tab: 'language',
                       list: [
                         { label: 'English', value: 'en' },
                         { label: 'Vietnam', value: 'vn' },
                       ],
                       column: [
-                        { title: 'id', name: 'id', formItem: { type: 'hidden' } },
+                        { title: 'id', name: 'id', formItem: { type: EFormType.hidden } },
                         {
                           title: 'Name',
                           name: 'name',
                           formItem: {
                             col: type === 'member' ? 6 : 12,
-                            rules: [{ type: 'required' }],
+                            rules: [{ type: EFormRuleType.required }],
                           },
                         },
 
@@ -139,7 +141,7 @@ const Page = () => {
                           title: 'Description',
                           name: 'description',
                           formItem: {
-                            type: 'textarea',
+                            type: EFormType.textarea,
                           },
                         },
 
@@ -149,7 +151,7 @@ const Page = () => {
                           formItem:
                             type === 'member'
                               ? {
-                                  type: 'editor',
+                                  type: EFormType.editor,
                                 }
                               : undefined,
                         },

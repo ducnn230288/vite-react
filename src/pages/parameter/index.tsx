@@ -9,6 +9,7 @@ import { GlobalFacade, ParameterFacade } from '@store';
 import { createSearchParams } from 'react-router-dom';
 import { Form } from '@core/form';
 import { getQueryStringParams } from '@core/data-table';
+import { EFormType } from '@models';
 
 const Page = () => {
   const { set } = GlobalFacade();
@@ -105,7 +106,7 @@ const Page = () => {
                     name: 'vn',
                     formItem: {
                       col: 6,
-                      type: 'textarea',
+                      type: EFormType.textarea,
                     },
                   },
                   {
@@ -113,7 +114,7 @@ const Page = () => {
                     name: 'en',
                     formItem: {
                       col: 6,
-                      type: 'textarea',
+                      type: EFormType.textarea,
                     },
                   },
                 ]}

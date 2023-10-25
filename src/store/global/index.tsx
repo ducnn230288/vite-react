@@ -101,13 +101,35 @@ const checkLanguage = (language: TLanguage) => {
   localStorage.setItem('i18nextLng', language);
   return { language: language, formatDate, locale };
 };
+export enum EStatusGlobal {
+  idle = 'idle',
+  logoutFulfilled = 'logout.fulfilled',
+  profilePending = 'profile.pending',
+  profileFulfilled = 'profile.fulfilled',
+  profileRejected = 'profile.rejected',
+  putProfilePending = 'putProfile.pending',
+  putProfileFulfilled = 'putProfile.fulfilled',
+  putProfileRejected = 'putProfile.rejected',
+  loginPending = 'login.pending',
+  loginFulfilled = 'login.fulfilled',
+  loginRejected = 'login.rejected',
+  forgottenPasswordPending = 'forgottenPassword.pending',
+  forgottenPasswordFulfilled = 'forgottenPassword.fulfilled',
+  forgottenPasswordRejected = 'forgottenPassword.rejected',
+  otpConfirmationPending = 'otpConfirmation.pending',
+  otpConfirmationFulfilled = 'otpConfirmation.fulfilled',
+  otpConfirmationRejected = 'otpConfirmation.rejected',
+  resetPasswordPending = 'resetPassword.pending',
+  resetPasswordFulfilled = 'resetPassword.fulfilled',
+  resetPasswordRejected = 'resetPassword.rejected',
+}
 const initialState: State = {
   data: JSON.parse(localStorage.getItem(keyUser) || '{}'),
   routeLanguage: undefined,
   user: JSON.parse(localStorage.getItem(keyUser) || '{}'),
   isLoading: false,
   isVisible: false,
-  status: 'idle',
+  status: EStatusGlobal.idle,
   title: '',
   pathname: '',
   breadcrumbs: [],
@@ -149,42 +171,42 @@ export const globalSlice = createSlice({
         localStorage.removeItem(keyToken);
         localStorage.removeItem(keyRefreshToken);
         state.isLoading = false;
-        state.status = 'logout.fulfilled';
+        state.status = EStatusGlobal.logoutFulfilled;
       })
 
       .addCase(action.profile.pending, (state: State) => {
         state.isLoading = true;
-        state.status = 'profile.pending';
+        state.status = EStatusGlobal.profilePending;
       })
       .addCase(action.profile.fulfilled, (state: State, action: PayloadAction<User>) => {
         if (action.payload) {
           state.user = action.payload;
           state.data = action.payload;
           localStorage.setItem(keyUser, JSON.stringify(action.payload));
-          state.status = 'profile.fulfilled';
-        } else state.status = 'idle';
+          state.status = EStatusGlobal.profileFulfilled;
+        } else state.status = EStatusGlobal.idle;
         state.isLoading = false;
       })
       .addCase(action.profile.rejected, (state: State) => {
-        state.status = 'profile.rejected';
+        state.status = EStatusGlobal.profileRejected;
         state.isLoading = false;
       })
 
       .addCase(action.putProfile.pending, (state: State, action) => {
         state.data = { ...state.data, ...action.meta.arg };
         state.isLoading = true;
-        state.status = 'putProfile.pending';
+        state.status = EStatusGlobal.putProfilePending;
       })
       .addCase(action.putProfile.fulfilled, (state: State, action: PayloadAction<User>) => {
         if (action.payload) {
           localStorage.setItem(keyUser, JSON.stringify(action.payload));
           state.user = action.payload;
-          state.status = 'putProfile.fulfilled';
-        } else state.status = 'idle';
+          state.status = EStatusGlobal.putProfileFulfilled;
+        } else state.status = EStatusGlobal.idle;
         state.isLoading = false;
       })
       .addCase(action.putProfile.rejected, (state: State) => {
-        state.status = 'putProfile.rejected';
+        state.status = EStatusGlobal.putProfileRejected;
         state.isLoading = false;
       })
 
@@ -200,7 +222,7 @@ export const globalSlice = createSlice({
         ) => {
           state.data = action.meta.arg;
           state.isLoading = true;
-          state.status = 'login.pending';
+          state.status = EStatusGlobal.loginPending;
         },
       )
       .addCase(action.login.fulfilled, (state: State, action: PayloadAction<User>) => {
@@ -208,12 +230,12 @@ export const globalSlice = createSlice({
           localStorage.setItem(keyUser, JSON.stringify(action.payload));
           state.user = action.payload;
           state.data = {};
-          state.status = 'login.fulfilled';
-        } else state.status = 'idle';
+          state.status = EStatusGlobal.loginFulfilled;
+        } else state.status = EStatusGlobal.idle;
         state.isLoading = false;
       })
       .addCase(action.login.rejected, (state: State) => {
-        state.status = 'login.rejected';
+        state.status = EStatusGlobal.loginRejected;
         state.isLoading = false;
       })
 
@@ -229,17 +251,17 @@ export const globalSlice = createSlice({
         ) => {
           state.data = action.meta.arg;
           state.isLoading = true;
-          state.status = 'forgottenPassword.pending';
+          state.status = EStatusGlobal.forgottenPasswordPending;
         },
       )
       .addCase(action.forgottenPassword.fulfilled, (state: State, action: PayloadAction<boolean>) => {
         if (action.payload) {
-          state.status = 'forgottenPassword.fulfilled';
-        } else state.status = 'idle';
+          state.status = EStatusGlobal.forgottenPasswordFulfilled;
+        } else state.status = EStatusGlobal.idle;
         state.isLoading = false;
       })
       .addCase(action.forgottenPassword.rejected, (state: State) => {
-        state.status = 'forgottenPassword.rejected';
+        state.status = EStatusGlobal.forgottenPasswordRejected;
         state.isLoading = false;
       })
 
@@ -255,17 +277,17 @@ export const globalSlice = createSlice({
         ) => {
           state.data = action.meta.arg;
           state.isLoading = true;
-          state.status = 'otpConfirmation.pending';
+          state.status = EStatusGlobal.otpConfirmationPending;
         },
       )
       .addCase(action.otpConfirmation.fulfilled, (state: State, action: PayloadAction<boolean>) => {
         if (action.payload) {
-          state.status = 'otpConfirmation.fulfilled';
-        } else state.status = 'idle';
+          state.status = EStatusGlobal.otpConfirmationFulfilled;
+        } else state.status = EStatusGlobal.idle;
         state.isLoading = false;
       })
       .addCase(action.otpConfirmation.rejected, (state: State) => {
-        state.status = 'otpConfirmation.rejected';
+        state.status = EStatusGlobal.otpConfirmationRejected;
         state.isLoading = false;
       })
 
@@ -277,23 +299,24 @@ export const globalSlice = createSlice({
         ) => {
           state.data = action.meta.arg;
           state.isLoading = true;
-          state.status = 'resetPassword.pending';
+          state.status = EStatusGlobal.resetPasswordPending;
         },
       )
       .addCase(action.resetPassword.fulfilled, (state: State, action: PayloadAction<boolean>) => {
         if (action.payload) {
           state.data = {};
-          state.status = 'resetPassword.fulfilled';
-        } else state.status = 'idle';
+          state.status = EStatusGlobal.resetPasswordFulfilled;
+        } else state.status = EStatusGlobal.idle;
         state.isLoading = false;
       })
       .addCase(action.resetPassword.rejected, (state: State) => {
-        state.status = 'resetPassword.rejected';
+        state.status = EStatusGlobal.resetPasswordRejected;
         state.isLoading = false;
       });
   },
 });
 export type TLanguage = 'vn' | 'en';
+
 interface State {
   [selector: string]: any;
   user?: User;
@@ -301,7 +324,7 @@ interface State {
   routeLanguage?: Record<string, string>;
   isLoading?: boolean;
   isVisible?: boolean;
-  status?: string;
+  status?: EStatusGlobal;
   title?: string;
   titleOption?: Record<string, string | undefined>;
   pathname?: string;

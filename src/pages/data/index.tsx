@@ -1,18 +1,18 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import { Button } from '@core/button';
-import { DataTable } from '@core/data-table';
-import { lang, keyRole, routerLinks } from '@utils';
-import { GlobalFacade, DataTypeFacade, DataFacade } from '@store';
-import { Check, Disable, Edit, Plus, Trash } from '@svgs';
-import { TableRefObject } from '@models';
 import { Popconfirm, Select, Spin, Tooltip } from 'antd';
 import { useNavigate } from 'react-router';
 import classNames from 'classnames';
 import { createSearchParams } from 'react-router-dom';
-import { Avatar } from '@core/avatar';
 import dayjs from 'dayjs';
+
+import { Button } from '@core/button';
+import { DataTable } from '@core/data-table';
+import { keyRole, lang, routerLinks } from '@utils';
+import { DataFacade, DataTypeFacade, GlobalFacade } from '@store';
+import { Check, Disable, Edit, Plus, Trash } from '@svgs';
+import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
+import { Avatar } from '@core/avatar';
 
 const Page = () => {
   const { user, set, formatDate } = GlobalFacade();
@@ -30,7 +30,7 @@ const Page = () => {
   const navigate = useNavigate();
   useEffect(() => {
     switch (dataTypeFacade.status) {
-      case 'get.fulfilled':
+      case EStatusState.getFulfilled:
         if (
           dataTypeFacade?.result?.data?.length &&
           !dataTypeFacade?.result?.data?.filter((item) => item.code === request.filter.type).length
@@ -49,10 +49,10 @@ const Page = () => {
   const dataFacade = DataFacade();
   useEffect(() => {
     switch (dataFacade.status) {
-      case 'put.fulfilled':
-      case 'putDisable.fulfilled':
-      case 'post.fulfilled':
-      case 'delete.fulfilled':
+      case EStatusState.putFulfilled:
+      case EStatusState.putDisableFulfilled:
+      case EStatusState.postFulfilled:
+      case EStatusState.deleteFulfilled:
         dataTableRef?.current?.onChange(request);
         break;
     }
@@ -121,7 +121,7 @@ const Page = () => {
                   title: 'routes.admin.Data.Name',
                   name: 'name',
                   tableItem: {
-                    filter: { type: 'search' },
+                    filter: { type: ETableFilterType.search },
                     sorter: true,
                     render: (text: string, item: any) => (
                       <Avatar
@@ -142,7 +142,7 @@ const Page = () => {
                   title: 'routes.admin.Data.Order',
                   name: 'order',
                   tableItem: {
-                    filter: { type: 'search' },
+                    filter: { type: ETableFilterType.search },
                     sorter: true,
                   },
                 },
@@ -151,7 +151,7 @@ const Page = () => {
                   name: 'createdAt',
                   tableItem: {
                     width: 120,
-                    filter: { type: 'date' },
+                    filter: { type: ETableFilterType.date },
                     sorter: true,
                     render: (text) => dayjs(text).format(formatDate),
                   },
@@ -160,7 +160,7 @@ const Page = () => {
                   title: 'routes.admin.user.Action',
                   tableItem: {
                     width: 100,
-                    align: 'center',
+                    align: ETableAlign.center,
                     render: (text: string, data) => (
                       <div className={'flex gap-2'}>
                         {user?.role?.permissions?.includes(keyRole.P_DATA_UPDATE) && (

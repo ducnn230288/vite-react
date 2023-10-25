@@ -3,10 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { Spin } from 'antd';
 
-import { UserFacade, CodeFacade, User, GlobalFacade, UserRoleFacade } from '@store';
-import { routerLinks, lang } from '@utils';
+import { CodeFacade, GlobalFacade, User, UserFacade, UserRoleFacade } from '@store';
+import { lang, routerLinks } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
+import { EStatusState, EFormRuleType, EFormType } from '@models';
 
 const Page = () => {
   const { id, roleCode } = useParams();
@@ -28,8 +29,8 @@ const Page = () => {
   const isBack = useRef(true);
   useEffect(() => {
     switch (userFacade.status) {
-      case 'post.fulfilled':
-      case 'put.fulfilled':
+      case EStatusState.postFulfilled:
+      case EStatusState.putFulfilled:
         if (isBack.current) handleBack();
         else {
           isBack.current = true;
@@ -41,7 +42,7 @@ const Page = () => {
   }, [userFacade.status]);
 
   const handleBack = () => {
-    userFacade.set({ status: 'idle' });
+    userFacade.set({ status: EStatusState.idle });
     navigate(`/${lang}${routerLinks('User')}?${new URLSearchParams(param).toString()}`);
   };
   const handleSubmit = (values: User) => {
@@ -79,7 +80,7 @@ const Page = () => {
               name: 'name',
               formItem: {
                 col: 6,
-                rules: [{ type: 'required' }],
+                rules: [{ type: EFormRuleType.required }],
               },
             },
             {
@@ -87,7 +88,11 @@ const Page = () => {
               name: 'email',
               formItem: {
                 col: 6,
-                rules: [{ type: 'required' }, { type: 'email' }, { type: 'min', value: 6 }],
+                rules: [
+                  { type: EFormRuleType.required },
+                  { type: EFormRuleType.email },
+                  { type: EFormRuleType.min, value: 6 },
+                ],
               },
             },
             {
@@ -95,9 +100,9 @@ const Page = () => {
               name: 'password',
               formItem: {
                 col: 6,
-                type: 'password',
+                type: EFormType.password,
                 condition: (value: string, form, index: number, values: any) => !values?.id,
-                rules: [{ type: 'required' }, { type: 'min', value: 6 }],
+                rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.min, value: 6 }],
               },
             },
             {
@@ -106,12 +111,12 @@ const Page = () => {
               formItem: {
                 placeholder: 'columns.auth.register.retypedPassword',
                 col: 6,
-                type: 'password',
+                type: EFormType.password,
                 condition: (value: string, form, index: number, values) => !values?.id,
                 rules: [
-                  { type: 'required' },
+                  { type: EFormRuleType.required },
                   {
-                    type: 'custom',
+                    type: EFormRuleType.custom,
                     validator: ({ getFieldValue }) => ({
                       validator(rule, value: string) {
                         if (!value || getFieldValue('password') === value) {
@@ -129,7 +134,7 @@ const Page = () => {
               name: 'phoneNumber',
               formItem: {
                 col: 6,
-                rules: [{ type: 'required' }, { type: 'phone', min: 10, max: 15 }],
+                rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.phone, min: 10, max: 15 }],
               },
             },
             {
@@ -137,8 +142,8 @@ const Page = () => {
               name: 'dob',
               formItem: {
                 col: 6,
-                type: 'date',
-                rules: [{ type: 'required' }],
+                type: EFormType.date,
+                rules: [{ type: EFormRuleType.required }],
               },
             },
             {
@@ -146,8 +151,8 @@ const Page = () => {
               name: 'positionCode',
               formItem: {
                 col: 6,
-                type: 'select',
-                rules: [{ type: 'required' }],
+                type: EFormType.select,
+                rules: [{ type: EFormRuleType.required }],
                 convert: (data) =>
                   data?.map ? data.map((_item: any) => (_item?.id !== undefined ? +_item.id : _item)) : data,
                 get: {
@@ -169,8 +174,8 @@ const Page = () => {
               name: 'startDate',
               formItem: {
                 col: 6,
-                type: 'date',
-                rules: [{ type: 'required' }],
+                type: EFormType.date,
+                rules: [{ type: EFormRuleType.required }],
               },
             },
             {
@@ -178,7 +183,7 @@ const Page = () => {
               name: 'description',
               formItem: {
                 col: 8,
-                type: 'textarea',
+                type: EFormType.textarea,
               },
             },
             {
@@ -186,7 +191,7 @@ const Page = () => {
               title: 'routes.admin.user.Upload avatar',
               formItem: {
                 col: 4,
-                type: 'upload',
+                type: EFormType.upload,
               },
             },
           ]}

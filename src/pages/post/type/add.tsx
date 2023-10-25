@@ -2,12 +2,14 @@ import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { Spin } from 'antd';
+import slug from 'slug';
 
-import { PostTypeFacade, PostType, GlobalFacade } from '@store';
-import { routerLinks, lang } from '@utils';
+import { GlobalFacade, PostType, PostTypeFacade } from '@store';
+import { lang, routerLinks } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
-import slug from 'slug';
+import { EStatusState, EFormRuleType, EFormType } from '@models';
+
 const Page = () => {
   const { id } = useParams();
   const postTypeFacade = PostTypeFacade();
@@ -33,8 +35,8 @@ const Page = () => {
   const isBack = useRef(true);
   useEffect(() => {
     switch (postTypeFacade.status) {
-      case 'post.fulfilled':
-      case 'put.fulfilled':
+      case EStatusState.postFulfilled:
+      case EStatusState.putFulfilled:
         postTypeFacade.get(JSON.parse(postTypeFacade.queryParams || '{}'));
         if (Object.keys(param).length > 0) isReload.current = true;
 
@@ -66,7 +68,7 @@ const Page = () => {
               title: 'Name',
               name: 'name',
               formItem: {
-                rules: [{ type: 'required' }],
+                rules: [{ type: EFormRuleType.required }],
                 onBlur: (e, form) => {
                   if (e.target.value && !form.getFieldValue('code'))
                     form.setFieldValue('code', slug(e.target.value).toUpperCase());
@@ -77,8 +79,8 @@ const Page = () => {
               title: 'Code',
               name: 'code',
               formItem: {
-                rules: [{ type: 'required' }, { type: 'max', value: 100 }],
-                type: id ? 'hidden' : 'text',
+                rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.max, value: 100 }],
+                type: id ? EFormType.hidden : EFormType.text,
               },
             },
           ]}
