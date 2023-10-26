@@ -48,8 +48,53 @@ const Page = () => {
     }
     return { obj: objDate, total: lengthDay };
   };
-  // .startOf('year')
-  const [date, setMonths] = useState(remainingMonths(dayjs().startOf('year')));
+  const [date] = useState(remainingMonths(dayjs().startOf('year')));
+  const task = [
+    {
+      name: 'Batch Editing',
+      assignee: 'Martin Tamer',
+      status: 'Completed',
+      priority: 'High',
+      planned: 43,
+      work: 42,
+      startDate: '2023-01-04T06:41:14.617Z',
+      endDate: '2023-01-10T06:41:14.617Z',
+      percent: 86,
+    },
+    {
+      name: 'PDF Export',
+      assignee: 'Rose Fuller',
+      status: 'On Hold',
+      priority: 'Normal',
+      planned: 45,
+      work: 42,
+      startDate: '2023-01-04T06:41:14.617Z',
+      endDate: '2023-01-10T06:41:14.617Z',
+      percent: 72,
+    },
+    {
+      name: 'Drag Multi-selection',
+      assignee: 'Fuller King',
+      status: 'Completed',
+      priority: 'Critical',
+      planned: 32,
+      work: 33,
+      startDate: '2023-01-04T06:41:14.617Z',
+      endDate: '2023-01-10T06:41:14.617Z',
+      percent: 100,
+    },
+    {
+      name: 'Touch Interaction',
+      assignee: 'Jack Davolio',
+      status: 'Completed',
+      priority: 'Normal',
+      planned: 14,
+      work: 18,
+      startDate: '2023-01-04T06:41:14.617Z',
+      endDate: '2023-01-10T06:41:14.617Z',
+      percent: 50,
+    },
+  ];
 
   return (
     <Fragment>
@@ -65,40 +110,42 @@ const Page = () => {
               <table className={'w-full min-w-[600px]'}>
                 <thead>
                   <tr>
-                    <th align={'left'} className="capitalize border px-4 h-[calc(3.5rem+1px)]">
+                    <th align={'left'} className="capitalize border px-4 h-12">
                       Product Release
                     </th>
-                    <th align={'left'} className="capitalize border px-4 h-[calc(3.5rem+1px)]">
+                    <th align={'left'} className="capitalize border px-4 h-12">
                       Assignee
                     </th>
-                    <th align={'left'} className="capitalize border px-4 h-[calc(3.5rem+1px)]">
+                    <th align={'left'} className="capitalize border px-4 h-12">
                       Status
                     </th>
-                    <th align={'left'} className="capitalize border px-4 h-[calc(3.5rem+1px)]">
+                    <th align={'left'} className="capitalize border px-4 h-12">
                       Priority
                     </th>
-                    <th align={'left'} className="capitalize border px-4 h-[calc(3.5rem+1px)]">
+                    <th align={'left'} className="capitalize border px-4 h-12">
                       Planned Hours
                     </th>
-                    <th align={'left'} className="capitalize border px-4 h-[calc(3.5rem+1px)]">
+                    <th align={'left'} className="capitalize border px-4 h-12">
                       Work Log
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td className="border px-4 h-6">Q-1 Release</td>
-                    <td className="border px-4 h-6"></td>
-                    <td className="border px-4 h-6">In Progress</td>
-                    <td className="border px-4 h-6"></td>
-                    <td className="border px-4 h-6">2</td>
-                    <td className="border px-4 h-6">71 days</td>
-                  </tr>
+                  {task.map((item, index) => (
+                    <tr key={index}>
+                      <td className="border px-4 h-6">{item.name}</td>
+                      <td className="border px-4 h-6">{item.assignee}</td>
+                      <td className="border px-4 h-6">{item.status}</td>
+                      <td className="border px-4 h-6">{item.priority}</td>
+                      <td className="border px-4 h-6">{item.planned}</td>
+                      <td className="border px-4 h-6">{item.work}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
             <div id={'right'} className={'overflow-auto'} style={{ flexBasis: '50%' }}>
-              <table className={'w-full min-w-[600px]'} style={{ width: date.total * 35 + 'px' }}>
+              <table className={'w-full min-w-[600px] border-b'} style={{ width: date.total * 35 + 'px' }}>
                 <thead>
                   <tr>
                     {Object.keys(date.obj).map((year) =>
@@ -107,23 +154,18 @@ const Page = () => {
                           key={index}
                           align={'left'}
                           className={'capitalize border-l border-r border-t px-4 h-6'}
-                          style={{ width: date.obj[year][month].length * 35 + 'px' }}
+                          colSpan={date.obj[year][month].length}
                         >
                           {dayjs().month(parseInt(month)).format('MMMM')} {year}
                         </th>
                       )),
                     )}
                   </tr>
-                </thead>
-                <tbody></tbody>
-              </table>
-              <table className={'w-full min-w-[600px]'} style={{ width: date.total * 35 + 'px' }}>
-                <thead>
                   <tr>
                     {Object.keys(date.obj).map((year) =>
                       Object.keys(date.obj[year]).map((month) =>
                         date.obj[year][month].map((day: number, index: number) => (
-                          <th key={index} className={'capitalize border font-normal h-8'}>
+                          <th key={index} className={'capitalize border font-normal h-6'}>
                             {day < 10 ? 0 : ''}
                             {day}
                           </th>
@@ -133,15 +175,31 @@ const Page = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    {Object.keys(date.obj).map((year) =>
-                      Object.keys(date.obj[year]).map((month) =>
-                        date.obj[year][month].map((day: number, index: number) => (
-                          <td key={index} className={'capitalize border font-normal h-6'}></td>
-                        )),
-                      ),
-                    )}
-                  </tr>
+                  {task.map((item, index) => (
+                    <tr key={index} className={'group'}>
+                      {Object.keys(date.obj).map((year) =>
+                        Object.keys(date.obj[year]).map((month) =>
+                          date.obj[year][month].map((day: number, index: number) => (
+                            <td
+                              key={index}
+                              className={'capitalize border-x font-normal h-6 relative group-hover:bg-blue-100'}
+                            >
+                              {index === 0 && (
+                                <div className={'bg-blue-300 w-20 h-5 absolute top-0.5 z-10 rounded-md overflow-auto'}>
+                                  <div
+                                    className={'bg-blue-500 h-5 text-center text-white'}
+                                    style={{ width: item.percent + '%' }}
+                                  >
+                                    {item.percent}%
+                                  </div>
+                                </div>
+                              )}
+                            </td>
+                          )),
+                        ),
+                      )}
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
