@@ -3,6 +3,8 @@ import { t } from 'i18next';
 import Draggabilly from 'draggabilly';
 import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/vi';
+import classNames from 'classnames';
+import { Arrow } from '@svgs';
 const Page = () => {
   useEffect(() => {
     dayjs.locale('vi');
@@ -51,6 +53,30 @@ const Page = () => {
   const [date] = useState(remainingMonths(dayjs().startOf('year')));
   const task = [
     {
+      name: 'Q-1 Release',
+      assignee: '',
+      status: 'Completed',
+      priority: '',
+      planned: 43,
+      work: 42,
+      startDate: dayjs('2023-01-04'),
+      endDate: dayjs('2023-01-12'),
+      percent: 86,
+      level: 0,
+    },
+    {
+      name: 'Roadmap',
+      assignee: '',
+      status: '',
+      priority: '',
+      planned: 43,
+      work: 42,
+      startDate: dayjs('2023-01-04'),
+      endDate: dayjs('2023-01-12'),
+      percent: 86,
+      level: 1,
+    },
+    {
       name: 'Batch Editing',
       assignee: 'Martin Tamer',
       status: 'Completed',
@@ -60,28 +86,7 @@ const Page = () => {
       startDate: dayjs('2023-01-04'),
       endDate: dayjs('2023-01-12'),
       percent: 86,
-    },
-    {
-      name: 'PDF Export',
-      assignee: 'Rose Fuller',
-      status: 'On Hold',
-      priority: 'Normal',
-      planned: 45,
-      work: 42,
-      startDate: dayjs('2023-01-05'),
-      endDate: dayjs('2023-01-14'),
-      percent: 72,
-    },
-    {
-      name: 'Drag Multi-selection',
-      assignee: 'Fuller King',
-      status: 'Completed',
-      priority: 'Critical',
-      planned: 32,
-      work: 33,
-      startDate: dayjs('2023-01-06'),
-      endDate: dayjs('2023-01-16'),
-      percent: 100,
+      level: 2,
     },
     {
       name: 'Touch Interaction',
@@ -93,6 +98,43 @@ const Page = () => {
       startDate: dayjs('2023-01-07'),
       endDate: dayjs('2023-01-18'),
       percent: 50,
+      level: 2,
+    },
+    {
+      name: 'PDF Export',
+      assignee: 'Rose Fuller',
+      status: 'On Hold',
+      priority: 'Normal',
+      planned: 45,
+      work: 42,
+      startDate: dayjs('2023-01-05'),
+      endDate: dayjs('2023-01-14'),
+      percent: 72,
+      level: 0,
+    },
+    {
+      name: 'Drag Multi-selection',
+      assignee: 'Fuller King',
+      status: 'Completed',
+      priority: 'Critical',
+      planned: 32,
+      work: 33,
+      startDate: dayjs('2023-01-06'),
+      endDate: dayjs('2023-01-16'),
+      percent: 100,
+      level: 0,
+    },
+    {
+      name: 'Touch Interaction',
+      assignee: 'Jack Davolio',
+      status: 'Completed',
+      priority: 'Normal',
+      planned: 14,
+      work: 18,
+      startDate: dayjs('2023-01-07'),
+      endDate: dayjs('2023-01-18'),
+      percent: 50,
+      level: 0,
     },
   ];
 
@@ -107,25 +149,25 @@ const Page = () => {
           ></div>
           <div className={'w-full flex gap-0.5'}>
             <div id={'left'} className={'overflow-auto'} style={{ flexBasis: '50%' }}>
-              <table className={'w-full min-w-[600px]'}>
+              <table className={'w-full min-w-[600px] border-b'}>
                 <thead>
                   <tr>
-                    <th align={'left'} className="capitalize border px-4 h-12">
+                    <th align={'left'} className="capitalize border px-4 h-12 text-xs">
                       Product Release
                     </th>
-                    <th align={'left'} className="capitalize border px-4 h-12">
+                    <th align={'left'} className="capitalize border px-4 h-12 text-xs">
                       Assignee
                     </th>
-                    <th align={'left'} className="capitalize border px-4 h-12">
+                    <th align={'left'} className="capitalize border px-4 h-12 text-xs">
                       Status
                     </th>
-                    <th align={'left'} className="capitalize border px-4 h-12">
+                    <th align={'left'} className="capitalize border px-4 h-12 text-xs">
                       Priority
                     </th>
-                    <th align={'left'} className="capitalize border px-4 h-12">
+                    <th align={'left'} className="capitalize border px-4 h-12 text-xs">
                       Planned Hours
                     </th>
-                    <th align={'left'} className="capitalize border px-4 h-12">
+                    <th align={'left'} className="capitalize border px-4 h-12 text-xs">
                       Work Log
                     </th>
                   </tr>
@@ -133,12 +175,19 @@ const Page = () => {
                 <tbody>
                   {task.map((item, index) => (
                     <tr key={index}>
-                      <td className="border px-4 h-6">{item.name}</td>
-                      <td className="border px-4 h-6">{item.assignee}</td>
-                      <td className="border px-4 h-6">{item.status}</td>
-                      <td className="border px-4 h-6">{item.priority}</td>
-                      <td className="border px-4 h-6">{item.planned}</td>
-                      <td className="border px-4 h-6">{item.work}</td>
+                      <td className="border-x px-4 h-6">
+                        <div className={'flex items-center'} style={{ paddingLeft: item.level * 12 + 'px' }}>
+                          {!!task[index + 1] && task[index + 1].level > item.level && (
+                            <Arrow className={'w-2.5 h-2.5 -ml-3.5'} />
+                          )}{' '}
+                          {item.name}
+                        </div>
+                      </td>
+                      <td className="border-x px-4 h-6">{item.assignee}</td>
+                      <td className="border-x px-4 h-6">{item.status}</td>
+                      <td className="border-x px-4 h-6">{item.priority}</td>
+                      <td className="border-x px-4 h-6">{item.planned}</td>
+                      <td className="border-x px-4 h-6">{item.work}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -153,7 +202,7 @@ const Page = () => {
                         <th
                           key={index}
                           align={'left'}
-                          className={'capitalize border-l border-r border-t px-4 h-6'}
+                          className={'capitalize border-l border-r border-t px-4 h-6 text-xs'}
                           colSpan={date.obj[year][month].length}
                         >
                           {dayjs().month(parseInt(month)).format('MMMM')} {year}
@@ -165,7 +214,7 @@ const Page = () => {
                     {Object.keys(date.obj).map((year) =>
                       Object.keys(date.obj[year]).map((month) =>
                         date.obj[year][month].map((day: Dayjs, index: number) => (
-                          <th key={index} className={'capitalize border font-normal h-6'}>
+                          <th key={index} className={'capitalize border font-normal h-6 text-xs'}>
                             {day.format('DD')}
                           </th>
                         )),
@@ -178,21 +227,27 @@ const Page = () => {
                     <tr key={index} className={'group'}>
                       {Object.keys(date.obj).map((year) =>
                         Object.keys(date.obj[year]).map((month) =>
-                          date.obj[year][month].map((day: Dayjs, index: number) => (
+                          date.obj[year][month].map((day: Dayjs, i: number) => (
                             <td
-                              key={index}
+                              key={i}
                               className={'capitalize border-x font-normal h-6 relative group-hover:bg-blue-100'}
                             >
                               {day.diff(item.startDate, 'day') <= 2 && day.diff(item.startDate, 'day') > -1 && (
                                 <div
-                                  className={'bg-blue-300 h-5 absolute top-0.5 z-10 rounded-md overflow-auto'}
+                                  className={classNames('h-5 absolute top-0.5 z-10 overflow-auto', {
+                                    'bg-gray-400': !!task[index + 1] && task[index + 1].level > item.level,
+                                    'rounded-md bg-blue-400': !task[index + 1] || task[index + 1].level <= item.level,
+                                  })}
                                   style={{
                                     width: item.endDate.diff(day, 'day') * 12 + 'px',
                                     marginLeft: item.startDate.diff(day, 'day') * 12 + 'px',
                                   }}
                                 >
                                   <div
-                                    className={'bg-blue-500 h-5 text-center text-white text-xs pt-0.5'}
+                                    className={classNames('h-5 text-center text-white text-xs pt-0.5', {
+                                      'bg-gray-600': !!task[index + 1] && task[index + 1].level > item.level,
+                                      'bg-blue-600': !task[index + 1] || task[index + 1].level <= item.level,
+                                    })}
                                     style={{ width: item.percent + '%' }}
                                   >
                                     {item.percent}%
