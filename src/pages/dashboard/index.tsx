@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { t } from 'i18next';
 import Draggabilly from 'draggabilly';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import 'dayjs/locale/vi';
 const Page = () => {
   useEffect(() => {
@@ -42,7 +42,7 @@ const Page = () => {
       const dayInMonth = dayjs().month(i).daysInMonth();
       for (let j = totalDay; j <= dayInMonth; j += 3) {
         if (j + 3 > dayInMonth) totalDay = j + 3 - dayInMonth;
-        objDate[year][i].push(j);
+        objDate[year][i].push(dayjs(year + '-' + (i < 10 ? '0' : '') + (i + 1) + '-' + (j < 10 ? '0' : '') + j));
       }
       lengthDay += objDate[year][i].length;
     }
@@ -57,8 +57,8 @@ const Page = () => {
       priority: 'High',
       planned: 43,
       work: 42,
-      startDate: '2023-01-04T06:41:14.617Z',
-      endDate: '2023-01-10T06:41:14.617Z',
+      startDate: dayjs('2023-01-04'),
+      endDate: dayjs('2023-01-12'),
       percent: 86,
     },
     {
@@ -68,8 +68,8 @@ const Page = () => {
       priority: 'Normal',
       planned: 45,
       work: 42,
-      startDate: '2023-01-04T06:41:14.617Z',
-      endDate: '2023-01-10T06:41:14.617Z',
+      startDate: dayjs('2023-01-05'),
+      endDate: dayjs('2023-01-14'),
       percent: 72,
     },
     {
@@ -79,8 +79,8 @@ const Page = () => {
       priority: 'Critical',
       planned: 32,
       work: 33,
-      startDate: '2023-01-04T06:41:14.617Z',
-      endDate: '2023-01-10T06:41:14.617Z',
+      startDate: dayjs('2023-01-06'),
+      endDate: dayjs('2023-01-16'),
       percent: 100,
     },
     {
@@ -90,8 +90,8 @@ const Page = () => {
       priority: 'Normal',
       planned: 14,
       work: 18,
-      startDate: '2023-01-04T06:41:14.617Z',
-      endDate: '2023-01-10T06:41:14.617Z',
+      startDate: dayjs('2023-01-07'),
+      endDate: dayjs('2023-01-18'),
       percent: 50,
     },
   ];
@@ -145,7 +145,7 @@ const Page = () => {
               </table>
             </div>
             <div id={'right'} className={'overflow-auto'} style={{ flexBasis: '50%' }}>
-              <table className={'w-full min-w-[600px] border-b'} style={{ width: date.total * 35 + 'px' }}>
+              <table className={'w-full min-w-[600px] border-b'} style={{ width: date.total * 36 + 'px' }}>
                 <thead>
                   <tr>
                     {Object.keys(date.obj).map((year) =>
@@ -164,10 +164,9 @@ const Page = () => {
                   <tr>
                     {Object.keys(date.obj).map((year) =>
                       Object.keys(date.obj[year]).map((month) =>
-                        date.obj[year][month].map((day: number, index: number) => (
+                        date.obj[year][month].map((day: Dayjs, index: number) => (
                           <th key={index} className={'capitalize border font-normal h-6'}>
-                            {day < 10 ? 0 : ''}
-                            {day}
+                            {day.format('DD')}
                           </th>
                         )),
                       ),
@@ -179,15 +178,21 @@ const Page = () => {
                     <tr key={index} className={'group'}>
                       {Object.keys(date.obj).map((year) =>
                         Object.keys(date.obj[year]).map((month) =>
-                          date.obj[year][month].map((day: number, index: number) => (
+                          date.obj[year][month].map((day: Dayjs, index: number) => (
                             <td
                               key={index}
                               className={'capitalize border-x font-normal h-6 relative group-hover:bg-blue-100'}
                             >
-                              {index === 0 && (
-                                <div className={'bg-blue-300 w-20 h-5 absolute top-0.5 z-10 rounded-md overflow-auto'}>
+                              {day.diff(item.startDate, 'day') <= 2 && day.diff(item.startDate, 'day') > -1 && (
+                                <div
+                                  className={'bg-blue-300 h-5 absolute top-0.5 z-10 rounded-md overflow-auto'}
+                                  style={{
+                                    width: item.endDate.diff(day, 'day') * 12 + 'px',
+                                    marginLeft: item.startDate.diff(day, 'day') * 12 + 'px',
+                                  }}
+                                >
                                   <div
-                                    className={'bg-blue-500 h-5 text-center text-white'}
+                                    className={'bg-blue-500 h-5 text-center text-white text-xs pt-0.5'}
                                     style={{ width: item.percent + '%' }}
                                   >
                                     {item.percent}%
