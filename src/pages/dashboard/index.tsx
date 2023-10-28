@@ -137,6 +137,26 @@ const Page = () => {
       level: 0,
     },
   ];
+  const handleHover = (e: any) => {
+    const index = e.target.parentElement.dataset.index;
+    ['left', 'right'].forEach(
+      (id) =>
+        document
+          .querySelectorAll(`#${id} > table > tbody > tr`)
+          [index]?.querySelectorAll('td')
+          .forEach((td: any) => td.classList.toggle('bg-blue-100')),
+    );
+  };
+  const handleCollaps = (e: any) => {
+    const index = e.target.parentElement.parentElement.parentElement.dataset.index;
+    ['left', 'right'].forEach(
+      (id) =>
+        document
+          .querySelectorAll(`#${id} > table > tbody > tr`)
+          [index]?.querySelectorAll('td')
+          .forEach((td: any) => ['h-6', 'h-0'].forEach((className) => td.classList.toggle(className))),
+    );
+  };
 
   return (
     <Fragment>
@@ -174,12 +194,12 @@ const Page = () => {
                 </thead>
                 <tbody>
                   {task.map((item, index) => (
-                    <tr key={index}>
+                    <tr key={index} onMouseOver={handleHover} onMouseOut={handleHover} data-index={index}>
                       <td className="border-x px-4 h-6">
                         <div className={'flex items-center'} style={{ paddingLeft: item.level * 12 + 'px' }}>
                           {!!task[index + 1] && task[index + 1].level > item.level && (
-                            <Arrow className={'w-2.5 h-2.5 -ml-3.5'} />
-                          )}{' '}
+                            <Arrow onClick={handleCollaps} className={'w-4 h-4 -ml-4 cursor-pointer'} />
+                          )}
                           {item.name}
                         </div>
                       </td>
@@ -224,19 +244,17 @@ const Page = () => {
                 </thead>
                 <tbody>
                   {task.map((item, index) => (
-                    <tr key={index} className={'group'}>
+                    <tr key={index} onMouseOver={handleHover} onMouseOut={handleHover} data-index={index}>
                       {Object.keys(date.obj).map((year) =>
                         Object.keys(date.obj[year]).map((month) =>
                           date.obj[year][month].map((day: Dayjs, i: number) => (
-                            <td
-                              key={i}
-                              className={'capitalize border-x font-normal h-6 relative group-hover:bg-blue-100'}
-                            >
+                            <td key={i} className={'capitalize border-x font-normal h-6 relative'}>
                               {day.diff(item.startDate, 'day') <= 2 && day.diff(item.startDate, 'day') > -1 && (
                                 <div
-                                  className={classNames('h-5 absolute top-0.5 z-10 overflow-auto', {
-                                    'bg-gray-400': !!task[index + 1] && task[index + 1].level > item.level,
-                                    'rounded-md bg-blue-400': !task[index + 1] || task[index + 1].level <= item.level,
+                                  className={classNames('absolute top-0.5 z-10', {
+                                    'h-4 bg-gray-400': !!task[index + 1] && task[index + 1].level > item.level,
+                                    'h-5 rounded-md bg-blue-400':
+                                      !task[index + 1] || task[index + 1].level <= item.level,
                                   })}
                                   style={{
                                     width: item.endDate.diff(day, 'day') * 12 + 'px',
@@ -244,9 +262,9 @@ const Page = () => {
                                   }}
                                 >
                                   <div
-                                    className={classNames('h-5 text-center text-white text-xs pt-0.5', {
-                                      'bg-gray-600': !!task[index + 1] && task[index + 1].level > item.level,
-                                      'bg-blue-600': !task[index + 1] || task[index + 1].level <= item.level,
+                                    className={classNames('text-center text-white text-xs', {
+                                      'h-4 bg-gray-600': !!task[index + 1] && task[index + 1].level > item.level,
+                                      'h-5 bg-blue-600 pt-0.5': !task[index + 1] || task[index + 1].level <= item.level,
                                     })}
                                     style={{ width: item.percent + '%' }}
                                   >
