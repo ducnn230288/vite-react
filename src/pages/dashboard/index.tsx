@@ -324,7 +324,7 @@ const Page = () => {
     <Fragment>
       <div className="h-full pb-10">
         <h1 className="text-3xl text-teal-900 font-bold text-center mb-14 ">{t('routes.auth.login.Welcome')}</h1>
-        <div className="relative overflow-auto">
+        <div className="relative">
           <div
             id={'drag'}
             className={'w-1 h-full bg-gray-300 cursor-ew-resize hover:bg-red-500 absolute left-1/2 -ml-0.5'}
@@ -428,24 +428,27 @@ const Page = () => {
                     );
                 })}
               </div>
-              <table className={'w-full min-w-[600px] border-b'} style={{ width: date.total * widthColumnDay + 'px' }}>
-                <tr>
-                  {Object.keys(date.obj).map((year) =>
-                    Object.keys(date.obj[year]).map((month, index) => (
-                      <th
-                        key={index}
-                        align={'left'}
-                        className={'capitalize border-l border-r border-t px-4 h-6 text-xs'}
-                        colSpan={date.obj[year][month].length}
-                        style={{ width: dayjs().year(parseInt(year)).month(parseInt(month)).daysInMonth() * 12 + 'px' }}
-                      >
-                        {dayjs().month(parseInt(month)).format('MMMM')} {year}
-                      </th>
-                    )),
-                  )}
-                </tr>
-              </table>
               <table className={'w-full min-w-[600px]'} style={{ width: date.total * widthColumnDay + 'px' }}>
+                <thead>
+                  <tr>
+                    {Object.keys(date.obj).map((year) =>
+                      Object.keys(date.obj[year]).map((month, index) => (
+                        <th
+                          key={index}
+                          align={'left'}
+                          className={'capitalize border-l border-r border-t px-4 h-6 text-xs'}
+                          style={{
+                            width: dayjs().year(parseInt(year)).month(parseInt(month)).daysInMonth() * 12 + 'px',
+                          }}
+                        >
+                          {dayjs().month(parseInt(month)).format('MMMM')} {year}
+                        </th>
+                      )),
+                    )}
+                  </tr>
+                </thead>
+              </table>
+              <table className={'w-full min-w-[600px] border-b'} style={{ width: date.total * widthColumnDay + 'px' }}>
                 <thead>
                   <tr>
                     {Object.keys(date.obj).map((year) =>
@@ -484,7 +487,7 @@ const Page = () => {
                                   }}
                                 >
                                   <div
-                                    className={classNames('text-center text-white text-xs h-4 ', {
+                                    className={classNames('text-center text-white text-xs h-4', {
                                       'bg-gray-600': !!task[index + 1] && task[index + 1].level > item.level,
                                       'bg-blue-600': !task[index + 1] || task[index + 1].level <= item.level,
                                     })}
