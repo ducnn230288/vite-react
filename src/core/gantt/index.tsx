@@ -35,31 +35,50 @@ export const Gantt = ({
   const id = useRef('gantt-' + nanoid());
   useEffect(() => {
     dayjs.locale('vi');
-    let wLeft = 0;
-    let wRight = 0;
-    const left: any = document.querySelector(`#${id.current} .left`);
-    const right: any = document.querySelector(`#${id.current} .right`);
-    new Draggabilly(document.querySelector(`#${id.current} .drag-side`)!, {
-      axis: 'x',
-    })
-      .on('dragStart', () => {
-        if (left && right) {
-          const width = left.parentElement!.offsetWidth;
-          if (left.style.flexBasis.indexOf('%') > 0) left.style.flexBasis = width / 2 + 'px';
-          if (right.style.flexBasis.indexOf('%') > 0) right.style.flexBasis = width / 2 + 'px';
-          wLeft = parseFloat(left.style.flexBasis.split('px')[0]);
-          wRight = parseFloat(right.style.flexBasis.split('px')[0]);
-        }
-      })
-      .on('dragMove', (_, __, moveVector) => {
-        if (left && right) {
-          const p = moveVector.x;
-          left.style.flexBasis = wLeft + p + 'px';
-          right.style.flexBasis = wRight - p + 'px';
-        }
-      });
 
     setTimeout(() => {
+      let wLeft = 0;
+      let wRight = 0;
+      const left: any = document.querySelector(`#${id.current} .left`);
+      const right: any = document.querySelector(`#${id.current} .right`);
+      new Draggabilly(document.querySelector(`#${id.current} .drag-side`)!, {
+        axis: 'x',
+      })
+        .on('dragStart', () => {
+          if (left && right) {
+            const width = left.parentElement!.offsetWidth;
+            if (left.style.flexBasis.indexOf('%') > 0) left.style.flexBasis = width / 2 + 'px';
+            if (right.style.flexBasis.indexOf('%') > 0) right.style.flexBasis = width / 2 + 'px';
+            wLeft = parseFloat(left.style.flexBasis.split('px')[0]);
+            wRight = parseFloat(right.style.flexBasis.split('px')[0]);
+          }
+        })
+        .on('dragMove', (_, __, moveVector) => {
+          if (left && right) {
+            const p = moveVector.x;
+            left.style.flexBasis = wLeft + p + 'px';
+            right.style.flexBasis = wRight - p + 'px';
+          }
+        });
+
+      let height = 0;
+      const dragVertical: any = document.querySelector(`#${id.current} .drag-vertical`);
+      new Draggabilly(dragVertical, {
+        axis: 'y',
+      })
+        .on('dragStart', () => {
+          height = document.querySelector(`#${id.current} .overflow-scroll`)!.clientHeight;
+        })
+        .on('dragMove', (_, __, moveVector) => {
+          document
+            .querySelectorAll(`#${id.current} .overflow-scroll`)
+            .forEach((e: any) => (e.style.height = height + moveVector.y + 'px'));
+        })
+        .on('dragEnd', () => {
+          dragVertical.style.removeProperty('left');
+          dragVertical.style.removeProperty('top');
+        });
+
       let widthDrag = 0;
       let index = 0;
       document.querySelectorAll(`#${id.current} .drag`).forEach((e: any) =>
@@ -187,214 +206,218 @@ export const Gantt = ({
 
   return (
     <div id={id.current} className="relative">
-      <div
-        className={'w-1 h-full bg-gray-300 cursor-ew-resize hover:bg-red-500 absolute left-1/2 -ml-0.5 drag-side'}
-      ></div>
-      <div className={'w-full flex gap-0.5'}>
-        <div className={'left overflow-hidden'} style={{ flexBasis: '50%' }}>
-          <table className={'w-full min-w-[600px]'}>
-            <thead>
-              <tr>
-                <NameColumn name={'Product Release'}></NameColumn>
-                <NameColumn name={'Assignee'}></NameColumn>
-                <NameColumn name={'Status'}></NameColumn>
-                <NameColumn name={'Priority'}></NameColumn>
-                <NameColumn name={'Planned'}></NameColumn>
-                <NameColumn name={'Work Log'} isDrag={false}></NameColumn>
-              </tr>
-            </thead>
-          </table>
+      <div className="relative">
+        <div
+          className={'w-1 h-full bg-gray-300 cursor-ew-resize hover:bg-red-500 absolute left-1/2 -ml-0.5 drag-side'}
+        ></div>
+        <div className={'w-full flex gap-0.5'}>
+          <div className={'left overflow-hidden'} style={{ flexBasis: '50%' }}>
+            <table className={'w-full min-w-[600px]'}>
+              <thead>
+                <tr>
+                  <NameColumn name={'Product Release'}></NameColumn>
+                  <NameColumn name={'Assignee'}></NameColumn>
+                  <NameColumn name={'Status'}></NameColumn>
+                  <NameColumn name={'Priority'}></NameColumn>
+                  <NameColumn name={'Planned'}></NameColumn>
+                  <NameColumn name={'Work Log'} isDrag={false}></NameColumn>
+                </tr>
+              </thead>
+            </table>
 
-          <div className="overflow-scroll h-64" onScroll={handleScroll}>
-            <table className={'w-full min-w-[600px] border-b'}>
-              <tbody>
-                {task.map((item, index) => (
-                  <tr
-                    key={index}
-                    onMouseOver={handleHover}
-                    onMouseOut={handleHover}
-                    data-index={index}
-                    data-level={item.level}
-                  >
-                    <td className="border-x pl-5 py-0 h-6 overflow-hidden">
-                      <div
-                        className={'flex items-center gap-1'}
-                        style={{ paddingLeft: item.level * (widthColumnDay / 3) + 'px' }}
-                      >
-                        {!!task[index + 1] && task[index + 1].level > item.level && (
-                          <Arrow onClick={handleCollapse} className={'w-3 h-3 -ml-4 cursor-pointer rotate-90'} />
-                        )}
-                        <span>{item.name}</span>
-                      </div>
-                    </td>
-                    <td className="border-x px-4 py-0 h-6">{item.assignee}</td>
-                    <td
-                      className={classNames('border-x px-4 py-0 h-6 text-white', {
-                        'bg-blue-600': item.status === 'In Progress',
-                        'bg-green-600': item.status === 'Completed',
-                        'bg-gray-600': item.status === 'On Hold',
-                      })}
-                    >
-                      {item.status}
-                    </td>
-                    <td
-                      className={classNames('border-x px-4 py-0 h-6 text-white', {
-                        'bg-red-500': item.priority === 'Critical',
-                        'bg-orange-500': item.priority === 'High',
-                        'bg-yellow-500': item.priority === 'Normal',
-                      })}
-                    >
-                      {item.priority}
-                    </td>
-                    <td className="border-x px-4 py-0 h-6">{item.planned} hours</td>
-                    <td className="border-x px-4 py-0 h-6">{item.work} days</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div className={'right relative overflow-hidden'} style={{ flexBasis: '50%' }}>
-          <div className={'overflow-x-hidden'}>
-            <table className={'w-full min-w-[600px] border-b'} style={{ width: date.total * widthColumnDay + 'px' }}>
-              <thead>
-              <tr>
-                {Object.keys(date.obj).map((year) =>
-                  Object.keys(date.obj[year]).map((month, index) => (
-                    <th
+            <div className="overflow-scroll h-64" onScroll={handleScroll}>
+              <table className={'w-full min-w-[600px] border-b'}>
+                <tbody>
+                  {task.map((item, index) => (
+                    <tr
                       key={index}
-                      align={'left'}
-                      className={'capitalize border-l border-r border-t px-4 h-6 text-xs'}
-                      style={{
-                        width: dayjs().year(parseInt(year)).month(parseInt(month)).daysInMonth() * 12 + 'px',
-                      }}
+                      onMouseOver={handleHover}
+                      onMouseOut={handleHover}
+                      data-index={index}
+                      data-level={item.level}
                     >
-                      {dayjs().month(parseInt(month)).format('MMMM')} {year}
-                    </th>
-                  )),
-                )}
-              </tr>
-              </thead>
-            </table>
-            <table className={'w-full min-w-[600px] border-b'} style={{ width: date.total * widthColumnDay + 'px' }}>
-              <thead>
-              <tr>
-                {Object.keys(date.obj).map((year) =>
-                  Object.keys(date.obj[year]).map((month) =>
-                    date.obj[year][month].map((day: Dayjs, index: number) => (
-                      <th
-                        key={index}
-                        className={'capitalize border-x font-normal h-6 text-xs'}
-                        style={{width: widthColumnDay + 'px'}}
+                      <td className="border-x pl-5 py-0 h-6 overflow-hidden">
+                        <div
+                          className={'flex items-center gap-1'}
+                          style={{ paddingLeft: item.level * (widthColumnDay / 3) + 'px' }}
+                        >
+                          {!!task[index + 1] && task[index + 1].level > item.level && (
+                            <Arrow onClick={handleCollapse} className={'w-3 h-3 -ml-4 cursor-pointer rotate-90'} />
+                          )}
+                          <span>{item.name}</span>
+                        </div>
+                      </td>
+                      <td className="border-x px-4 py-0 h-6">{item.assignee}</td>
+                      <td
+                        className={classNames('border-x px-4 py-0 h-6 text-white', {
+                          'bg-blue-600': item.status === 'In Progress',
+                          'bg-green-600': item.status === 'Completed',
+                          'bg-gray-600': item.status === 'On Hold',
+                        })}
                       >
-                        {day.format('DD')}
-                      </th>
-                    )),
-                  ),
-                )}
-              </tr>
-              </thead>
-            </table>
-          </div>
-          <div className="overflow-scroll h-64 relative" data-scroll-x={'.overflow-x-hidden'} onScroll={handleScroll}>
-            <div
-              className="event h-full absolute top-0 left-0 flex"
-              style={{ width: date.total * widthColumnDay + 'px' }}
-            >
-              {event.map((item, index) => {
-                if (item.endDate)
-                  return (
-                    <div
-                      key={index}
-                      className={'bg-gray-200 h-full absolute flex items-center justify-center'}
-                      style={{
-                        width: (item.endDate.diff(item.startDate, 'day') + 1) * 12 + 'px',
-                        left: item.startDate.diff(dateStart, 'day') * 12 + 'px',
-                      }}
-                    >
-                      <div
-                        className="rotate-90 whitespace-nowrap text-center"
-                        style={{ marginTop: -item.name.length * 6 + 'px' }}
+                        {item.status}
+                      </td>
+                      <td
+                        className={classNames('border-x px-4 py-0 h-6 text-white', {
+                          'bg-red-500': item.priority === 'Critical',
+                          'bg-orange-500': item.priority === 'High',
+                          'bg-yellow-500': item.priority === 'Normal',
+                        })}
                       >
-                        {item.name}
-                      </div>
-                    </div>
-                  );
-                else
-                  return (
-                    <div
-                      key={index}
-                      className={
-                        'border-red-600 border-l border-dashed h-full absolute flex justify-center items-center'
-                      }
-                      style={{
-                        left: item.startDate.diff(dateStart, 'day') * 12 + 'px',
-                      }}
-                    >
-                      <div className="px-2 py-1 bg-red-500 text-white rounded-r-xl">{item.name}</div>
-                    </div>
-                  );
-              })}
+                        {item.priority}
+                      </td>
+                      <td className="border-x px-4 py-0 h-6">{item.planned} hours</td>
+                      <td className="border-x px-4 py-0 h-6">{item.work} days</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-            <table className={'w-full min-w-[600px] border-b'} style={{ width: date.total * widthColumnDay + 'px' }}>
-              <tbody>
-                {task.map((item, index) => (
-                  <tr
-                    key={index}
-                    onMouseOver={handleHover}
-                    onMouseOut={handleHover}
-                    data-index={index}
-                    data-level={item.level}
-                  >
+          </div>
+          <div className={'right relative overflow-hidden'} style={{ flexBasis: '50%' }}>
+            <div className={'overflow-x-hidden'}>
+              <table className={'w-full min-w-[600px] border-b'} style={{ width: date.total * widthColumnDay + 'px' }}>
+                <thead>
+                  <tr>
+                    {Object.keys(date.obj).map((year) =>
+                      Object.keys(date.obj[year]).map((month, index) => (
+                        <th
+                          key={index}
+                          align={'left'}
+                          className={'capitalize border-l border-r border-t px-4 h-6 text-xs'}
+                          style={{
+                            width: dayjs().year(parseInt(year)).month(parseInt(month)).daysInMonth() * 12 + 'px',
+                          }}
+                        >
+                          {dayjs().month(parseInt(month)).format('MMMM')} {year}
+                        </th>
+                      )),
+                    )}
+                  </tr>
+                </thead>
+              </table>
+              <table className={'w-full min-w-[600px] border-b'} style={{ width: date.total * widthColumnDay + 'px' }}>
+                <thead>
+                  <tr>
                     {Object.keys(date.obj).map((year) =>
                       Object.keys(date.obj[year]).map((month) =>
-                        date.obj[year][month].map((day: Dayjs, i: number) => (
-                          <td key={i} className={'capitalize border-x font-normal h-6 relative py-0'}>
-                            {day.diff(item.startDate, 'day') <= 2 && day.diff(item.startDate, 'day') > -1 && (
-                              <Fragment>
-                                {item.endDate ? (
-                                  <div
-                                    className={classNames('absolute top-1 z-10 overflow-hidden h-4', {
-                                      'bg-gray-400': !!task[index + 1] && task[index + 1].level > item.level,
-                                      'rounded-md bg-blue-400': !task[index + 1] || task[index + 1].level <= item.level,
-                                    })}
-                                    style={{
-                                      width: (item.endDate.diff(day, 'day') + 1) * 12 + 'px',
-                                      marginLeft: item.startDate.diff(day, 'day') * 12 + 'px',
-                                    }}
-                                  >
-                                    <div
-                                      className={classNames('text-center text-white text-xs h-4', {
-                                        'bg-gray-600': !!task[index + 1] && task[index + 1].level > item.level,
-                                        'bg-blue-600': !task[index + 1] || task[index + 1].level <= item.level,
-                                      })}
-                                      style={{ width: item.percent + '%' }}
-                                    >
-                                      {item.percent}%
-                                    </div>
-                                  </div>
-                                ) : (
-                                  <div className={'relative'}>
-                                    <div
-                                      className={'absolute top-1.5 left-1.5 z-10 h-3 w-3 bg-black rotate-45'}
-                                      style={{ marginLeft: item.startDate.diff(day, 'day') * 12 + 'px' }}
-                                    ></div>
-                                    <div className="absolute top-0.5 left-6">{ item.name }</div>
-                                  </div>
-                                )}
-                              </Fragment>
-                            )}
-                          </td>
+                        date.obj[year][month].map((day: Dayjs, index: number) => (
+                          <th
+                            key={index}
+                            className={'capitalize border-x font-normal h-6 text-xs'}
+                            style={{ width: widthColumnDay + 'px' }}
+                          >
+                            {day.format('DD')}
+                          </th>
                         )),
                       ),
                     )}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+              </table>
+            </div>
+            <div className="overflow-scroll h-64 relative" data-scroll-x={'.overflow-x-hidden'} onScroll={handleScroll}>
+              <div
+                className="event h-full absolute top-0 left-0 flex"
+                style={{ width: date.total * widthColumnDay + 'px' }}
+              >
+                {event.map((item, index) => {
+                  if (item.endDate)
+                    return (
+                      <div
+                        key={index}
+                        className={'bg-gray-200 h-full absolute flex items-center justify-center'}
+                        style={{
+                          width: (item.endDate.diff(item.startDate, 'day') + 1) * 12 + 'px',
+                          left: item.startDate.diff(dateStart, 'day') * 12 + 'px',
+                        }}
+                      >
+                        <div
+                          className="rotate-90 whitespace-nowrap text-center"
+                          style={{ marginTop: -item.name.length * 6 + 'px' }}
+                        >
+                          {item.name}
+                        </div>
+                      </div>
+                    );
+                  else
+                    return (
+                      <div
+                        key={index}
+                        className={
+                          'border-red-600 border-l border-dashed h-full absolute flex justify-center items-center'
+                        }
+                        style={{
+                          left: item.startDate.diff(dateStart, 'day') * 12 + 'px',
+                        }}
+                      >
+                        <div className="px-2 py-1 bg-red-500 text-white rounded-r-xl">{item.name}</div>
+                      </div>
+                    );
+                })}
+              </div>
+              <table className={'w-full min-w-[600px] border-b'} style={{ width: date.total * widthColumnDay + 'px' }}>
+                <tbody>
+                  {task.map((item, index) => (
+                    <tr
+                      key={index}
+                      onMouseOver={handleHover}
+                      onMouseOut={handleHover}
+                      data-index={index}
+                      data-level={item.level}
+                    >
+                      {Object.keys(date.obj).map((year) =>
+                        Object.keys(date.obj[year]).map((month) =>
+                          date.obj[year][month].map((day: Dayjs, i: number) => (
+                            <td key={i} className={'capitalize border-x font-normal h-6 relative py-0'}>
+                              {day.diff(item.startDate, 'day') <= 2 && day.diff(item.startDate, 'day') > -1 && (
+                                <Fragment>
+                                  {item.endDate ? (
+                                    <div
+                                      className={classNames('absolute top-1 z-10 overflow-hidden h-4', {
+                                        'bg-gray-400': !!task[index + 1] && task[index + 1].level > item.level,
+                                        'rounded-md bg-blue-400':
+                                          !task[index + 1] || task[index + 1].level <= item.level,
+                                      })}
+                                      style={{
+                                        width: (item.endDate.diff(day, 'day') + 1) * 12 + 'px',
+                                        marginLeft: item.startDate.diff(day, 'day') * 12 + 'px',
+                                      }}
+                                    >
+                                      <div
+                                        className={classNames('text-center text-white text-xs h-4', {
+                                          'bg-gray-600': !!task[index + 1] && task[index + 1].level > item.level,
+                                          'bg-blue-600': !task[index + 1] || task[index + 1].level <= item.level,
+                                        })}
+                                        style={{ width: item.percent + '%' }}
+                                      >
+                                        {item.percent}%
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    <div className={'relative'}>
+                                      <div
+                                        className={'absolute top-1.5 left-1.5 z-10 h-3 w-3 bg-black rotate-45'}
+                                        style={{ marginLeft: item.startDate.diff(day, 'day') * 12 + 'px' }}
+                                      ></div>
+                                      <div className="absolute top-0.5 left-6">{item.name}</div>
+                                    </div>
+                                  )}
+                                </Fragment>
+                              )}
+                            </td>
+                          )),
+                        ),
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
+      <div className="drag-vertical w-full h-1 cursor-ns-resize hover:bg-red-500 absolute bottom-0"></div>
     </div>
   );
 };
