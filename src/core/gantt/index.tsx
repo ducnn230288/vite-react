@@ -174,6 +174,8 @@ export const Gantt = ({
     ['left', 'right'].forEach((className) =>
       document.querySelector(`#${id.current} .${className} .overflow-scroll`)!.scrollTo({ top: e.target.scrollTop }),
     );
+    if (e.target.dataset.scrollX)
+      document.querySelector(`#${id.current} ${e.target.dataset.scrollX}`)!.scrollTo({ left: e.target.scrollLeft });
   };
   const NameColumn = ({ name, isDrag = true }: { name: string; isDrag?: boolean }) => (
     <th align={'left'} className="capitalize border px-4 h-12 text-xs relative">
@@ -252,8 +254,9 @@ export const Gantt = ({
           </div>
         </div>
         <div className={'right relative overflow-hidden'} style={{ flexBasis: '50%' }}>
-          <table className={'w-full min-w-[600px]'} style={{ width: date.total * widthColumnDay + 'px' }}>
-            <thead>
+          <div className={'overflow-x-hidden'}>
+            <table className={'w-full min-w-[600px] border-b'} style={{ width: date.total * widthColumnDay + 'px' }}>
+              <thead>
               <tr>
                 {Object.keys(date.obj).map((year) =>
                   Object.keys(date.obj[year]).map((month, index) => (
@@ -270,25 +273,29 @@ export const Gantt = ({
                   )),
                 )}
               </tr>
-            </thead>
-          </table>
-          <table className={'w-full min-w-[600px]'} style={{ width: date.total * widthColumnDay + 'px' }}>
-            <thead>
+              </thead>
+            </table>
+            <table className={'w-full min-w-[600px] border-b'} style={{ width: date.total * widthColumnDay + 'px' }}>
+              <thead>
               <tr>
                 {Object.keys(date.obj).map((year) =>
                   Object.keys(date.obj[year]).map((month) =>
                     date.obj[year][month].map((day: Dayjs, index: number) => (
-                      <th key={index} className={'capitalize border-x font-normal h-6 text-xs'}>
+                      <th
+                        key={index}
+                        className={'capitalize border-x font-normal h-6 text-xs'}
+                        style={{width: widthColumnDay + 'px'}}
+                      >
                         {day.format('DD')}
                       </th>
                     )),
                   ),
                 )}
               </tr>
-            </thead>
-          </table>
-
-          <div className="overflow-scroll h-64 relative" onScroll={handleScroll}>
+              </thead>
+            </table>
+          </div>
+          <div className="overflow-scroll h-64 relative" data-scroll-x={'.overflow-x-hidden'} onScroll={handleScroll}>
             <div
               className="event h-full absolute top-0 left-0 flex"
               style={{ width: date.total * widthColumnDay + 'px' }}
@@ -344,7 +351,7 @@ export const Gantt = ({
                           <td key={i} className={'capitalize border-x font-normal h-6 relative py-0'}>
                             {day.diff(item.startDate, 'day') <= 2 && day.diff(item.startDate, 'day') > -1 && (
                               <Fragment>
-                                {!!item.endDate ? (
+                                {item.endDate ? (
                                   <div
                                     className={classNames('absolute top-1 z-10 overflow-hidden h-4', {
                                       'bg-gray-400': !!task[index + 1] && task[index + 1].level > item.level,
@@ -366,10 +373,13 @@ export const Gantt = ({
                                     </div>
                                   </div>
                                 ) : (
-                                  <div
-                                    className={'absolute top-1.5 left-1.5 z-10 h-3 w-3 bg-black rotate-45 '}
-                                    style={{ marginLeft: item.startDate.diff(day, 'day') * 12 + 'px' }}
-                                  ></div>
+                                  <div className={'relative'}>
+                                    <div
+                                      className={'absolute top-1.5 left-1.5 z-10 h-3 w-3 bg-black rotate-45 '}
+                                      style={{ marginLeft: item.startDate.diff(day, 'day') * 12 + 'px' }}
+                                    ></div>
+                                    <div className="absolute top-0.5 left-6">{ item.name }</div>
+                                  </div>
                                 )}
                               </Fragment>
                             )}
