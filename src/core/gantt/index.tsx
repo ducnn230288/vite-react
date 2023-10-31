@@ -37,8 +37,8 @@ export const Gantt = ({
     dayjs.locale('vi');
     let wLeft = 0;
     let wRight = 0;
-    const left = document.querySelector(`#${id.current} .left`);
-    const right = document.querySelector(`#${id.current} .right`);
+    const left: any = document.querySelector(`#${id.current} .left`);
+    const right: any = document.querySelector(`#${id.current} .right`);
     new Draggabilly(document.querySelector(`#${id.current} .drag-side`)!, {
       axis: 'x',
     })
@@ -62,7 +62,7 @@ export const Gantt = ({
     setTimeout(() => {
       let widthDrag = 0;
       let index = 0;
-      document.querySelectorAll(`#${id.current} .drag`).forEach((e) =>
+      document.querySelectorAll(`#${id.current} .drag`).forEach((e: any) =>
         new Draggabilly(e, {
           axis: 'x',
         })
@@ -73,8 +73,9 @@ export const Gantt = ({
           })
           .on('dragMove', (_, __, moveVector) => {
             if (e.parentElement) e.parentElement.style.width = widthDrag + moveVector.x + 'px';
-            document.querySelector(`#${id.current} .left tbody > tr > td:nth-of-type(${index + 1})`)!.style.width =
-              widthDrag + moveVector.x + 'px';
+            (document.querySelector(
+              `#${id.current} .left tbody > tr > td:nth-of-type(${index + 1})`,
+            ) as any)!.style.width = widthDrag + moveVector.x + 'px';
           })
           .on('dragEnd', () => {
             e.style.removeProperty('left');
@@ -115,8 +116,8 @@ export const Gantt = ({
 
   useEffect(() => {
     if (task.length)
-      document.querySelectorAll(`#${id.current} .left tbody > tr:nth-of-type(1) > td`).forEach((e, index, arr) => {
-        document.querySelector(`#${id.current} .left thead > tr > th:nth-of-type(${index + 1})`)!.style.width =
+      document.querySelectorAll(`#${id.current} .left tbody > tr:nth-of-type(1) > td`).forEach((e: any, index, arr) => {
+        (document.querySelector(`#${id.current} .left thead > tr > th:nth-of-type(${index + 1})`) as any)!.style.width =
           e.clientWidth + (arr.length - 1 === index ? getScrollBarWidth() : 0) + 'px';
         e.style.width = e.clientWidth + 'px';
       });
@@ -141,8 +142,8 @@ export const Gantt = ({
   };
   const time = useRef<any>({});
   const handleCollapse = (e: any) => {
-    const index = parseInt(e.target.parentElement.parentElement.parentElement.dataset.index);
-    const level = parseInt(e.target.parentElement.parentElement.parentElement.dataset.level);
+    const index = parseInt(loopGetDataset(e.target as HTMLElement, 'index').dataset.index!);
+    const level = parseInt(loopGetDataset(e.target as HTMLElement, 'level').dataset.level!);
 
     if (time.current[index]) {
       time.current[index][time.current[index].reversed() ? 'play' : 'reverse']();
@@ -157,7 +158,7 @@ export const Gantt = ({
       document.querySelectorAll(`#${id.current} .${className} tbody > tr`).forEach((tr: any) => {
         const trIndex = parseInt(tr.dataset.index);
         const trLevel = parseInt(tr.dataset.level);
-        if (trIndex > index && isCollapse) {
+        if (isCollapse && trIndex > index) {
           if (trLevel > level) {
             tr.querySelectorAll('td').forEach((td: any) => {
               time.current[index].to(td, { fontSize: '-0px', lineHeight: '-0px', height: '-0px', opacity: '-0' }, '0');
@@ -170,7 +171,7 @@ export const Gantt = ({
   };
 
   const handleScroll = (e: any) => {
-    document.querySelector(`#${id.current} .event`)!.style.top = e.target.scrollTop + 'px';
+    (document.querySelector(`#${id.current} .event`) as any)!.style.top = e.target.scrollTop + 'px';
     ['left', 'right'].forEach((className) =>
       document.querySelector(`#${id.current} .${className} .overflow-scroll`)!.scrollTo({ top: e.target.scrollTop }),
     );
@@ -312,7 +313,7 @@ export const Gantt = ({
                       }}
                     >
                       <div
-                        className="rotate-90 whitespace-nowrap w-0 text-center"
+                        className="rotate-90 whitespace-nowrap text-center"
                         style={{ marginTop: -item.name.length * 6 + 'px' }}
                       >
                         {item.name}
@@ -375,7 +376,7 @@ export const Gantt = ({
                                 ) : (
                                   <div className={'relative'}>
                                     <div
-                                      className={'absolute top-1.5 left-1.5 z-10 h-3 w-3 bg-black rotate-45 '}
+                                      className={'absolute top-1.5 left-1.5 z-10 h-3 w-3 bg-black rotate-45'}
                                       style={{ marginLeft: item.startDate.diff(day, 'day') * 12 + 'px' }}
                                     ></div>
                                     <div className="absolute top-0.5 left-6">{ item.name }</div>
