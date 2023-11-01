@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { nanoid } from 'nanoid';
 import dayjs, { Dayjs } from 'dayjs';
 import Draggabilly from 'draggabilly';
@@ -194,56 +194,38 @@ export const Gantt = ({
   );
   const renderSvg = (item: TTask, i: number) => {
     if (item.success) {
-      const endDate = item.endDate || item.startDate.add(1, 'day');
+      const endDate = item.endDate || item.startDate;
       const startTop = i * 24 + 4 + 8;
-      const startLeft = (endDate.diff(dateStart, 'day') + 0.7) * (widthColumnDay / 3);
+      const startLeft = (endDate.diff(dateStart, 'day') + (item.endDate ? 1 : 0.4)) * (widthColumnDay / 3);
       return item.success.split(',').map((id) => {
         const data = task.filter((item) => item.id === id)[0];
         const endTop = task.indexOf(data) * 24 + 4 + 8;
-        const endLeft =
-          data.startDate.diff(dateStart, 'day') * (widthColumnDay / 3) -
-          (item.endDate && endDate < data.startDate ? 4 : 8);
-        return endDate < data.startDate ? (
+        const endLeft = (data.startDate.diff(dateStart, 'day') - (data.endDate ? 0.3 : 0.8)) * (widthColumnDay / 3) - 4;
+        return (
           <g key={i}>
             <path
-              // d={`M 386 99 L 429 99 L 429 286 L 441 286`}
-              d={`M ${startLeft} ${startTop} L ${startLeft + widthColumnDay / 3} ${startTop} L ${
-                startLeft + widthColumnDay / 3
-              } ${endTop} L ${endLeft} ${endTop}`}
+              d={
+                endDate.diff(data.startDate, 'day') > 1
+                  ? `M ${startLeft} ${startTop} L ${startLeft + widthColumnDay / 3} ${startTop} L ${
+                      startLeft + widthColumnDay / 3
+                    } ${endTop} L ${endLeft} ${endTop}`
+                  : `M ${startLeft - 1} ${startTop} L ${startLeft + 2} ${startTop} L ${startLeft + 2} ${
+                      startTop + widthColumnDay / 3
+                    } L ${endLeft - widthColumnDay / 6} ${startTop + widthColumnDay / 3} L ${
+                      endLeft - widthColumnDay / 6
+                    } ${endTop} L ${endLeft} ${endTop}`
+              }
               fill="transparent"
               stroke="black"
               strokeWidth={1}
-              aria-label="Connector Line Frozen Column Finish to Dependency and CRUD operation in row virtualization Start"
-              tabIndex={-1}
-            ></path>
-            <path
-              // d="M 449 286 L 441 281 L 441 290 Z"
-              d={`M ${endLeft + widthColumnDay / 4.5} ${endTop} L ${endLeft} ${
-                endTop - widthColumnDay / 8
-              } L ${endLeft} ${endTop + widthColumnDay / 8} Z`}
-              aria-label="Connector Line Frozen Column Finish to Dependency and CRUD operation in row virtualization Start"
-            ></path>
-          </g>
-        ) : (
-          <g key={i}>
-            <path
-              // d="M 511.5 71 L 521.5 71 L 521.5 160 L 491.5 160 L 491.5 178 L 503.5 178"
-              d={`M ${startLeft} ${startTop} L ${startLeft + 2} ${startTop} L ${startLeft + 2} ${
-                startTop + widthColumnDay / 3
-              } L ${endLeft - widthColumnDay / 6} ${startTop + widthColumnDay / 3} L ${
-                endLeft - widthColumnDay / 6
-              } ${endTop} L ${endLeft} ${endTop}`}
-              fill="transparent"
-              stroke="black"
-              strokeWidth={1}
-              aria-label="Connector Line Drag Multi-selection Finish to Drag Multi-selection Start"
+              aria-label={item.name}
               tabIndex={-1}
             ></path>
             <path
               d={`M ${endLeft + widthColumnDay / 4.5} ${endTop} L ${endLeft} ${
                 endTop - widthColumnDay / 8
               } L ${endLeft} ${endTop + widthColumnDay / 8} Z`}
-              aria-label="Connector Line Drag Multi-selection Finish to Drag Multi-selection Start"
+              aria-label={item.name}
             ></path>
           </g>
         );
@@ -288,7 +270,7 @@ export const Gantt = ({
           left: startLeft + 'px',
         }}
       >
-        <div className={'absolute top-0.5 left-1.5 z-10 h-3 w-3 bg-black rotate-45'}></div>
+        <div className={'absolute top-1 -left-1.5 z-10 h-2.5 w-2.5 bg-black rotate-45'}></div>
         <div className="absolute -top-0.5 left-6 whitespace-nowrap">{item.name}</div>
       </div>
     );

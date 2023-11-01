@@ -183,10 +183,10 @@ const Page = () => {
       startDate: dayjs('2015-08-15'),
       endDate: dayjs('2015-08-15'),
     },
-    // {
-    //   name: 'Q-1 Release',
-    //   startDate: dayjs('2015-07-20'),
-    // },
+    {
+      name: 'Q-1 Release',
+      startDate: dayjs('2015-07-09'),
+    },
     // {
     //   name: 'Q-2 Release',
     //   startDate: dayjs('2015-07-30'),
