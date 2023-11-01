@@ -9,6 +9,7 @@ const Page = () => {
   const dateStart = dayjs().startOf('year');
   const task = [
     {
+      id: '1',
       name: 'Q-1 Release',
       assignee: '',
       status: 'In Progress',
@@ -21,6 +22,7 @@ const Page = () => {
       level: 0,
     },
     {
+      id: '2',
       name: 'Roadmap',
       assignee: '',
       status: '',
@@ -33,35 +35,41 @@ const Page = () => {
       level: 1,
     },
     {
+      id: '3',
       name: 'Batch Editing',
       assignee: 'Martin Tamer',
       status: 'Completed',
       priority: 'High',
       planned: 43,
       work: 42,
-      startDate: dayjs('2023-01-04'),
+      startDate: dayjs('2023-01-05'),
       endDate: dayjs('2023-01-12'),
       percent: 86,
       level: 2,
+      success: '5',
     },
     {
+      id: '4',
       name: 'Touch Interaction',
       assignee: 'Jack Davolio',
       status: 'Completed',
       priority: 'Normal',
       planned: 14,
       work: 18,
-      startDate: dayjs('2023-01-07'),
-      endDate: dayjs('2023-01-18'),
+      startDate: dayjs('2023-01-08'),
+      endDate: dayjs('2023-01-19'),
       percent: 50,
       level: 2,
+      success: '5',
     },
     {
+      id: '5',
       name: 'Finished',
       startDate: dayjs('2023-01-31'),
       level: 2,
     },
     {
+      id: '6',
       name: 'PDF Export',
       assignee: 'Rose Fuller',
       status: 'On Hold',
@@ -74,6 +82,7 @@ const Page = () => {
       level: 0,
     },
     {
+      id: '7',
       name: 'Drag Multi-selection',
       assignee: 'Fuller King',
       status: 'Completed',
@@ -86,6 +95,7 @@ const Page = () => {
       level: 0,
     },
     {
+      id: '8',
       name: 'Touch Interaction',
       assignee: 'Jack Davolio',
       status: 'Completed',
@@ -99,6 +109,7 @@ const Page = () => {
     },
 
     {
+      id: '9',
       name: 'Q-1 Release',
       assignee: '',
       status: 'In Progress',
@@ -111,6 +122,7 @@ const Page = () => {
       level: 0,
     },
     {
+      id: '10',
       name: 'Roadmap',
       assignee: '',
       status: '',
@@ -123,6 +135,7 @@ const Page = () => {
       level: 1,
     },
     {
+      id: '11',
       name: 'Batch Editing',
       assignee: 'Martin Tamer',
       status: 'Completed',
@@ -135,6 +148,7 @@ const Page = () => {
       level: 2,
     },
     {
+      id: '12',
       name: 'Touch Interaction',
       assignee: 'Jack Davolio',
       status: 'Completed',
@@ -147,6 +161,7 @@ const Page = () => {
       level: 2,
     },
     {
+      id: '13',
       name: 'PDF Export',
       assignee: 'Rose Fuller',
       status: 'On Hold',
@@ -159,6 +174,7 @@ const Page = () => {
       level: 0,
     },
     {
+      id: '14',
       name: 'Drag Multi-selection',
       assignee: 'Fuller King',
       status: 'Completed',
@@ -171,6 +187,7 @@ const Page = () => {
       level: 0,
     },
     {
+      id: '15',
       name: 'Touch Interaction',
       assignee: 'Jack Davolio',
       status: 'Completed',

@@ -15,6 +15,7 @@ export const Gantt = ({
   widthColumnDay: number;
   dateStart: Dayjs;
   task: {
+    id: string;
     name: string;
     assignee?: string;
     status?: string;
@@ -25,6 +26,7 @@ export const Gantt = ({
     endDate?: Dayjs;
     percent?: number;
     level: number;
+    success?: string;
   }[];
   event: {
     name: string;
@@ -101,6 +103,48 @@ export const Gantt = ({
             e.style.removeProperty('top');
           }),
       );
+    });
+    document.querySelectorAll(`#${id.current} .task-success`).forEach((e) => {
+      console.log(e.parentElement!.offsetTop + 4);
+      console.log(
+        e.parentElement!.offsetLeft +
+          parseFloat(e.style.marginLeft.replace('px', '')) +
+          parseFloat(e.style.width.replace('px', '')),
+      );
+      e.dataset.success.split(',').forEach((e: any) => {
+        const success = document.getElementById(id.current + e)!;
+        console.log(success.parentElement!.offsetLeft + parseFloat(success.style.marginLeft.replace('px', '')));
+        console.log(success.parentElement!.offsetTop + 4);
+
+        // <g>
+        //   <path
+        //     d="M 511.5 71  L 521.5 71 L 521.5 160 L 491.5 160 L 491.5 178 L 503.5 178"
+        //     fill="transparent"
+        //     stroke="black"
+        //     strokeWidth={1}
+        //     aria-label="Connector Line Drag Multi-selection Finish to Drag Multi-selection Start"
+        //     tabIndex={-1}
+        //   ></path>
+        //   <path
+        //     d="M 511.5 178 L 503.5 173 L 503.5 183 Z"
+        //     aria-label="Connector Line Drag Multi-selection Finish to Drag Multi-selection Start"
+        //   ></path>
+        // </g>
+        // <g>
+        //   <path
+        //     d="M 386 99 L 429 99 L 429 286 L 441 286"
+        //     fill="transparent"
+        //     stroke="black"
+        //     strokeWidth={1}
+        //     aria-label="Connector Line Frozen Column Finish to Dependency and CRUD operation in row virtualization Start"
+        //     tabIndex={-1}
+        //   ></path>
+        //   <path
+        //     d="M 449 286 L 441 281 L 441 290 Z"
+        //     aria-label="Connector Line Frozen Column Finish to Dependency and CRUD operation in row virtualization Start"
+        //   ></path>
+        // </g>
+      });
     });
   }, []);
 
@@ -286,7 +330,9 @@ export const Gantt = ({
                           align={'left'}
                           className={'capitalize border-l border-r border-t px-4 h-6 text-xs'}
                           style={{
-                            width: dayjs().year(parseInt(year)).month(parseInt(month)).daysInMonth() * 12 + 'px',
+                            width:
+                              dayjs().year(parseInt(year)).month(parseInt(month)).daysInMonth() * (widthColumnDay / 3) +
+                              'px',
                           }}
                         >
                           {dayjs().month(parseInt(month)).format('MMMM')} {year}
@@ -328,8 +374,8 @@ export const Gantt = ({
                         key={index}
                         className={'bg-gray-200 h-full absolute flex items-center justify-center'}
                         style={{
-                          width: (item.endDate.diff(item.startDate, 'day') + 1) * 12 + 'px',
-                          left: item.startDate.diff(dateStart, 'day') * 12 + 'px',
+                          width: (item.endDate.diff(item.startDate, 'day') + 1) * (widthColumnDay / 3) + 'px',
+                          left: item.startDate.diff(dateStart, 'day') * (widthColumnDay / 3) + 'px',
                         }}
                       >
                         <div
@@ -348,7 +394,7 @@ export const Gantt = ({
                           'border-red-600 border-l border-dashed h-full absolute flex justify-center items-center'
                         }
                         style={{
-                          left: item.startDate.diff(dateStart, 'day') * 12 + 'px',
+                          left: item.startDate.diff(dateStart, 'day') * (widthColumnDay / 3) + 'px',
                         }}
                       >
                         <div className="px-2 py-1 bg-red-500 text-white rounded-r-xl">{item.name}</div>
@@ -356,6 +402,10 @@ export const Gantt = ({
                     );
                 })}
               </div>
+              <svg
+                className={'absolute top-0 left-0'}
+                style={{ width: date.total * widthColumnDay + 'px', height: task.length * 24 + 'px' }}
+              ></svg>
               <table className={'w-full min-w-[600px] border-b'} style={{ width: date.total * widthColumnDay + 'px' }}>
                 <tbody>
                   {task.map((item, index) => (
@@ -374,14 +424,17 @@ export const Gantt = ({
                                 <Fragment>
                                   {item.endDate ? (
                                     <div
+                                      id={id.current + item.id}
+                                      data-success={item.success}
                                       className={classNames('absolute top-1 z-10 overflow-hidden h-4', {
                                         'bg-gray-400': !!task[index + 1] && task[index + 1].level > item.level,
                                         'rounded-md bg-blue-400':
                                           !task[index + 1] || task[index + 1].level <= item.level,
+                                        'task-success': !!item.success,
                                       })}
                                       style={{
-                                        width: (item.endDate.diff(day, 'day') + 1) * 12 + 'px',
-                                        marginLeft: item.startDate.diff(day, 'day') * 12 + 'px',
+                                        width: (item.endDate.diff(day, 'day') + 1) * (widthColumnDay / 3) + 'px',
+                                        marginLeft: item.startDate.diff(day, 'day') * (widthColumnDay / 3) + 'px',
                                       }}
                                     >
                                       <div
@@ -395,10 +448,18 @@ export const Gantt = ({
                                       </div>
                                     </div>
                                   ) : (
-                                    <div className={'relative'}>
+                                    <div
+                                      className={classNames('relative', {
+                                        'task-success': !!item.success,
+                                      })}
+                                      id={id.current + item.id}
+                                      data-success={item.success}
+                                      style={{
+                                        marginLeft: item.startDate.diff(day, 'day') * (widthColumnDay / 3) + 'px',
+                                      }}
+                                    >
                                       <div
                                         className={'absolute top-1.5 left-1.5 z-10 h-3 w-3 bg-black rotate-45'}
-                                        style={{ marginLeft: item.startDate.diff(day, 'day') * 12 + 'px' }}
                                       ></div>
                                       <div className="absolute top-0.5 left-6">{item.name}</div>
                                     </div>
