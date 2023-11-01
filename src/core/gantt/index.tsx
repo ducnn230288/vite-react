@@ -14,20 +14,7 @@ export const Gantt = ({
 }: {
   widthColumnDay: number;
   dateStart: Dayjs;
-  task: {
-    id: string;
-    name: string;
-    assignee?: string;
-    status?: string;
-    priority?: string;
-    planned?: number;
-    work?: number;
-    startDate: Dayjs;
-    endDate?: Dayjs;
-    percent?: number;
-    level: number;
-    success?: string;
-  }[];
+  task: TTask[];
   event: {
     name: string;
     startDate: Dayjs;
@@ -103,48 +90,6 @@ export const Gantt = ({
             e.style.removeProperty('top');
           }),
       );
-    });
-    document.querySelectorAll(`#${id.current} .task-success`).forEach((e) => {
-      console.log(e.parentElement!.offsetTop + 4);
-      console.log(
-        e.parentElement!.offsetLeft +
-          parseFloat(e.style.marginLeft.replace('px', '')) +
-          parseFloat(e.style.width.replace('px', '')),
-      );
-      e.dataset.success.split(',').forEach((e: any) => {
-        const success = document.getElementById(id.current + e)!;
-        console.log(success.parentElement!.offsetLeft + parseFloat(success.style.marginLeft.replace('px', '')));
-        console.log(success.parentElement!.offsetTop + 4);
-
-        // <g>
-        //   <path
-        //     d="M 511.5 71  L 521.5 71 L 521.5 160 L 491.5 160 L 491.5 178 L 503.5 178"
-        //     fill="transparent"
-        //     stroke="black"
-        //     strokeWidth={1}
-        //     aria-label="Connector Line Drag Multi-selection Finish to Drag Multi-selection Start"
-        //     tabIndex={-1}
-        //   ></path>
-        //   <path
-        //     d="M 511.5 178 L 503.5 173 L 503.5 183 Z"
-        //     aria-label="Connector Line Drag Multi-selection Finish to Drag Multi-selection Start"
-        //   ></path>
-        // </g>
-        // <g>
-        //   <path
-        //     d="M 386 99 L 429 99 L 429 286 L 441 286"
-        //     fill="transparent"
-        //     stroke="black"
-        //     strokeWidth={1}
-        //     aria-label="Connector Line Frozen Column Finish to Dependency and CRUD operation in row virtualization Start"
-        //     tabIndex={-1}
-        //   ></path>
-        //   <path
-        //     d="M 449 286 L 441 281 L 441 290 Z"
-        //     aria-label="Connector Line Frozen Column Finish to Dependency and CRUD operation in row virtualization Start"
-        //   ></path>
-        // </g>
-      });
     });
   }, []);
 
@@ -247,7 +192,55 @@ export const Gantt = ({
       {isDrag && <div className="w-0.5 h-12 absolute right-0 top-0 cursor-ew-resize drag"></div>}
     </th>
   );
+  const renderSvg = (item: TTask, i: number) => {
+    if (item.success) {
+      if (item.endDate) {
+        const startTop = (i * 24) + 4 + 8;
+        const startLeft = (item.endDate.diff(dateStart, 'day') - 1) * (widthColumnDay / 3);
+        console.log(startLeft);
+        return item.success.split(',').map((id) => {
+          const data = task.filter((item) => item.id === id)[0];
+          const endTop = task.indexOf(data) * 24 + 4 + 8;
+          const endLeft = (data.startDate.diff(dateStart, 'day')) * (widthColumnDay / 3) - (item.endDate! < data.startDate ? 0 : 5);
+          return item.endDate! < data.startDate ? (
+            <g key={i}>
+              <path
+                // d={`M 386 99 L 429 99 L 429 286 L 441 286`}
+                d={`M ${startLeft} ${startTop} L ${startLeft + (widthColumnDay / 3)} ${startTop} L ${startLeft + (widthColumnDay / 3)} ${endTop} L ${endLeft} ${endTop}`}
+                fill="transparent"
+                stroke="black"
+                strokeWidth={1}
+                aria-label="Connector Line Frozen Column Finish to Dependency and CRUD operation in row virtualization Start"
+                tabIndex={-1}
+              ></path>
+              <path
+                // d="M 449 286 L 441 281 L 441 290 Z"
+                d={`M ${endLeft + (widthColumnDay / 4.5)} ${endTop} L ${endLeft} ${endTop - (widthColumnDay / 8)} L ${endLeft} ${endTop + (widthColumnDay / 8)} Z`}
+                aria-label="Connector Line Frozen Column Finish to Dependency and CRUD operation in row virtualization Start"
+              ></path>
+            </g>
+          ) : (
+            <g key={i}>
+              <path
+                // d="M 511.5 71 L 521.5 71 L 521.5 160 L 491.5 160 L 491.5 178 L 503.5 178"
+                d={`M ${startLeft} ${startTop} L ${startLeft + (widthColumnDay / 3)} ${startTop} L ${startLeft + (widthColumnDay / 3)} ${startTop + (widthColumnDay / 3)} L ${endLeft - (widthColumnDay / 6)} ${startTop + (widthColumnDay / 3)} L ${endLeft - (widthColumnDay / 6)} ${endTop} L ${endLeft} ${endTop}`}
+                fill="transparent"
+                stroke="black"
+                strokeWidth={1}
+                aria-label="Connector Line Drag Multi-selection Finish to Drag Multi-selection Start"
+                tabIndex={-1}
+              ></path>
+              <path
+                d={`M ${endLeft + (widthColumnDay / 4.5)} ${endTop} L ${endLeft} ${endTop - (widthColumnDay / 8)} L ${endLeft} ${endTop + (widthColumnDay / 8)} Z`}
+                aria-label="Connector Line Drag Multi-selection Finish to Drag Multi-selection Start"
+              ></path>
+            </g>
+          )
+        });
+      }
+    }
 
+  }
   return (
     <div id={id.current} className="relative">
       <div className="relative">
@@ -405,7 +398,9 @@ export const Gantt = ({
               <svg
                 className={'absolute top-0 left-0'}
                 style={{ width: date.total * widthColumnDay + 'px', height: task.length * 24 + 'px' }}
-              ></svg>
+              >
+                {task.map((item, i) => renderSvg(item, i))}
+              </svg>
               <table className={'w-full min-w-[600px] border-b'} style={{ width: date.total * widthColumnDay + 'px' }}>
                 <tbody>
                   {task.map((item, index) => (
@@ -424,13 +419,11 @@ export const Gantt = ({
                                 <Fragment>
                                   {item.endDate ? (
                                     <div
-                                      id={id.current + item.id}
                                       data-success={item.success}
                                       className={classNames('absolute top-1 z-10 overflow-hidden h-4', {
                                         'bg-gray-400': !!task[index + 1] && task[index + 1].level > item.level,
                                         'rounded-md bg-blue-400':
-                                          !task[index + 1] || task[index + 1].level <= item.level,
-                                        'task-success': !!item.success,
+                                          !task[index + 1] || task[index + 1].level <= item.level
                                       })}
                                       style={{
                                         width: (item.endDate.diff(day, 'day') + 1) * (widthColumnDay / 3) + 'px',
@@ -449,19 +442,16 @@ export const Gantt = ({
                                     </div>
                                   ) : (
                                     <div
-                                      className={classNames('relative', {
-                                        'task-success': !!item.success,
-                                      })}
-                                      id={id.current + item.id}
+                                      className={'relative'}
                                       data-success={item.success}
                                       style={{
                                         marginLeft: item.startDate.diff(day, 'day') * (widthColumnDay / 3) + 'px',
                                       }}
                                     >
                                       <div
-                                        className={'absolute top-1.5 left-1.5 z-10 h-3 w-3 bg-black rotate-45'}
+                                        className={'absolute -top-1.5 left-1.5 z-10 h-3 w-3 bg-black rotate-45'}
                                       ></div>
-                                      <div className="absolute top-0.5 left-6">{item.name}</div>
+                                      <div className="absolute -top-2.5 left-3">{item.name}</div>
                                     </div>
                                   )}
                                 </Fragment>
@@ -481,4 +471,18 @@ export const Gantt = ({
       <div className="drag-vertical w-full h-1 cursor-ns-resize hover:bg-red-500 absolute bottom-0"></div>
     </div>
   );
+};
+type TTask = {
+  id: string;
+  name: string;
+  assignee?: string;
+  status?: string;
+  priority?: string;
+  planned?: number;
+  work?: number;
+  startDate: Dayjs;
+  endDate?: Dayjs;
+  percent?: number;
+  level: number;
+  success?: string;
 };

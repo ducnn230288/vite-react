@@ -142,10 +142,11 @@ const Page = () => {
       priority: 'High',
       planned: 43,
       work: 42,
-      startDate: dayjs('2023-01-04'),
-      endDate: dayjs('2023-01-12'),
+      startDate: dayjs('2023-01-05'),
+      endDate: dayjs('2023-01-13'),
       percent: 86,
       level: 2,
+      success: '12',
     },
     {
       id: '12',
