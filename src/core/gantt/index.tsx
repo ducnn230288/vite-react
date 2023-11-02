@@ -8,11 +8,15 @@ import classNames from 'classnames';
 
 export const Gantt = ({
   widthColumnDay = 36,
+  perRow = 3,
+  maxHeight = 500,
   dateStart,
   data = [],
   event = [],
 }: {
   widthColumnDay: number;
+  perRow?: number;
+  maxHeight?: number;
   dateStart: Dayjs;
   data: TTask[];
   event: {
@@ -97,14 +101,14 @@ export const Gantt = ({
     const month = date.month();
     const year = date.year();
     const objDate: any = {};
-    let totalDay = 1;
+    let totalDay = date.day();
     let lengthDay = 0;
     for (let i = month; i < 12; i++) {
       if (!objDate[year]) objDate[year] = {};
       if (!objDate[year][i]) objDate[year][i] = [];
       const dayInMonth = dayjs().month(i).daysInMonth();
-      for (let j = totalDay; j <= dayInMonth; j += 3) {
-        if (j + 3 > dayInMonth) totalDay = j + 3 - dayInMonth;
+      for (let j = totalDay; j <= dayInMonth; j += perRow) {
+        if (j + perRow > dayInMonth) totalDay = j + perRow - dayInMonth;
         objDate[year][i].push(dayjs(year + '-' + (i < 10 ? '0' : '') + (i + 1) + '-' + (j < 10 ? '0' : '') + j));
       }
       lengthDay += objDate[year][i].length;
@@ -124,7 +128,8 @@ export const Gantt = ({
 
   useEffect(() => {
     if (data.length) {
-      (document.querySelector(`#${id.current} .left .head`) as any)!.style.width = document.querySelector(`#${id.current} .left .body`)!.clientWidth + getScrollBarWidth() + 'px';
+      (document.querySelector(`#${id.current} .left .head`) as any)!.style.width =
+        document.querySelector(`#${id.current} .left .body`)!.clientWidth + getScrollBarWidth() + 'px';
       document.querySelectorAll(`#${id.current} .left tbody > tr:nth-of-type(1) > td`).forEach((e: any, index, arr) => {
         (document.querySelector(`#${id.current} .left thead > tr > th:nth-of-type(${index + 1})`) as any)!.style.width =
           e.clientWidth + (arr.length - 1 === index ? getScrollBarWidth() : 0) + 'px';
@@ -205,33 +210,31 @@ export const Gantt = ({
   const NameColumn = ({ name, isDrag = true }: { name: string; isDrag?: boolean }) => (
     <th align={'left'} className="capitalize border px-4 h-12 text-xs relative truncate">
       {name}
-      {/*{isDrag && <div className="w-0.5 h-12 absolute right-0 top-0 cursor-ew-resize drag"></div>}*/}
+      {isDrag && <div className="w-0.5 h-12 absolute right-0 top-0 cursor-ew-resize drag"></div>}
     </th>
   );
   const renderSvg = (item: TTask, i: number) => {
     if (item.success) {
-      const endDate = item.endDate || item.startDate;
+      const endDate = item.endDate || item.startDate.add(i === 0 ? 0 : 1, 'day');
       const startTop = i * 24 + 4 + 8;
-      const startLeft = (endDate.diff(dateStart, 'day') + 0.4) * (widthColumnDay / 3);
+      const startLeft = (endDate.diff(dateStart, 'day') + perRow / 10) * (widthColumnDay / perRow);
       return item.success.split(',').map((id, index) => {
         const listData = task.filter((item) => !item.hidden && item.id === id);
         if (listData.length) {
           const data = listData[0];
-          const endTop = task.filter((item) => !item.hidden).indexOf(data) * 24 + 4;
+          const endTop = task.filter((item) => !item.hidden).indexOf(data) * 24 + (data.endDate ? 4 : 7);
           const endLeft =
-            (data.startDate.diff(dateStart, 'day') + 0.5) * (widthColumnDay / 3) + (data.endDate ?  0 : -3);
+            (data.startDate.diff(dateStart, 'day') + (data.endDate ? 0 : 1) + perRow / 8) * (widthColumnDay / perRow) +
+            (data.endDate ? 3 : data.startDate.diff(endDate) > 0 ? -9 : 3);
           return (
             <g key={i + '' + index}>
               <path
                 d={
-                  endDate.diff(data.startDate, 'day') > 0
-                    ? `M ${startLeft - 1} ${startTop} L ${startLeft + (widthColumnDay / 3)} ${startTop} L ${startLeft + (widthColumnDay / 3)} ${startTop + 10} L ${endLeft} ${startTop + 10} L ${endLeft} ${endTop} `
+                  endDate.diff(data.startDate, 'day') > 1
+                    ? `M ${startLeft - 1} ${startTop} L ${startLeft + widthColumnDay / perRow} ${startTop} L ${
+                        startLeft + widthColumnDay / perRow
+                      } ${startTop + 10} L ${endLeft} ${startTop + 10} L ${endLeft} ${endTop} `
                     : `M ${startLeft - 1} ${startTop} L ${endLeft} ${startTop} L ${endLeft} ${endTop}`
-                    // : `M ${startLeft - 1} ${startTop} L ${startLeft + 2} ${startTop} L ${startLeft + 2} ${
-                    //     startTop + widthColumnDay / 3
-                    //   } L ${endLeft - widthColumnDay / 6} ${startTop + widthColumnDay / 3} L ${
-                    //     endLeft - widthColumnDay / 6
-                    //   } ${endTop} L ${endLeft} ${endTop}`
                 }
                 fill="transparent"
                 stroke={!item.endDate ? 'black' : '#2563eb'}
@@ -240,7 +243,9 @@ export const Gantt = ({
                 tabIndex={-1}
               ></path>
               <path
-                d={`M ${endLeft + 4.2} ${endTop - 4.5} L ${endLeft - 4.5} ${endTop - 4.5} L ${endLeft + 0.2} ${endTop} Z`}
+                d={`M ${endLeft + 4.2} ${endTop - 4.5} L ${endLeft - 4.5} ${endTop - 4.5} L ${
+                  endLeft + 0.2
+                } ${endTop} Z`}
                 aria-label={item.name}
                 fill={!item.endDate ? 'black' : '#2563eb'}
               ></path>
@@ -252,7 +257,7 @@ export const Gantt = ({
   };
   const renderProgress = (item: TTask, index: number) => {
     const startTop = index * 24 + 4;
-    const startLeft = item.startDate.diff(dateStart, 'day') * (widthColumnDay / 3);
+    const startLeft = item.startDate.diff(dateStart, 'day') * (widthColumnDay / perRow);
     if (item.endDate && item.percent) {
       return (
         <div
@@ -269,7 +274,7 @@ export const Gantt = ({
               'rounded-md bg-blue-400': !task[index + 1] || task[index + 1].level <= item.level,
             })}
             style={{
-              width: (item.endDate.diff(item.startDate, 'day') + 1) * (widthColumnDay / 3) + 'px',
+              width: (item.endDate.diff(item.startDate, 'day') + 1) * (widthColumnDay / perRow) + 'px',
             }}
           >
             <div
@@ -280,14 +285,14 @@ export const Gantt = ({
               style={{ width: item.percent + '%' }}
             ></div>
           </div>
-          <div
-            className={'absolute top-0 text-xs text-gray-400'}
-            style={{
-              left: 5 + (item.endDate.diff(item.startDate, 'day') + 1) * (widthColumnDay / 3) + 'px',
-            }}
-          >
-            {item.percent}%
-          </div>
+          {/*<div*/}
+          {/*  className={'absolute top-0 text-xs text-gray-400'}*/}
+          {/*  style={{*/}
+          {/*    left: 5 + (item.endDate.diff(item.startDate, 'day') + 1) * (widthColumnDay / perRow) + 'px',*/}
+          {/*  }}*/}
+          {/*>*/}
+          {/*  {item.percent}%*/}
+          {/*</div>*/}
         </div>
       );
     }
@@ -297,11 +302,11 @@ export const Gantt = ({
         className={'absolute'}
         style={{
           top: startTop,
-          left: startLeft + 'px',
+          left: startLeft + (item.endDate || index === 0 ? 0 : widthColumnDay / perRow) + 'px',
         }}
       >
         <div className={'absolute top-1 -left-1 z-10 h-3 w-3 bg-black rotate-45'}></div>
-        <div className="absolute -top-0.5 left-3 whitespace-nowrap">{item.name}</div>
+        {/*<div className="absolute -top-0.5 left-3 whitespace-nowrap">{item.name}</div>*/}
       </div>
     );
   };
@@ -316,20 +321,24 @@ export const Gantt = ({
             <div className={'left-scroll overflow-x-hidden'}>
               <table className={'head min-w-[600px]'}>
                 <thead>
-                <tr>
-                  <NameColumn name={'Product Release'}></NameColumn>
-                  <NameColumn name={'Assignee'}></NameColumn>
-                  <NameColumn name={'Status'}></NameColumn>
-                  <NameColumn name={'Priority'}></NameColumn>
-                  <NameColumn name={'Planned'}></NameColumn>
-                  <NameColumn name={'Work Log'} isDrag={false}></NameColumn>
-                </tr>
+                  <tr>
+                    <NameColumn name={'Product Release'}></NameColumn>
+                    <NameColumn name={'Assignee'}></NameColumn>
+                    <NameColumn name={'Status'}></NameColumn>
+                    <NameColumn name={'Priority'}></NameColumn>
+                    <NameColumn name={'Planned'}></NameColumn>
+                    <NameColumn name={'Work Log'} isDrag={false}></NameColumn>
+                  </tr>
                 </thead>
               </table>
             </div>
 
-
-            <div className="overflow-scroll max-h-[500px]" data-scroll-x={'.left-scroll'} onScroll={handleScroll}>
+            <div
+              className="overflow-scroll"
+              data-scroll-x={'.left-scroll'}
+              onScroll={handleScroll}
+              style={{ maxHeight }}
+            >
               <table className={'body min-w-[600px] border-b'}>
                 <tbody>
                   {task.map((item, index) => (
@@ -343,7 +352,7 @@ export const Gantt = ({
                       <td className="border-x pl-5 py-0 h-6 overflow-hidden">
                         <div
                           className={'flex items-center gap-1'}
-                          style={{ paddingLeft: item.level * (widthColumnDay / 3) + 'px' }}
+                          style={{ paddingLeft: item.level * (widthColumnDay / perRow) + 'px' }}
                         >
                           {!!task[index + 1] && task[index + 1].level > item.level && (
                             <Arrow onClick={handleCollapse} className={'w-3 h-3 -ml-4 cursor-pointer rotate-90'} />
@@ -370,8 +379,12 @@ export const Gantt = ({
                       >
                         {item.priority}
                       </td>
-                      <td className="border-x px-4 py-0 h-6 truncate">{item.planned} {item.planned ? 'hours' : ''}</td>
-                      <td className="border-x px-4 py-0 h-6 truncate">{item.work} {item.work ? 'days' : ''}</td>
+                      <td className="border-x px-4 py-0 h-6 truncate">
+                        {item.planned} {item.planned ? 'hours' : ''}
+                      </td>
+                      <td className="border-x px-4 py-0 h-6 truncate">
+                        {item.work} {item.work ? 'days' : ''}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -391,7 +404,8 @@ export const Gantt = ({
                           className={'capitalize border-l border-r border-t px-4 h-6 text-xs'}
                           style={{
                             width:
-                              dayjs().year(parseInt(year)).month(parseInt(month)).daysInMonth() * (widthColumnDay / 3) +
+                              dayjs().year(parseInt(year)).month(parseInt(month)).daysInMonth() *
+                                (widthColumnDay / perRow) +
                               'px',
                           }}
                         >
@@ -423,9 +437,10 @@ export const Gantt = ({
               </table>
             </div>
             <div
-              className="overflow-scroll max-h-[500px] relative"
+              className="overflow-scroll relative"
               data-scroll-x={'.right-scroll'}
               onScroll={handleScroll}
+              style={{ maxHeight }}
             >
               <div
                 className="event h-full absolute top-0 left-0 flex z-10"
@@ -438,8 +453,8 @@ export const Gantt = ({
                         key={index}
                         className={'bg-gray-200 h-full absolute flex items-center justify-center text-gray-400'}
                         style={{
-                          width: (item.endDate.diff(item.startDate, 'day') + 1) * (widthColumnDay / 3) + 'px',
-                          left: item.startDate.diff(dateStart, 'day') * (widthColumnDay / 3) + 'px',
+                          width: (item.endDate.diff(item.startDate, 'day') + 1) * (widthColumnDay / perRow) + 'px',
+                          left: item.startDate.diff(dateStart, 'day') * (widthColumnDay / perRow) + 'px',
                         }}
                       >
                         <div
@@ -458,7 +473,7 @@ export const Gantt = ({
                           'border-red-600 border-l border-dashed h-full absolute flex justify-center items-center'
                         }
                         style={{
-                          left: item.startDate.diff(dateStart, 'day') * (widthColumnDay / 3) + 'px',
+                          left: item.startDate.diff(dateStart, 'day') * (widthColumnDay / perRow) + 'px',
                         }}
                       >
                         <div className="px-2 py-1 bg-red-500 text-white rounded-r-xl">{item.name}</div>
