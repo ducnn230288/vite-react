@@ -123,12 +123,14 @@ export const Gantt = ({
   };
 
   useEffect(() => {
-    if (data.length)
+    if (data.length) {
+      (document.querySelector(`#${id.current} .left .head`) as any)!.style.width = document.querySelector(`#${id.current} .left .body`)!.clientWidth + getScrollBarWidth() + 'px';
       document.querySelectorAll(`#${id.current} .left tbody > tr:nth-of-type(1) > td`).forEach((e: any, index, arr) => {
         (document.querySelector(`#${id.current} .left thead > tr > th:nth-of-type(${index + 1})`) as any)!.style.width =
           e.clientWidth + (arr.length - 1 === index ? getScrollBarWidth() : 0) + 'px';
         e.style.width = e.clientWidth + 'px';
       });
+    }
   }, [data]);
 
   const loopGetDataset = (e: HTMLElement, key: string): HTMLElement => {
@@ -201,9 +203,9 @@ export const Gantt = ({
       document.querySelector(`#${id.current} ${e.target.dataset.scrollX}`)!.scrollTo({ left: e.target.scrollLeft });
   };
   const NameColumn = ({ name, isDrag = true }: { name: string; isDrag?: boolean }) => (
-    <th align={'left'} className="capitalize border px-4 h-12 text-xs relative">
+    <th align={'left'} className="capitalize border px-4 h-12 text-xs relative truncate">
       {name}
-      {isDrag && <div className="w-0.5 h-12 absolute right-0 top-0 cursor-ew-resize drag"></div>}
+      {/*{isDrag && <div className="w-0.5 h-12 absolute right-0 top-0 cursor-ew-resize drag"></div>}*/}
     </th>
   );
   const renderSvg = (item: TTask, i: number) => {
@@ -257,11 +259,9 @@ export const Gantt = ({
       return (
         <div
           key={index}
-          data-index={index}
-          data-level={item.level}
           className={'absolute'}
           style={{
-            top: startTop,
+            top: startTop + 'px',
             left: startLeft + 'px',
           }}
         >
@@ -296,7 +296,7 @@ export const Gantt = ({
     return (
       <div
         key={index}
-        className={'relative'}
+        className={'absolute'}
         style={{
           top: startTop,
           left: startLeft + 'px',
@@ -315,8 +315,9 @@ export const Gantt = ({
         ></div>
         <div className={'w-full flex gap-0.5'}>
           <div className={'left overflow-hidden'} style={{ flexBasis: '50%' }}>
-            <table className={'w-full min-w-[600px]'}>
-              <thead>
+            <div className={'left-scroll overflow-x-hidden'}>
+              <table className={'head min-w-[600px]'}>
+                <thead>
                 <tr>
                   <NameColumn name={'Product Release'}></NameColumn>
                   <NameColumn name={'Assignee'}></NameColumn>
@@ -325,11 +326,13 @@ export const Gantt = ({
                   <NameColumn name={'Planned'}></NameColumn>
                   <NameColumn name={'Work Log'} isDrag={false}></NameColumn>
                 </tr>
-              </thead>
-            </table>
+                </thead>
+              </table>
+            </div>
 
-            <div className="overflow-scroll max-h-[500px]" onScroll={handleScroll}>
-              <table className={'w-full min-w-[600px] border-b'}>
+
+            <div className="overflow-scroll max-h-[500px]" data-scroll-x={'.left-scroll'} onScroll={handleScroll}>
+              <table className={'body min-w-[600px] border-b'}>
                 <tbody>
                   {task.map((item, index) => (
                     <tr
@@ -347,12 +350,12 @@ export const Gantt = ({
                           {!!task[index + 1] && task[index + 1].level > item.level && (
                             <Arrow onClick={handleCollapse} className={'w-3 h-3 -ml-4 cursor-pointer rotate-90'} />
                           )}
-                          <span>{item.name}</span>
+                          <span className={'truncate'}>{item.name}</span>
                         </div>
                       </td>
-                      <td className="border-x px-4 py-0 h-6">{item.assignee}</td>
+                      <td className="border-x px-4 py-0 h-6 truncate">{item.assignee}</td>
                       <td
-                        className={classNames('border-x px-4 py-0 h-6 text-white', {
+                        className={classNames('border-x px-4 py-0 h-6 text-white truncate', {
                           'bg-blue-600': item.status === 'In Progress',
                           'bg-green-600': item.status === 'Completed',
                           'bg-gray-600': item.status === 'On Hold',
@@ -361,7 +364,7 @@ export const Gantt = ({
                         {item.status}
                       </td>
                       <td
-                        className={classNames('border-x px-4 py-0 h-6 text-white', {
+                        className={classNames('border-x px-4 py-0 h-6 text-white truncate', {
                           'bg-red-500': item.priority === 'Critical',
                           'bg-orange-500': item.priority === 'High',
                           'bg-yellow-500': item.priority === 'Normal',
@@ -369,8 +372,8 @@ export const Gantt = ({
                       >
                         {item.priority}
                       </td>
-                      <td className="border-x px-4 py-0 h-6">{item.planned} hours</td>
-                      <td className="border-x px-4 py-0 h-6">{item.work} days</td>
+                      <td className="border-x px-4 py-0 h-6 truncate">{item.planned} {item.planned ? 'hours' : ''}</td>
+                      <td className="border-x px-4 py-0 h-6 truncate">{item.work} {item.work ? 'days' : ''}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -378,7 +381,7 @@ export const Gantt = ({
             </div>
           </div>
           <div className={'right relative overflow-hidden'} style={{ flexBasis: '50%' }}>
-            <div className={'overflow-x-hidden'}>
+            <div className={'right-scroll overflow-x-hidden'}>
               <table className={'w-full min-w-[600px] border-b'} style={{ width: date.total * widthColumnDay + 'px' }}>
                 <thead>
                   <tr>
@@ -423,7 +426,7 @@ export const Gantt = ({
             </div>
             <div
               className="overflow-scroll max-h-[500px] relative"
-              data-scroll-x={'.overflow-x-hidden'}
+              data-scroll-x={'.right-scroll'}
               onScroll={handleScroll}
             >
               <div
