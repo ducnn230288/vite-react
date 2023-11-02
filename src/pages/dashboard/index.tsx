@@ -44,7 +44,7 @@ const Page = () => {
       work: 42,
       startDate: dayjs('2015-07-06'),
       endDate: dayjs('2015-07-08'),
-      percent: 86,
+      percent: 1,
       level: 2,
       success: '4',
     },
@@ -201,7 +201,7 @@ const Page = () => {
     <Fragment>
       <div className="h-full pb-10">
         <h1 className="text-3xl text-teal-900 font-bold text-center mb-14 ">{t('routes.auth.login.Welcome')}</h1>
-        <Gantt widthColumnDay={widthColumnDay} dateStart={dateStart} task={task} event={event} />
+        <Gantt widthColumnDay={widthColumnDay} dateStart={dateStart} data={task} event={event} />
       </div>
     </Fragment>
   );

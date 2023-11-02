@@ -9,12 +9,12 @@ import classNames from 'classnames';
 export const Gantt = ({
   widthColumnDay = 36,
   dateStart,
-  task = [],
+  data = [],
   event = [],
 }: {
   widthColumnDay: number;
   dateStart: Dayjs;
-  task: TTask[];
+  data: TTask[];
   event: {
     name: string;
     startDate: Dayjs;
@@ -123,13 +123,13 @@ export const Gantt = ({
   };
 
   useEffect(() => {
-    if (task.length)
+    if (data.length)
       document.querySelectorAll(`#${id.current} .left tbody > tr:nth-of-type(1) > td`).forEach((e: any, index, arr) => {
         (document.querySelector(`#${id.current} .left thead > tr > th:nth-of-type(${index + 1})`) as any)!.style.width =
           e.clientWidth + (arr.length - 1 === index ? getScrollBarWidth() : 0) + 'px';
         e.style.width = e.clientWidth + 'px';
       });
-  }, [task]);
+  }, [data]);
 
   const loopGetDataset = (e: HTMLElement, key: string): HTMLElement => {
     if (e.parentElement && Object.prototype.hasOwnProperty.call(e.parentElement.dataset, key)) return e.parentElement;
@@ -149,9 +149,23 @@ export const Gantt = ({
     }
   };
   const time = useRef<any>({});
+  const [task, setTask] = useState(data);
   const handleCollapse = (e: any) => {
     const index = parseInt(loopGetDataset(e.target as HTMLElement, 'index').dataset.index!);
     const level = parseInt(loopGetDataset(e.target as HTMLElement, 'level').dataset.level!);
+    let isCheck = true;
+    setTask(
+      task.map((item, trIndex) => {
+        if (isCheck && trIndex > index) {
+          if (item.level > level) {
+            item.hidden = !time.current[index] || time.current[index].reversed();
+            return item;
+          } else isCheck = false;
+        }
+        item.hidden = false;
+        return item;
+      }),
+    );
 
     if (time.current[index]) {
       time.current[index][time.current[index].reversed() ? 'play' : 'reverse']();
@@ -197,64 +211,82 @@ export const Gantt = ({
       const endDate = item.endDate || item.startDate;
       const startTop = i * 24 + 4 + 8;
       const startLeft = (endDate.diff(dateStart, 'day') + (item.endDate ? 1 : 0.4)) * (widthColumnDay / 3);
-      return item.success.split(',').map((id) => {
-        const data = task.filter((item) => item.id === id)[0];
-        const endTop = task.indexOf(data) * 24 + 4 + 8;
-        const endLeft = (data.startDate.diff(dateStart, 'day') - (data.endDate ? 0.3 : 0.8)) * (widthColumnDay / 3) - 4;
-        return (
-          <g key={i}>
-            <path
-              d={
-                endDate.diff(data.startDate, 'day') > 1
-                  ? `M ${startLeft} ${startTop} L ${startLeft + widthColumnDay / 3} ${startTop} L ${
-                      startLeft + widthColumnDay / 3
-                    } ${endTop} L ${endLeft} ${endTop}`
-                  : `M ${startLeft - 1} ${startTop} L ${startLeft + 2} ${startTop} L ${startLeft + 2} ${
-                      startTop + widthColumnDay / 3
-                    } L ${endLeft - widthColumnDay / 6} ${startTop + widthColumnDay / 3} L ${
-                      endLeft - widthColumnDay / 6
-                    } ${endTop} L ${endLeft} ${endTop}`
-              }
-              fill="transparent"
-              stroke="black"
-              strokeWidth={1}
-              aria-label={item.name}
-              tabIndex={-1}
-            ></path>
-            <path
-              d={`M ${endLeft + widthColumnDay / 4.5} ${endTop} L ${endLeft} ${
-                endTop - widthColumnDay / 8
-              } L ${endLeft} ${endTop + widthColumnDay / 8} Z`}
-              aria-label={item.name}
-            ></path>
-          </g>
-        );
+      return item.success.split(',').map((id, index) => {
+        const listData = task.filter((item) => !item.hidden && item.id === id);
+        if (listData.length) {
+          const data = listData[0];
+          const endTop = task.filter((item) => !item.hidden).indexOf(data) * 24 + 4 + 8;
+          const endLeft =
+            (data.startDate.diff(dateStart, 'day') - (data.endDate ? 0.3 : 0.8)) * (widthColumnDay / 3) - 4;
+          return (
+            <g key={i + '' + index}>
+              <path
+                d={
+                  endDate.diff(data.startDate, 'day') > 1
+                    ? `M ${startLeft} ${startTop} L ${startLeft + widthColumnDay / 3} ${startTop} L ${
+                        startLeft + widthColumnDay / 3
+                      } ${endTop} L ${endLeft} ${endTop}`
+                    : `M ${startLeft - 1} ${startTop} L ${startLeft + 2} ${startTop} L ${startLeft + 2} ${
+                        startTop + widthColumnDay / 3
+                      } L ${endLeft - widthColumnDay / 6} ${startTop + widthColumnDay / 3} L ${
+                        endLeft - widthColumnDay / 6
+                      } ${endTop} L ${endLeft} ${endTop}`
+                }
+                fill="transparent"
+                stroke="black"
+                strokeWidth={1}
+                aria-label={item.name}
+                tabIndex={-1}
+              ></path>
+              <path
+                d={`M ${endLeft + widthColumnDay / 4.5} ${endTop} L ${endLeft} ${
+                  endTop - widthColumnDay / 8
+                } L ${endLeft} ${endTop + widthColumnDay / 8} Z`}
+                aria-label={item.name}
+              ></path>
+            </g>
+          );
+        }
       });
     }
   };
   const renderProgress = (item: TTask, index: number) => {
     const startTop = index * 24 + 4;
     const startLeft = item.startDate.diff(dateStart, 'day') * (widthColumnDay / 3);
-    if (item.endDate) {
+    if (item.endDate && item.percent) {
       return (
         <div
           key={index}
-          className={classNames('absolute top-1 z-10 overflow-hidden h-4', {
-            'bg-gray-400': !!task[index + 1] && task[index + 1].level > item.level,
-            'rounded-md bg-blue-400': !task[index + 1] || task[index + 1].level <= item.level,
-          })}
+          data-index={index}
+          data-level={item.level}
+          className={'absolute'}
           style={{
             top: startTop,
-            width: (item.endDate.diff(item.startDate, 'day') + 1) * (widthColumnDay / 3) + 'px',
             left: startLeft + 'px',
           }}
         >
           <div
-            className={classNames('text-center text-white text-xs h-4', {
-              'bg-gray-600': !!task[index + 1] && task[index + 1].level > item.level,
-              'bg-blue-600': !task[index + 1] || task[index + 1].level <= item.level,
+            className={classNames('z-10 overflow-hidden', {
+              'bg-gray-400': !!task[index + 1] && task[index + 1].level > item.level,
+              'rounded-md bg-blue-400': !task[index + 1] || task[index + 1].level <= item.level,
             })}
-            style={{ width: item.percent + '%' }}
+            style={{
+              width: (item.endDate.diff(item.startDate, 'day') + 1) * (widthColumnDay / 3) + 'px',
+            }}
+          >
+            <div
+              className={classNames('text-center text-white text-xs h-4', {
+                'bg-gray-600': !!task[index + 1] && task[index + 1].level > item.level,
+                'bg-blue-600': !task[index + 1] || task[index + 1].level <= item.level,
+              })}
+              style={{ width: item.percent + '%' }}
+            ></div>
+          </div>
+          <div
+            className={'absolute top-0 text-xs text-gray-400'}
+            style={{
+              left: 5 + (item.endDate.diff(item.startDate, 'day') + 1) * (widthColumnDay / 3) + 'px',
+            }}
           >
             {item.percent}%
           </div>
@@ -271,7 +303,7 @@ export const Gantt = ({
         }}
       >
         <div className={'absolute top-1 -left-1.5 z-10 h-2.5 w-2.5 bg-black rotate-45'}></div>
-        <div className="absolute -top-0.5 left-6 whitespace-nowrap">{item.name}</div>
+        <div className="absolute -top-0.5 left-3 whitespace-nowrap">{item.name}</div>
       </div>
     );
   };
@@ -437,10 +469,13 @@ export const Gantt = ({
                 className={'absolute top-0 left-0 z-10'}
                 style={{ width: date.total * widthColumnDay + 'px', height: task.length * 24 + 'px' }}
               >
-                {task.map((item, i) => renderSvg(item, i))}
+                {task.filter((item) => !item.hidden).map((item, i) => renderSvg(item, i))}
               </svg>
-              <div className="absolute top-0 left-0 flex" style={{ width: date.total * widthColumnDay + 'px' }}>
-                {task.map((item, index) => renderProgress(item, index))}
+              <div
+                className="task absolute top-0 left-0 flex z-10"
+                style={{ width: date.total * widthColumnDay + 'px' }}
+              >
+                {task.filter((item) => !item.hidden).map((item, index) => renderProgress(item, index))}
               </div>
               <table className={'min-w-[600px] border-b -z-10'} style={{ width: date.total * widthColumnDay + 'px' }}>
                 <tbody>
@@ -484,4 +519,5 @@ type TTask = {
   percent?: number;
   level: number;
   success?: string;
+  hidden?: boolean;
 };
