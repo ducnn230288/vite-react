@@ -56,7 +56,7 @@ const Page = () => {
       priority: 'High',
       planned: 43,
       work: 42,
-      startDate: dayjs('2015-07-09'),
+      startDate: dayjs('2015-07-07'),
       endDate: dayjs('2015-07-15'),
       percent: 86,
       level: 2,
@@ -168,7 +168,7 @@ const Page = () => {
     {
       id: '13',
       name: 'Basics complete',
-      startDate: dayjs('2015-08-06'),
+      startDate: dayjs('2015-08-07'),
       level: 2,
     },
   ];

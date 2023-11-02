@@ -212,39 +212,37 @@ export const Gantt = ({
     if (item.success) {
       const endDate = item.endDate || item.startDate;
       const startTop = i * 24 + 4 + 8;
-      const startLeft = (endDate.diff(dateStart, 'day') + (item.endDate ? 1 : 0.4)) * (widthColumnDay / 3);
+      const startLeft = (endDate.diff(dateStart, 'day') + 0.4) * (widthColumnDay / 3);
       return item.success.split(',').map((id, index) => {
         const listData = task.filter((item) => !item.hidden && item.id === id);
         if (listData.length) {
           const data = listData[0];
-          const endTop = task.filter((item) => !item.hidden).indexOf(data) * 24 + 4 + 8;
+          const endTop = task.filter((item) => !item.hidden).indexOf(data) * 24 + 4;
           const endLeft =
-            (data.startDate.diff(dateStart, 'day') - (data.endDate ? 0.3 : 0.8)) * (widthColumnDay / 3) - 4;
+            (data.startDate.diff(dateStart, 'day') + 0.5) * (widthColumnDay / 3) + (data.endDate ?  0 : -3);
           return (
             <g key={i + '' + index}>
               <path
                 d={
-                  endDate.diff(data.startDate, 'day') > 1
-                    ? `M ${startLeft} ${startTop} L ${startLeft + widthColumnDay / 3} ${startTop} L ${
-                        startLeft + widthColumnDay / 3
-                      } ${endTop} L ${endLeft} ${endTop}`
-                    : `M ${startLeft - 1} ${startTop} L ${startLeft + 2} ${startTop} L ${startLeft + 2} ${
-                        startTop + widthColumnDay / 3
-                      } L ${endLeft - widthColumnDay / 6} ${startTop + widthColumnDay / 3} L ${
-                        endLeft - widthColumnDay / 6
-                      } ${endTop} L ${endLeft} ${endTop}`
+                  endDate.diff(data.startDate, 'day') > 0
+                    ? `M ${startLeft - 1} ${startTop} L ${startLeft + (widthColumnDay / 3)} ${startTop} L ${startLeft + (widthColumnDay / 3)} ${startTop + 10} L ${endLeft} ${startTop + 10} L ${endLeft} ${endTop} `
+                    : `M ${startLeft - 1} ${startTop} L ${endLeft} ${startTop} L ${endLeft} ${endTop}`
+                    // : `M ${startLeft - 1} ${startTop} L ${startLeft + 2} ${startTop} L ${startLeft + 2} ${
+                    //     startTop + widthColumnDay / 3
+                    //   } L ${endLeft - widthColumnDay / 6} ${startTop + widthColumnDay / 3} L ${
+                    //     endLeft - widthColumnDay / 6
+                    //   } ${endTop} L ${endLeft} ${endTop}`
                 }
                 fill="transparent"
-                stroke="black"
+                stroke={!item.endDate ? 'black' : '#2563eb'}
                 strokeWidth={1}
                 aria-label={item.name}
                 tabIndex={-1}
               ></path>
               <path
-                d={`M ${endLeft + widthColumnDay / 4.5} ${endTop} L ${endLeft} ${
-                  endTop - widthColumnDay / 8
-                } L ${endLeft} ${endTop + widthColumnDay / 8} Z`}
+                d={`M ${endLeft + 4.2} ${endTop - 4.5} L ${endLeft - 4.5} ${endTop - 4.5} L ${endLeft + 0.2} ${endTop} Z`}
                 aria-label={item.name}
+                fill={!item.endDate ? 'black' : '#2563eb'}
               ></path>
             </g>
           );
@@ -302,7 +300,7 @@ export const Gantt = ({
           left: startLeft + 'px',
         }}
       >
-        <div className={'absolute top-1 -left-1.5 z-10 h-2.5 w-2.5 bg-black rotate-45'}></div>
+        <div className={'absolute top-1 -left-1 z-10 h-3 w-3 bg-black rotate-45'}></div>
         <div className="absolute -top-0.5 left-3 whitespace-nowrap">{item.name}</div>
       </div>
     );
