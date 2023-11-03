@@ -10,7 +10,6 @@ export const Gantt = ({
   widthColumnDay = 36,
   perRow = 3,
   maxHeight = 500,
-  dateStart,
   data = [],
   event = [],
 }: {
@@ -97,25 +96,32 @@ export const Gantt = ({
     });
   }, []);
 
-  const remainingMonths = (date: Dayjs) => {
-    const month = date.month();
-    const year = date.year();
+  const remainingMonths = (d: Dayjs, end: Dayjs) => {
+    const date = d.subtract(perRow, 'days');
+    setDateStart(date);
+    const endMonth = end.diff(date, 'months') + 1;
     const objDate: any = {};
-    let totalDay = date.day();
+    let totalDay = date.date();
     let lengthDay = 0;
-    for (let i = month; i < 12; i++) {
-      if (!objDate[year]) objDate[year] = {};
-      if (!objDate[year][i]) objDate[year][i] = [];
-      const dayInMonth = dayjs().month(i).daysInMonth();
+    for (let i = 0; i < endMonth; i++) {
+      const currentDay = d.add(i, 'months');
+      const month = currentDay.month();
+      if (!objDate[currentDay.year()]) objDate[currentDay.year()] = {};
+      if (!objDate[currentDay.year()][month]) objDate[currentDay.year()][month] = [];
+      const dayInMonth = currentDay.daysInMonth();
       for (let j = totalDay; j <= dayInMonth; j += perRow) {
         if (j + perRow > dayInMonth) totalDay = j + perRow - dayInMonth;
-        objDate[year][i].push(dayjs(year + '-' + (i < 10 ? '0' : '') + (i + 1) + '-' + (j < 10 ? '0' : '') + j));
+        const nextDate = dayjs(
+          currentDay.year() + '-' + (month < 10 ? '0' : '') + (month + 1) + '-' + (j < 10 ? '0' : '') + j,
+        );
+        if (nextDate < end.add(perRow, 'days')) objDate[currentDay.year()][month].push(nextDate);
       }
-      lengthDay += objDate[year][i].length;
+      lengthDay += objDate[currentDay.year()][month].length;
     }
     return { obj: objDate, total: lengthDay };
   };
-  const [date] = useState(remainingMonths(dateStart));
+  const [date, setDate] = useState<any>({ obj: {}, total: 0 });
+  const [dateStart, setDateStart] = useState(dayjs());
 
   const getScrollBarWidth = () => {
     const el = document.createElement('div');
@@ -127,6 +133,8 @@ export const Gantt = ({
   };
 
   useEffect(() => {
+    let start = dayjs();
+    let end = dayjs().add(1, 'months');
     if (data.length) {
       (document.querySelector(`#${id.current} .left .head`) as any)!.style.width =
         document.querySelector(`#${id.current} .left .body`)!.clientWidth + getScrollBarWidth() + 'px';
@@ -135,7 +143,14 @@ export const Gantt = ({
           e.clientWidth + (arr.length - 1 === index ? getScrollBarWidth() : 0) + 'px';
         e.style.width = e.clientWidth + 'px';
       });
+      start = data[0].startDate;
+      end = data[0].endDate || data[0].startDate.add(1, 'months');
+      data.forEach((item) => {
+        if (item.startDate < start) start = item.startDate;
+        if (item.endDate && item.endDate > end) end = item.endDate;
+      });
     }
+    setDate(remainingMonths(start, end));
   }, [data]);
 
   const loopGetDataset = (e: HTMLElement, key: string): HTMLElement => {
