@@ -5,8 +5,6 @@ import 'dayjs/locale/vi';
 import { Gantt } from '@core/gantt';
 
 const Page = () => {
-  const widthColumnDay = 36;
-  const dateStart = dayjs('2015-07-03');
   const task = [
     {
       id: '1',
@@ -532,7 +530,7 @@ const Page = () => {
     <Fragment>
       <div className="h-full pb-10">
         <h1 className="text-3xl text-teal-900 font-bold text-center mb-14 ">{t('routes.auth.login.Welcome')}</h1>
-        <Gantt widthColumnDay={widthColumnDay} dateStart={dateStart} data={task} event={event} perRow={3} />
+        <Gantt data={task} event={event} />
       </div>
     </Fragment>
   );

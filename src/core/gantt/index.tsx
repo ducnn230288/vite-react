@@ -13,10 +13,9 @@ export const Gantt = ({
   data = [],
   event = [],
 }: {
-  widthColumnDay: number;
+  widthColumnDay?: number;
   perRow?: number;
   maxHeight?: number;
-  dateStart: Dayjs;
   data: TTask[];
   event: {
     name: string;
@@ -24,6 +23,7 @@ export const Gantt = ({
     endDate?: Dayjs;
   }[];
 }) => {
+  const widthMonthYear = 110;
   const id = useRef('gantt-' + nanoid());
   useEffect(() => {
     dayjs.locale('vi');
@@ -96,15 +96,24 @@ export const Gantt = ({
     });
   }, []);
 
-  const remainingMonths = (d: Dayjs, end: Dayjs) => {
-    const date = d.subtract(perRow, 'days');
+  const remainingMonths = (d: Dayjs, e: Dayjs) => {
+    let date = d.subtract(perRow * 2, 'days');
+    let end = e;
+    const addDate = date.daysInMonth() - date.date() + 1;
+    if (addDate * (widthColumnDay / perRow) < widthMonthYear)
+      date = date.subtract(Math.ceil(widthMonthYear / widthColumnDay) * perRow - addDate, 'days');
+
+    const addEndDate = end.date() + 1;
+    if (addEndDate * (widthColumnDay / perRow) < widthMonthYear)
+      end = end.add(Math.ceil(widthMonthYear / widthColumnDay) * perRow - addEndDate, 'days');
+
     setDateStart(date);
-    const endMonth = end.diff(date, 'months') + 1;
+    const endMonth = end.month() - date.month() + 1 + (end.year() - date.year()) * 12;
     const objDate: any = {};
     let totalDay = date.date();
     let lengthDay = 0;
     for (let i = 0; i < endMonth; i++) {
-      const currentDay = d.add(i, 'months');
+      const currentDay = date.add(i, 'months');
       const month = currentDay.month();
       if (!objDate[currentDay.year()]) objDate[currentDay.year()] = {};
       if (!objDate[currentDay.year()][month]) objDate[currentDay.year()][month] = [];
@@ -407,7 +416,7 @@ export const Gantt = ({
             </div>
           </div>
           <div className={'right relative overflow-hidden'} style={{ flexBasis: '50%' }}>
-            <div className={'right-scroll overflow-x-hidden'}>
+            <div className={'right-scroll overflow-x-hidden'} style={{ paddingRight: getScrollBarWidth() + 'px' }}>
               <table className={'w-full min-w-[600px] border-b'} style={{ width: date.total * widthColumnDay + 'px' }}>
                 <thead>
                   <tr>
@@ -419,12 +428,32 @@ export const Gantt = ({
                           className={'capitalize border-l border-r border-t px-4 h-6 text-xs'}
                           style={{
                             width:
-                              dayjs().year(parseInt(year)).month(parseInt(month)).daysInMonth() *
+                              (dayjs()
+                                .year(parseInt(year))
+                                .month(parseInt(month))
+                                .endOf('month')
+                                .diff(date.obj[year][month][date.obj[year][month].length - 1], 'days') < perRow
+                                ? dayjs()
+                                    .year(parseInt(year))
+                                    .month(parseInt(month))
+                                    .endOf('month')
+                                    .diff(date.obj[year][month][0], 'days') >
+                                  date.obj[year][month][0].daysInMonth() - (widthMonthYear / widthColumnDay) * perRow
+                                  ? date.obj[year][month][0].daysInMonth()
+                                  : dayjs()
+                                      .year(parseInt(year))
+                                      .month(parseInt(month))
+                                      .endOf('month')
+                                      .diff(date.obj[year][month][0], 'days') + 1
+                                : date.obj[year][month][date.obj[year][month].length - 1].diff(
+                                    date.obj[year][month][0].startOf('month'),
+                                    'days',
+                                  ) + perRow) *
                                 (widthColumnDay / perRow) +
                               'px',
                           }}
                         >
-                          {dayjs().month(parseInt(month)).format('MMMM')} {year}
+                          {date.obj[year][month][0].format('MMMM')} {year}
                         </th>
                       )),
                     )}
