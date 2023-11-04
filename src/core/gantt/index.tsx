@@ -159,6 +159,9 @@ export const Gantt = ({
         if (item.endDate && item.endDate > end) end = item.endDate;
       });
     }
+    document
+      .querySelectorAll(`#${id.current} .overflow-scroll`)
+      .forEach((e: any) => (e.style.height = maxHeight + 'px'));
     setDate(remainingMonths(start, end));
   }, [data]);
 
@@ -357,12 +360,7 @@ export const Gantt = ({
               </table>
             </div>
 
-            <div
-              className="overflow-scroll"
-              data-scroll-x={'.left-scroll'}
-              onScroll={handleScroll}
-              style={{ maxHeight }}
-            >
+            <div className="overflow-scroll" data-scroll-x={'.left-scroll'} onScroll={handleScroll}>
               <table className={'body min-w-[600px] border-b'}>
                 <tbody>
                   {task.map((item, index) => (
@@ -480,12 +478,7 @@ export const Gantt = ({
                 </thead>
               </table>
             </div>
-            <div
-              className="overflow-scroll relative"
-              data-scroll-x={'.right-scroll'}
-              onScroll={handleScroll}
-              style={{ maxHeight }}
-            >
+            <div className="overflow-scroll relative" data-scroll-x={'.right-scroll'} onScroll={handleScroll}>
               <div
                 className="event h-full absolute top-0 left-0 flex z-10"
                 style={{ width: date.total * widthColumnDay + 'px' }}
