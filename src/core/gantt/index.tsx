@@ -196,7 +196,6 @@ export const Gantt = ({
             return item;
           } else isCheck = false;
         }
-        item.hidden = false;
         return item;
       }),
     );
