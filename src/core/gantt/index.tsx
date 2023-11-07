@@ -549,7 +549,10 @@ export const Gantt = ({
               </div>
               <svg
                 className={'absolute top-0 left-0 z-10'}
-                style={{ width: date.total * widthColumnDay + 'px', height: task.length * 24 + 'px' }}
+                style={{
+                  width: date.total * widthColumnDay + 'px',
+                  height: task.filter((item) => !item.hidden).length * 24 + 'px',
+                }}
               >
                 {task.filter((item) => !item.hidden).map((item, i) => renderSvg(item, i))}
               </svg>
