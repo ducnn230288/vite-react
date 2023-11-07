@@ -187,42 +187,44 @@ export const Gantt = ({
   const handleCollapse = (e: any) => {
     const index = parseInt(loopGetDataset(e.target as HTMLElement, 'index').dataset.index!);
     const level = parseInt(loopGetDataset(e.target as HTMLElement, 'level').dataset.level!);
+    if (time.current[index]) time.current[index][time.current[index].reversed() ? 'play' : 'reverse']();
+    else {
+      time.current[index] = gsap.timeline({ defaults: { duration: 0.2, ease: 'power1.inOut' } });
+      time.current[index].to(e.target, { transform: 'rotate(0deg)' }, '0');
+      ['left', 'right'].forEach((className) => {
+        let isCollapse = true;
+        document.querySelectorAll(`#${id.current} .${className} tbody > tr`).forEach((tr: any) => {
+          const trIndex = parseInt(tr.dataset.index);
+          const trLevel = parseInt(tr.dataset.level);
+          if (isCollapse && trIndex > index) {
+            if (trLevel > level) {
+              tr.querySelectorAll('td').forEach((td: any) => {
+                time.current[index].to(td, { fontSize: '-0px', lineHeight: '-0px', height: '-0px', opacity: '-0' }, '0');
+                const svg = td.querySelector('svg');
+                if (svg) time.current[index].to(svg, { height: '-0px', width: '-0px' }, '0');
+              });
+            } else isCollapse = false;
+          }
+        });
+      });
+    }
+
     let isCheck = true;
+    let currentLevel: number | undefined;
     setTask(
       task.map((item, trIndex) => {
         if (isCheck && trIndex > index) {
           if (item.level > level) {
-            item.hidden = !time.current[index] || time.current[index].reversed();
+            if (currentLevel !== undefined && currentLevel === item.level) {
+              currentLevel = undefined;
+            } else if (!!time.current[trIndex] && !time.current[trIndex].reversed() && currentLevel === undefined) currentLevel = item.level;
+            if (currentLevel === undefined) item.hidden = (!time.current[trIndex] && !!time.current[index] && !time.current[index].reversed())|| time.current[trIndex] && time.current[trIndex].reversed();
             return item;
           } else isCheck = false;
         }
         return item;
       }),
     );
-
-    if (time.current[index]) {
-      time.current[index][time.current[index].reversed() ? 'play' : 'reverse']();
-      return;
-    } else {
-      time.current[index] = gsap.timeline({ defaults: { duration: 0.2, ease: 'power1.inOut' } });
-      time.current[index].to(e.target, { transform: 'rotate(0deg)' }, '0');
-    }
-
-    ['left', 'right'].forEach((className) => {
-      let isCollapse = true;
-      document.querySelectorAll(`#${id.current} .${className} tbody > tr`).forEach((tr: any) => {
-        const trIndex = parseInt(tr.dataset.index);
-        const trLevel = parseInt(tr.dataset.level);
-        if (isCollapse && trIndex > index) {
-          if (trLevel > level) {
-            tr.querySelectorAll('td').forEach((td: any) => {
-              time.current[index].to(td, { fontSize: '-0px', lineHeight: '-0px', height: '-0px', opacity: '-0' }, '0');
-              time.current[index].to(td.querySelector('svg'), { height: '-0px', width: '-0px' }, '0');
-            });
-          } else isCollapse = false;
-        }
-      });
-    });
   };
 
   const handleScroll = (e: any) => {
