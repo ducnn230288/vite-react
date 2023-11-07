@@ -183,11 +183,14 @@ export const Gantt = ({
     }
   };
   const time = useRef<any>({});
+  const statusCollapse = useRef<any>({});
   const [task, setTask] = useState(data);
   const handleCollapse = (e: any) => {
     const index = parseInt(loopGetDataset(e.target as HTMLElement, 'index').dataset.index!);
     const level = parseInt(loopGetDataset(e.target as HTMLElement, 'level').dataset.level!);
-    if (time.current[index]) time.current[index][time.current[index].reversed() ? 'play' : 'reverse']();
+    const reversed = !!time.current[index] && !time.current[index].reversed();
+    statusCollapse.current[index] = !reversed;
+    if (reversed) time.current[index].reverse();
     else {
       time.current[index] = gsap.timeline({ defaults: { duration: 0.2, ease: 'power1.inOut' } });
       time.current[index].to(e.target, { transform: 'rotate(0deg)' }, '0');
@@ -199,7 +202,11 @@ export const Gantt = ({
           if (isCollapse && trIndex > index) {
             if (trLevel > level) {
               tr.querySelectorAll('td').forEach((td: any) => {
-                time.current[index].to(td, { fontSize: '-0px', lineHeight: '-0px', height: '-0px', opacity: '-0' }, '0');
+                time.current[index].to(
+                  td,
+                  { fontSize: '-0px', lineHeight: '-0px', height: '-0px', opacity: '-0' },
+                  '0',
+                );
                 const svg = td.querySelector('svg');
                 if (svg) time.current[index].to(svg, { height: '-0px', width: '-0px' }, '0');
               });
@@ -215,11 +222,28 @@ export const Gantt = ({
       task.map((item, trIndex) => {
         if (isCheck && trIndex > index) {
           if (item.level > level) {
-            if (currentLevel !== undefined && currentLevel === item.level) {
+            if (currentLevel !== undefined && currentLevel === item.level && !statusCollapse.current[trIndex])
               currentLevel = undefined;
-            } else if (!!time.current[trIndex] && !time.current[trIndex].reversed() && currentLevel === undefined) currentLevel = item.level;
-            if (currentLevel === undefined) item.hidden = (!time.current[trIndex] && !!time.current[index] && !time.current[index].reversed())|| time.current[trIndex] && time.current[trIndex].reversed();
-            return item;
+            else if (statusCollapse.current[trIndex] && currentLevel === undefined) {
+              currentLevel = item.level;
+            }
+            if (
+              trIndex === 1 ||
+              trIndex === 2 ||
+              trIndex === 6 ||
+              trIndex === 7 ||
+              trIndex === 33 ||
+              trIndex === 34 ||
+              trIndex === 35 ||
+              trIndex === 36 ||
+              trIndex === 37
+            ) {
+              console.log(currentLevel, item.level, level, item.name, statusCollapse.current, trIndex, index);
+              console.log(statusCollapse.current[index], currentLevel !== undefined, statusCollapse.current[trIndex]);
+              console.log(statusCollapse.current[index] || (currentLevel !== undefined && currentLevel !== item.level));
+            }
+
+            item.hidden = statusCollapse.current[index] || (currentLevel !== undefined && currentLevel !== item.level);
           } else isCheck = false;
         }
         return item;
@@ -283,8 +307,12 @@ export const Gantt = ({
       });
     }
   };
+  const indexTask = useRef(-1);
   const renderProgress = (item: TTask, index: number) => {
-    const startTop = index * 24 + 4;
+    if (index === 0) indexTask.current = -1;
+    if (item.hidden) return;
+    indexTask.current += 1;
+    const startTop = indexTask.current * 24 + 4;
     const startLeft = item.startDate.diff(dateStart, 'day') * (widthColumnDay / perRow);
     if (item.endDate && item.percent) {
       return (
@@ -529,7 +557,7 @@ export const Gantt = ({
                 className="task absolute top-0 left-0 flex z-10"
                 style={{ width: date.total * widthColumnDay + 'px' }}
               >
-                {task.filter((item) => !item.hidden).map((item, index) => renderProgress(item, index))}
+                {task.map((item, index) => renderProgress(item, index))}
               </div>
               <table className={'min-w-[600px] border-b -z-10'} style={{ width: date.total * widthColumnDay + 'px' }}>
                 <tbody>
