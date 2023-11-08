@@ -144,14 +144,8 @@ export const Gantt = ({
   useEffect(() => {
     let start = dayjs();
     let end = dayjs().add(1, 'months');
-    if (data.length) {
-      (document.querySelector(`#${id.current} .left .head`) as any)!.style.width =
-        document.querySelector(`#${id.current} .left .body`)!.clientWidth + getScrollBarWidth() + 'px';
-      document.querySelectorAll(`#${id.current} .left tbody > tr:nth-of-type(1) > td`).forEach((e: any, index, arr) => {
-        (document.querySelector(`#${id.current} .left thead > tr > th:nth-of-type(${index + 1})`) as any)!.style.width =
-          e.clientWidth + (arr.length - 1 === index ? getScrollBarWidth() : 0) + 'px';
-        e.style.width = e.clientWidth + 'px';
-      });
+    if (data.length && date.total === 0) {
+
       start = data[0].startDate;
       end = data[0].endDate || data[0].startDate.add(1, 'months');
       data.forEach((item) => {
@@ -163,7 +157,21 @@ export const Gantt = ({
       .querySelectorAll(`#${id.current} .overflow-scroll`)
       .forEach((e: any) => (e.style.height = maxHeight + 'px'));
     setDate(remainingMonths(start, end));
+
   }, [data]);
+
+  useEffect(() => {
+    if (date.total > 0) {
+      (document.querySelector(`#${id.current} .left .head`) as any)!.style.width =
+        document.querySelector(`#${id.current} .left .body`)!.clientWidth + getScrollBarWidth() + 'px';
+      document.querySelectorAll(`#${id.current} .left tbody > tr:nth-of-type(1) > td`).forEach((e: any, index, arr) => {
+        console.log( e.clientWidth + (arr.length - 1 === index ? getScrollBarWidth() : 0) + 'px');
+        console.log((document.querySelector(`#${id.current} .left thead > tr:nth-of-type(1) > th:nth-of-type(${index + 1})`) as any));
+        (document.querySelector(`#${id.current} .left thead > tr:nth-of-type(1) > th:nth-of-type(${index + 1})`) as any)!.style.width =
+          e.clientWidth + (arr.length - 1 === index ? getScrollBarWidth() : 0) + 'px';
+      });
+    }
+  }, [date]);
 
   const loopGetDataset = (e: HTMLElement, key: string): HTMLElement => {
     if (e.parentElement && Object.prototype.hasOwnProperty.call(e.parentElement.dataset, key)) return e.parentElement;
@@ -224,25 +232,7 @@ export const Gantt = ({
           if (item.level > level) {
             if (currentLevel !== undefined && currentLevel === item.level && !statusCollapse.current[trIndex])
               currentLevel = undefined;
-            else if (statusCollapse.current[trIndex] && currentLevel === undefined) {
-              currentLevel = item.level;
-            }
-            if (
-              trIndex === 1 ||
-              trIndex === 2 ||
-              trIndex === 6 ||
-              trIndex === 7 ||
-              trIndex === 33 ||
-              trIndex === 34 ||
-              trIndex === 35 ||
-              trIndex === 36 ||
-              trIndex === 37
-            ) {
-              console.log(currentLevel, item.level, level, item.name, statusCollapse.current, trIndex, index);
-              console.log(statusCollapse.current[index], currentLevel !== undefined, statusCollapse.current[trIndex]);
-              console.log(statusCollapse.current[index] || (currentLevel !== undefined && currentLevel !== item.level));
-            }
-
+            else if (statusCollapse.current[trIndex] && currentLevel === undefined) currentLevel = item.level;
             item.hidden = statusCollapse.current[index] || (currentLevel !== undefined && currentLevel !== item.level);
           } else isCheck = false;
         }
