@@ -16,6 +16,7 @@ export const routerLinks = (name: string, type?: string) => {
     PostType: '/setting/post/type',
     Code: '/setting/code',
     Parameter: '/setting/parameter',
+    Schedule: '/schedule',
     'Code/Add': '/setting/code/add',
     Team: '/setting/team',
     'Team/Add': '/setting/team/add',

@@ -152,6 +152,11 @@ const pages = [
         title: 'DayOff/Edit',
       },
       {
+        path: routerLinks('Schedule') ,
+        component: React.lazy(() => import('@pages/schedule/index')),
+        title: 'Schedule',
+      },
+      {
         path: routerLinks('DayOff/List'),
         component: React.lazy(() => import('@pages/dayoff')),
         title: 'DayOff/List',
