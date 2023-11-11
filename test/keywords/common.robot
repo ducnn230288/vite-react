@@ -9,7 +9,7 @@ ${HEADLESS}         ${True}
 ${BROWSER_TIMEOUT}  60 seconds
 ${SHOULD_TIMEOUT}   0.1 seconds
 
-${URL_DEFAULT}      http://localhost:5173
+${URL_DEFAULT}      http://localhost:3000
 ${STATE}            Evaluate  json.loads('''{}''')  json
 
 *** Keywords ***

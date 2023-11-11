@@ -1,11 +1,26 @@
-version: "3.8"
+version: "3.9"
 services:
   app:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - '4000:4000'
+      - '3000:3000'
     volumes:
-      - ./src:/app/src
-    command: npm run dev
+      - app:/app
+    command: npm run start
+  robotframework:
+    build:
+      context: .
+      dockerfile: DockerfileRobot
+    ports:
+      - "8000:8000"
+    volumes:
+      - robotframework:/test
+    depends_on:
+      - app
+    command: >
+      robot -d result testcases/*.robot
+volumes:
+  app:
+  robotframework:
