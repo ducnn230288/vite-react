@@ -6,6 +6,6 @@ RUN npm install -f
 COPY --chown=root:root . .
 ENV NODE_OPTIONS=--max_old_space_size=4048
 RUN chmod 777 /app
-RUN npm install -g npm serve
-RUN npm run build
+#RUN npm install -g npm serve
+#RUN npm run build
 USER root

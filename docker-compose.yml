@@ -5,17 +5,15 @@ services:
       context: .
       dockerfile: DockerfileApp
     ports:
-      - '3000:3000'
+      - '4000:4000'
     volumes:
       - app:/app
-    command: npm run serve
+    command: npm run dev
     networks:
       - network
 
   robotframework:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: robot-framework-docker
     ports:
       - "8000:8000"
     volumes:

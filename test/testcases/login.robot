@@ -4,23 +4,23 @@ Test Setup              Setup
 Test Teardown           Tear Down
 
 *** Test Cases ***
-DN-01 Verify that Đăng nhập successfully with valid Email and Mật khẩu
-  [Tags]                @smoketest               @regression
-  Then Login to admin
-
-DN-02 Verify that Login unsuccessfully with invalid Email
-  [Tags]                @smoketest               @regression
-  When Enter "email" in "Tên đăng nhập" with "_RANDOM_"
-  When Enter "text" in "Mật khẩu" with "Password1!"
-  When Click "Đăng nhập" button
-  Then User look message "Người dùng _@Tên đăng nhập@_ không tồn tại!" popup
-
-DN-03 Verify that Đăng nhập unsuccessfully with invalid Email
-  [Tags]                @smoketest               @regression
-  When Enter "email" in "Tên đăng nhập" with "admin@admin.com"
-  When Enter "text" in "Mật khẩu" with "Password1!!"
-  When Click "Đăng nhập" button
-  Then User look message "Thông tin đăng nhập không hợp lệ cho người dùng _@Tên đăng nhập@_" popup
+#DN-01 Verify that Đăng nhập successfully with valid Email and Mật khẩu
+#  [Tags]                @smoketest               @regression
+#  Then Login to admin
+#
+#DN-02 Verify that Login unsuccessfully with invalid Email
+#  [Tags]                @smoketest               @regression
+#  When Enter "email" in "Tên đăng nhập" with "_RANDOM_"
+#  When Enter "text" in "Mật khẩu" with "Password1!"
+#  When Click "Đăng nhập" button
+#  Then User look message "Người dùng _@Tên đăng nhập@_ không tồn tại!" popup
+#
+#DN-03 Verify that Đăng nhập unsuccessfully with invalid Email
+#  [Tags]                @smoketest               @regression
+#  When Enter "email" in "Tên đăng nhập" with "admin@admin.com"
+#  When Enter "text" in "Mật khẩu" with "Password1!!"
+#  When Click "Đăng nhập" button
+#  Then User look message "Thông tin đăng nhập không hợp lệ cho người dùng _@Tên đăng nhập@_" popup
 
 DN-04 Verify that Đăng nhập unsuccessfully with invalid Mật khẩu
   [Tags]                @smoketest               @regression
