@@ -4,30 +4,12 @@ name: Checks
 on:
   push:
     branches:
-      - 'master'
+      - 'gantt'
 
 jobs:
   test-lint:
     name: Test and Lint
     runs-on: ubuntu-latest
-    env:
-      NODE_ENV: test
-      DOMAIN_FE: "http://localhost:5173"
-      DOMAIN: "http://localhost:3000"
-      SERVER_PORT: 3000
-      DATABASE_HOST: 'database'
-      DATABASE_PORT: 5432
-      DATABASE_USER: "root"
-      DATABASE_PASSWORD: "admin"
-      DATABASE_NAME: "postgres"
-      REDIS_HOST: 'cache'
-      SMTP_HOST: "email-smtp.ap-southeast-1.amazonaws.com"
-      SMTP_PORT: 587
-      SMTP_USER: "AKIAWV6EY3UJOGGGRKGB"
-      SMTP_PASSWORD: "BDMHA0ch6kEUQDRofGfaxGVCf+rVnj/NQIGqgd8l52GV"
-      MAIL_SENDER: "no-reply@ari.com.vn"
-      ID_TOKEN_PUBLIC_KEY_AS_BASE64: "37d1efb6-969c-4f3a-a178-af96a05ca578"
-      ID_TOKEN_PRIVATE_KEY_AS_BASE64: "28edb7f4-2464-4be2-8e06-fafb3d10ef32"
     steps:
       - name: Login to Docker Hub
         uses: docker/login-action@v1
