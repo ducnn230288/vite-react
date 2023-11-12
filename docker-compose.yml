@@ -3,16 +3,19 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: DockerfileApp
     ports:
       - '3000:3000'
     volumes:
       - app:/app
-    command: npm run start
+    command: npm run serve
+    networks:
+      - network
+
   robotframework:
     build:
       context: .
-      dockerfile: DockerfileRobot
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     volumes:
@@ -20,7 +23,15 @@ services:
     depends_on:
       - app
     command: >
-      robot -d result testcases/*.robot
+      robot -d result testcases/login.robot
+    networks:
+      - network
+
+networks:
+  network:
+    driver: bridge
+    name: network
+
 volumes:
   app:
   robotframework:

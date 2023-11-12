@@ -1,11 +1,10 @@
 FROM bitnami/node:18
+ENV APP_ROOT=/test
 
-WORKDIR /app
-COPY --chown=root:root package*.json ./
-RUN npm install
-COPY --chown=root:root . .
-ENV NODE_OPTIONS=--max_old_space_size=4048
-RUN chmod 777 /app
-RUN npm install -g npm serve
-RUN npm run build
-USER root
+COPY ./test ${APP_ROOT}
+WORKDIR ${APP_ROOT}
+RUN install_packages python3
+RUN ln -sf python3 /usr/bin/python && \
+ pip3 install --no-cache -r requirements.txt && \
+  npx playwright install-deps
+RUN rfbrowser init
