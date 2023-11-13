@@ -21,5 +21,5 @@ jobs:
       - name: Build the docker-compose stack
         run: docker-compose -f docker-compose.yml up -d
       - name: Run Test
-        run: docker-compose -f docker-compose.yml run --rm robotframework sh -c "robot -d result testcases/login.robot"
+        run: docker compose exec robotframework robot -d test/result test/testcases/login.robot
 
