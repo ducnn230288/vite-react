@@ -1,27 +1,16 @@
 version: "3.9"
-services:
-  app:
-    build:
-      context: .
-      dockerfile: DockerfileApp
-    ports:
-      - '4000:4000'
-    volumes:
-      - app:/app
-    command: npm run dev
-    networks:
-      - network
 
+services:
   robotframework:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "4200:4200"
     volumes:
       - robotframework:/test
-    depends_on:
-      - app
+    command: >
+      npm run serve
     networks:
       - network
 
@@ -31,5 +20,4 @@ networks:
     name: network
 
 volumes:
-  app:
   robotframework:
