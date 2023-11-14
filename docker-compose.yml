@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+  test:
+    image: 'langphongmtb/robot-framework-playwright'
+    volumes:
+      - .\test:/app/test
+    tty: true
+    stdin_open: true
+
