@@ -1,16 +1,17 @@
 version: "3.9"
 
 services:
-  test:
+  test-react:
+    container_name: 'test-react'
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "4000:4000"
     volumes:
-      - test:/test
+      - test-react:/test
     command: >
       npm run serve
 
 volumes:
-  test:
+  test-react:
