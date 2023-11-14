@@ -7,7 +7,7 @@
     "build": "tsc && vite build",
     "serve": "npx serve build -l 4000",
     "build:dev": "tsc && vite build",
-    "build:staging": "tsc && vite build --mode staging",
+    "build:stag": "tsc && vite build --mode staging",
     "build:prod": "tsc && vite build --mode prod",
     "preview": "vite preview",
     "format": "prettier --write \"{src,public}/**/*.{tsx,jsx}\"",

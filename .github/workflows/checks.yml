@@ -19,7 +19,7 @@ jobs:
       - name: Run actions/checkout@v2
         uses: actions/checkout@v2
       - name: Build the docker-compose stack
-        run: docker-compose -f docker-compose.yml up -d
+        run: docker-compose -f docker-test.yml up -d
       - name: Run Test
-        run: docker compose exec robotframework robot -d test/result test/testcases/login.robot
+        run: docker compose exec test robot -d test/result test/testcases/login.robot
 
