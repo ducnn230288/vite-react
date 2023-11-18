@@ -52,7 +52,7 @@ export const API = {
     }
 
     if (response.status === 401 && url !== `${routerLinks('Auth', 'api')}/login`) {
-      localStorage.removeItem(keyUser);
+      localStorage.removeItem(keyToken);
       location.reload();
     }
     throw {};
