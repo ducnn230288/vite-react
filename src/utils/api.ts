@@ -1,4 +1,4 @@
-import { keyRefreshToken, keyToken, keyUser, linkApi, routerLinks } from '@utils';
+import { keyRefreshToken, keyToken, linkApi, routerLinks } from '@utils';
 import { Message } from '@core/message';
 import { Responses } from '@models';
 
@@ -52,7 +52,7 @@ export const API = {
     }
 
     if (response.status === 401 && url !== `${routerLinks('Auth', 'api')}/login`) {
-      localStorage.removeItem(keyUser);
+      localStorage.removeItem(keyToken);
       location.reload();
     }
     throw {};
