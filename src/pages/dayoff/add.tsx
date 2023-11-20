@@ -7,6 +7,8 @@ import { Button } from '@core/button';
 import { Form } from '@core/form';
 import { GlobalFacade, DayoffFacade } from '@store';
 import { routerLinks, lang } from '@utils';
+import { EStatusState, EFormRuleType, EFormType } from '@models';
+
 
 const Page = () => {
   const { id } = useParams();
@@ -30,8 +32,8 @@ const Page = () => {
   const navigate = useNavigate();
   useEffect(() => {
     switch (dayoffFacade.status) {
-      case 'put.fulfilled':
-      case 'post.fulfilled':
+      case EStatusState.putFulfilled:
+        case EStatusState.postFulfilled:
         if (isBack.current) handleBack();
         else {
           isBack.current = true;
@@ -44,7 +46,7 @@ const Page = () => {
   }, [dayoffFacade.status]);
 
   const handleBack = () => {
-    dayoffFacade.set({ status: 'idle' });
+    dayoffFacade.set({ status: EStatusState.idle });
     navigate(`/${lang}${routerLinks('DayOff/List')}?${new URLSearchParams(param).toString()}`);
   };
   const handleSubmit = (values: any) => {
@@ -89,9 +91,9 @@ const Page = () => {
                 name: 'type',
                 title: 'routes.admin.dayoff.register.Leave Type',
                 formItem: {
-                  type: 'select',
+                  type: EFormType.select,
                   col: 6,
-                  rules: [{ type: 'required' }],
+                  rules: [{ type: EFormRuleType.required }],
                   list: listType || [],
                   onChange: (value: number, form: any) => {
                     const dateLeave = form.getFieldValue('dateLeave');
@@ -111,9 +113,9 @@ const Page = () => {
                 name: 'time',
                 title: 'routes.admin.dayoff.register.Time',
                 formItem: {
-                  type: 'select',
+                  type: EFormType.select,
                   col: 6,
-                  rules: [{ type: 'required' }],
+                  rules: [{ type: EFormRuleType.required }],
                   disabled: (values: any, form: any) =>
                     form.getFieldValue('date') &&
                     form.getFieldValue('date')[1].diff(form.getFieldValue('date')[0], 'days') > 0,
@@ -127,8 +129,8 @@ const Page = () => {
                 title: 'routes.admin.dayoff.Leave Date',
                 name: 'dateLeave',
                 formItem: {
-                  type: 'date_range',
-                  rules: [{ type: 'required' }],
+                  type: EFormType.dateRange,
+                  rules: [{ type: EFormRuleType.required }],
                   disabledDate: (current, form) => {
                     if (
                       current.startOf('day').toString() !== current.startOf('week').toString() &&
@@ -215,8 +217,8 @@ const Page = () => {
                 title: 'routes.admin.dayoff.Reason',
                 formItem: {
                   // col: 8,
-                  type: 'textarea',
-                  rules: [{ type: 'required' }],
+                  type: EFormType.textarea,
+                  rules: [{ type: EFormRuleType.required }],
                 },
               },
               // {

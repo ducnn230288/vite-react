@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { Spin } from 'antd';
+import { EStatusState, EFormRuleType } from '@models';
+
 
 import { DataTypeFacade, DataType, GlobalFacade } from '@store';
 import { routerLinks, lang } from '@utils';
@@ -32,8 +34,8 @@ const Page = () => {
   const isBack = useRef(true);
   useEffect(() => {
     switch (dataTypeFacade.status) {
-      case 'post.fulfilled':
-      case 'put.fulfilled':
+      case EStatusState.postFulfilled:
+      case EStatusState.putFulfilled:
         dataTypeFacade.get(JSON.parse(dataTypeFacade.queryParams || '{}'));
         if (Object.keys(param).length > 0) isReload.current = true;
 
@@ -65,14 +67,14 @@ const Page = () => {
               title: 'Name',
               name: 'name',
               formItem: {
-                rules: [{ type: 'required' }],
+                rules: [{ type: EFormRuleType.required }],
               },
             },
             {
               title: 'Code',
               name: 'code',
               formItem: {
-                rules: [{ type: 'required' }],
+                rules: [{ type: EFormRuleType.required }],
               },
             },
           ]}

@@ -1,6 +1,59 @@
 import { CheckboxOptionType, FormInstance } from 'antd';
 import { TableGet } from '../data-table';
 
+export enum EFormType {
+  onlyNumber = 'only_number',
+  hidden = 'hidden',
+  number = 'number',
+  text = 'text',
+  name = 'name',
+  tab = 'tab',
+  addable = 'addable',
+  editor = 'editor',
+  upload = 'upload',
+  tableTransfer = 'table_transfer',
+  password = 'password',
+  textarea = 'textarea',
+  slider = 'slider',
+  sliderNumber = 'slider_number',
+  date = 'date',
+  dateRange = 'date_range',
+  time = 'time',
+  timeRange = 'time_range',
+  checkbox = 'checkbox',
+  radio = 'radio',
+  tag = 'tag',
+  chips = 'chips',
+  select = 'select',
+  treeSelect = 'tree_select',
+  otp = 'otp',
+  switch = 'switch',
+}
+export enum EFormModeSelect {
+  multiple = 'multiple',
+  tags = 'tags',
+}
+export enum EFormPickerDate {
+  time = 'time',
+  date = 'date',
+  week = 'week',
+  month = 'month',
+  quarter = 'quarter',
+  year = 'year',
+}
+export enum EFormRuleType {
+  required = 'required',
+  email = 'email',
+  min = 'min',
+  max = 'max',
+  custom = 'custom',
+  phone = 'phone',
+  url = 'url',
+  onlyText = 'only_text',
+  onlyTextSpace = 'only_text_space',
+  textarea = 'textarea',
+}
+
 export class FormModel {
   constructor(
     public name: string,
@@ -10,38 +63,12 @@ export class FormModel {
 }
 
 export class FormItem {
-  type?:
-    | 'only_number'
-    | 'hidden'
-    | 'number'
-    | 'text'
-    | 'name'
-    | 'tab'
-    | 'addable'
-    | 'editor'
-    | 'upload'
-    | 'table_transfer'
-    | 'password'
-    | 'textarea'
-    | 'slider'
-    | 'slider_number'
-    | 'date'
-    | 'date_range'
-    | 'time'
-    | 'time_range'
-    | 'checkbox'
-    | 'radio'
-    | 'tag'
-    | 'chips'
-    | 'select'
-    | 'tree_select'
-    | 'otp'
-    | 'switch';
+  type?: EFormType;
   col?: number;
   condition?: (value: string, form: FormInstance, index: number, values: any) => boolean;
   list?: CheckboxOptionType[];
   rules?: FormItemRule[];
-  mode?: 'multiple' | 'tags';
+  mode?: EFormModeSelect;
   tab?: string;
   column?: FormModel[];
   disabled?: (values: any, form?: FormInstance) => boolean;
@@ -56,7 +83,7 @@ export class FormItem {
   onBlur?: (e: React.FocusEvent<HTMLInputElement, Element>, form: FormInstance, name: string) => void;
   disabledDate?: (current: any, form: FormInstance) => boolean;
   showTime?: boolean;
-  picker?: 'time' | 'date' | 'week' | 'month' | 'quarter' | 'year';
+  picker?: EFormPickerDate;
   onCalendarChange?: (current: any, form: FormInstance, reRender: any) => void;
   api?: FormApi;
   get?: TableGet;
@@ -90,17 +117,7 @@ export class FormItemList {
 }
 
 export class FormItemRule {
-  type?:
-    | 'required'
-    | 'email'
-    | 'phone'
-    | 'min'
-    | 'max'
-    | 'url'
-    | 'only_text'
-    | 'only_text_space'
-    | 'textarea'
-    | 'custom';
+  type?: EFormRuleType;
   message?: string;
   value?: any;
   validator?: ({ getFieldValue }: any) => { validator(rule: any, value: string): Promise<void> };

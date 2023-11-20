@@ -8,6 +8,8 @@ import { keyRole, lang, routerLinks } from '@utils';
 import { Button } from '@core/button';
 import { Plus, Trash } from '@svgs';
 import { useTranslation } from 'react-i18next';
+import { EStatusState } from '@models';
+
 // import { useTranslation } from 'react-i18next';
 
 const Page = () => {
@@ -43,7 +45,7 @@ const Page = () => {
 
   useEffect(() => {
     switch (bookingFacade.status) {
-      case 'delete.fulfilled':
+      case EStatusState.deleteFulfilled:
         bookingFacade.get({
           perPage: 1000,
           filter: JSON.stringify({

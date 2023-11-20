@@ -8,6 +8,8 @@ import { Booking, GlobalFacade, BookingFacade, CodeFacade, CodeTypeFacade } from
 import { routerLinks, lang } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
+import { EStatusState, EFormRuleType, EFormType } from '@models';
+
 const Page = () => {
   const { id, date, typeCode } = useParams();
   const bookingFacade = BookingFacade();
@@ -35,8 +37,8 @@ const Page = () => {
   const isBack = useRef(true);
   useEffect(() => {
     switch (bookingFacade.status) {
-      case 'post.fulfilled':
-      case 'put.fulfilled':
+      case EStatusState.postFulfilled:
+      case EStatusState.putFulfilled:
         bookingFacade.get(JSON.parse(bookingFacade.queryParams || '{}'));
         if (Object.keys(param).length > 0) isReload.current = true;
 
@@ -88,8 +90,8 @@ const Page = () => {
               title: 'Time',
               name: 'time',
               formItem: {
-                type: 'time_range',
-                rules: [{ type: 'required' }],
+                type: EFormType.timeRange,
+                rules: [{ type: EFormRuleType.required }],
                 col: 6,
               },
             },
@@ -97,8 +99,8 @@ const Page = () => {
               title: 'Room',
               name: 'itemCode',
               formItem: {
-                type: 'select',
-                rules: [{ type: 'required' }],
+                type: EFormType.select,
+                rules: [{ type: EFormRuleType.required }],
                 col: 6,
                 get: {
                   facade: CodeFacade,
@@ -118,7 +120,7 @@ const Page = () => {
               title: 'Name',
               name: 'name',
               formItem: {
-                rules: [{ type: 'required' }],
+                rules: [{ type: EFormRuleType.required }],
               },
             },
 
@@ -126,7 +128,7 @@ const Page = () => {
               name: 'description',
               title: 'Description',
               formItem: {
-                type: 'textarea',
+                type: EFormType.textarea,
               },
             },
           ]}

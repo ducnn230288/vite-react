@@ -5,13 +5,14 @@ import { Spin } from 'antd';
 
 import { Form } from '@core/form';
 import { routerLinks, lang } from '@utils';
-import { GlobalFacade } from '@store';
+import { EStatusGlobal, GlobalFacade } from '@store';
+import { EFormRuleType, EFormType } from '@models';
 
 const Page = () => {
   const { isLoading, status, resetPassword, data } = GlobalFacade();
   const navigate = useNavigate();
   useEffect(() => {
-    if (status === 'resetPassword.fulfilled') {
+    if (status === EStatusGlobal.resetPasswordFulfilled) {
       navigate(`/${lang}${routerLinks('Login')}`, { replace: true });
     }
   }, [status]);
@@ -43,14 +44,14 @@ const Page = () => {
               name: 'otp',
               title: 'routes.auth.reset-password.Code OTP',
               formItem: {
-                type: 'hidden',
+                type: EFormType.hidden,
               },
             },
             {
               title: '',
               name: 'email',
               formItem: {
-                type: 'hidden',
+                type: EFormType.hidden,
               },
             },
             {
@@ -58,8 +59,8 @@ const Page = () => {
               title: 'columns.auth.login.password',
               formItem: {
                 placeholder: 'columns.auth.login.Enter Password',
-                type: 'password',
-                rules: [{ type: 'required' }, { type: 'min', value: 6 }],
+                type: EFormType.password,
+                rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.min, value: 6 }],
               },
             },
             {
@@ -67,12 +68,12 @@ const Page = () => {
               title: 'columns.auth.register.retypedPassword',
               formItem: {
                 placeholder: 'columns.auth.register.retypedPassword',
-                type: 'password',
+                type:  EFormType.password,
                 rules: [
-                  { type: 'required' },
-                  { type: 'min', value: 6 },
+                  { type: EFormRuleType.required },
+                  { type: EFormRuleType.min, value: 6 },
                   {
-                    type: 'custom',
+                    type: EFormRuleType.custom,
                     validator: ({ getFieldValue }) => ({
                       validator(rule, value: string) {
                         const errorMsg = t('columns.auth.placeholder.subConfirm');

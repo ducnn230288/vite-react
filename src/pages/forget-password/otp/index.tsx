@@ -4,15 +4,17 @@ import { t } from 'i18next';
 
 import { Spin } from 'antd';
 import { Form } from '@core/form';
-import { GlobalFacade } from '@store';
+import { EStatusGlobal, GlobalFacade } from '@store';
 import { routerLinks, lang } from '@utils';
+import { EFormRuleType, EFormType } from '@models';
+
 
 const Page = () => {
   const navigate = useNavigate();
   const { isLoading, status, data, otpConfirmation } = GlobalFacade();
 
   useEffect(() => {
-    if (status === 'otpConfirmation.fulfilled') {
+    if (status === EStatusGlobal.otpConfirmationFulfilled) {
       navigate(`/${lang}${routerLinks('SetPassword')}`, { replace: true });
     }
   }, [status]);
@@ -39,14 +41,17 @@ const Page = () => {
                 name: 'otp',
                 title: 'routes.auth.reset-password.Code OTP',
                 formItem: {
-                  rules: [{ type: 'required' }, { type: 'min', value: 6 }, { type: 'max', value: 6 }],
+                  rules: [
+                    { type: EFormRuleType.required }, 
+                    { type:EFormRuleType.min, value: 6 }, 
+                    { type: EFormRuleType.max, value: 6 }],
                 },
               },
               {
                 title: '',
                 name: 'email',
                 formItem: {
-                  type: 'hidden',
+                  type:  EFormType.hidden,
                 },
               },
             ]}

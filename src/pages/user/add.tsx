@@ -8,6 +8,8 @@ import { UserRoleFacade, UserFacade, CodeFacade, User, GlobalFacade, UserTeamFac
 import { routerLinks, lang } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
+import { EStatusState, EFormRuleType, EFormType, EFormModeSelect } from '@models';
+
 
 const Page = () => {
   const { id, roleCode } = useParams();
@@ -30,8 +32,8 @@ const Page = () => {
   const isBack = useRef(true);
   useEffect(() => {
     switch (userFacade.status) {
-      case 'post.fulfilled':
-      case 'put.fulfilled':
+      case EStatusState.postFulfilled:
+      case EStatusState.putFulfilled:
         if (isBack.current) handleBack();
         else {
           isBack.current = true;
@@ -43,7 +45,7 @@ const Page = () => {
   }, [userFacade.status]);
 
   const handleBack = () => {
-    userFacade.set({ status: 'idle' });
+    userFacade.set({ status: EStatusState.idle });
     navigate(`/${lang}${routerLinks('User')}?${new URLSearchParams(param).toString()}`);
   };
   const handleSubmit = (values: User) => {
@@ -82,7 +84,7 @@ const Page = () => {
               name: 'name',
               formItem: {
                 col: 6,
-                rules: [{ type: 'required' }],
+                rules: [{ type: EFormRuleType.required }],
               },
             },
             {
@@ -90,7 +92,11 @@ const Page = () => {
               name: 'email',
               formItem: {
                 col: 6,
-                rules: [{ type: 'required' }, { type: 'email' }, { type: 'min', value: 6 }],
+                rules: [
+                  { type: EFormRuleType.required }, 
+                  { type: EFormRuleType.email }, 
+                  { type:EFormRuleType.min, value: 6 }
+                ],
               },
             },
             {
@@ -98,9 +104,12 @@ const Page = () => {
               name: 'password',
               formItem: {
                 col: 6,
-                type: 'password',
+                type: EFormType.password,
                 condition: (value: string, form, index: number, values: any) => !values?.id,
-                rules: [{ type: 'required' }, { type: 'min', value: 6 }],
+                rules: [
+                  { type: EFormRuleType.required }, 
+                  { type: EFormRuleType.min, value: 6 }
+                ],
               },
             },
             {
@@ -109,12 +118,12 @@ const Page = () => {
               formItem: {
                 placeholder: 'columns.auth.register.retypedPassword',
                 col: 6,
-                type: 'password',
+                type: EFormType.password,
                 condition: (value: string, form, index: number, values) => !values?.id,
                 rules: [
-                  { type: 'required' },
+                  { type: EFormRuleType.required },
                   {
-                    type: 'custom',
+                    type: EFormRuleType.custom,
                     validator: ({ getFieldValue }) => ({
                       validator(rule, value: string) {
                         if (!value || getFieldValue('password') === value) {
@@ -132,7 +141,7 @@ const Page = () => {
               name: 'phoneNumber',
               formItem: {
                 col: 6,
-                rules: [{ type: 'required' }, { type: 'phone', min: 10, max: 15 }],
+                rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.phone, min: 10, max: 15 }],
               },
             },
             {
@@ -140,8 +149,8 @@ const Page = () => {
               name: 'dob',
               formItem: {
                 col: 6,
-                type: 'date',
-                rules: [{ type: 'required' }],
+                type: EFormType.date,
+                rules: [{ type: EFormRuleType.required }],
               },
             },
             {
@@ -149,8 +158,8 @@ const Page = () => {
               name: 'positionCode',
               formItem: {
                 col: 6,
-                type: 'select',
-                rules: [{ type: 'required' }],
+                type: EFormType.select,
+                rules: [{ type: EFormRuleType.required}],
                 convert: (data) =>
                   data?.map ? data.map((_item: any) => (_item?.id !== undefined ? +_item.id : _item)) : data,
                 get: {
@@ -172,8 +181,8 @@ const Page = () => {
               name: 'startDate',
               formItem: {
                 col: 6,
-                type: 'date',
-                rules: [{ type: 'required' }],
+                type: EFormType.date,
+                rules: [{ type: EFormRuleType.required }],
               },
             },
             {
@@ -181,8 +190,8 @@ const Page = () => {
               name: 'teams',
               formItem: {
                 col: 6,
-                type: 'select',
-                mode: 'multiple',
+                type: EFormType.select,
+                mode: EFormModeSelect.multiple,
                 get: {
                   facade: UserTeamFacade,
                   format: (item: any) => ({
@@ -202,7 +211,7 @@ const Page = () => {
               name: 'managerId',
               formItem: {
                 col: 6,
-                type: 'select',
+                type: EFormType.select,
                 get: {
                   facade: ManagerFacade,
                   format: (item: any) => ({
@@ -223,7 +232,7 @@ const Page = () => {
               title: 'routes.admin.dayoff.Leave Date',
               formItem: {
                 condition: (value) => value !== undefined,
-                type: 'number',
+                type: EFormType.number,
                 col: 6,
                 mask: {
                   mask: '9{1,2}[.V{0,1}]',
@@ -234,9 +243,9 @@ const Page = () => {
                   },
                 },
                 rules: [
-                  { type: 'required' },
+                  { type: EFormRuleType.required },
                   {
-                    type: 'custom',
+                    type: EFormRuleType.custom,
                     validator: () => ({
                       validator(rule, value: string) {
                         if (parseFloat(value) < 17) return Promise.resolve();
@@ -252,7 +261,7 @@ const Page = () => {
               name: 'description',
               formItem: {
                 // col: 8,
-                type: 'textarea',
+                type: EFormType.textarea,
               },
             },
             // {

@@ -3,7 +3,8 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { API, routerLinks } from '@utils';
 
 import { useAppDispatch, useTypedSelector, Action, Slice, State, User } from '@store';
-import { CommonEntity, PaginationQuery } from '@models';
+import { CommonEntity, PaginationQuery, EStatusState } from '@models';
+
 
 const name = 'DayOff';
 const action = {
@@ -27,18 +28,18 @@ export const dayoffSlice = createSlice(
     builder
       .addCase(action.putStatus.pending, (state: StateDayOff<DayOff>) => {
         state.isLoading = true;
-        state.status = 'putStatus.pending';
+        state.status = EStatusState.putStatusPending;
       })
       .addCase(action.putStatus.fulfilled, (state: StateDayOff<DayOff>, action: PayloadAction<DayOff>) => {
         state.data = action.payload;
         state.isLoading = false;
         state.isVisibleReject = false;
         state.isVisibleDetail = false;
-        state.status = 'putStatus.fulfilled';
+        state.status = EStatusState.putStatusFulfilled;
       })
       .addCase(action.putStatus.rejected, (state: StateDayOff<DayOff>) => {
         state.isLoading = false;
-        state.status = 'putStatus.rejected';
+        state.status = EStatusState.putStatusRejected;
       });
   }),
 );

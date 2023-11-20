@@ -4,8 +4,10 @@ import { useNavigate } from 'react-router';
 
 import { Spin } from 'antd';
 import { Form } from '@core/form';
-import { GlobalFacade } from '@store';
+import { EStatusGlobal, GlobalFacade } from '@store';
 import { routerLinks, lang } from '@utils';
+import { EFormRuleType, EFormType } from '@models';
+
 
 const Page = () => {
   const { t } = useTranslation();
@@ -14,7 +16,7 @@ const Page = () => {
   const { isLoading, status, user, data, login, profile } = globalFacade;
 
   useEffect(() => {
-    if (status === 'login.fulfilled' && user && Object.keys(user).length > 0) {
+    if (status === EStatusGlobal.loginFulfilled && user && Object.keys(user).length > 0) {
       navigate('/' + lang + '/dashboard', { replace: true });
       profile();
     }
@@ -42,7 +44,10 @@ const Page = () => {
                 title: t('columns.auth.login.Username'),
                 formItem: {
                   placeholder: 'columns.auth.login.Enter Username',
-                  rules: [{ type: 'required' }, { type: 'email' }],
+                  rules: [
+                    { type:  EFormRuleType.required }, 
+                    { type: EFormRuleType.email }
+                  ],
                 },
               },
               {
@@ -50,9 +55,9 @@ const Page = () => {
                 title: t('columns.auth.login.password'),
                 formItem: {
                   placeholder: 'columns.auth.login.Enter Password',
-                  type: 'password',
+                  type: EFormType.password,
                   notDefaultValid: true,
-                  rules: [{ type: 'required' }],
+                  rules: [{ type:  EFormRuleType.required }],
                 },
               },
             ]}

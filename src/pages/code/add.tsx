@@ -8,6 +8,7 @@ import { routerLinks, lang } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
 import { Spin } from 'antd';
+import { EStatusState, EFormRuleType, EFormType } from '@models';
 
 const Page = () => {
   const { id, type } = useParams();
@@ -30,8 +31,8 @@ const Page = () => {
   const isBack = useRef(true);
   useEffect(() => {
     switch (codeFacade.status) {
-      case 'post.fulfilled':
-      case 'put.fulfilled':
+      case EStatusState.postFulfilled:
+      case EStatusState.putFulfilled:
         if (isBack.current) handleBack();
         else {
           isBack.current = true;
@@ -43,7 +44,7 @@ const Page = () => {
   }, [codeFacade.status]);
 
   const handleBack = () => {
-    codeFacade.set({ status: 'idle' });
+    codeFacade.set({ status: EStatusState.idle });
     navigate(`/${lang}${routerLinks('Code')}?${new URLSearchParams(param).toString()}`);
   };
   const handleSubmit = (values: Code) => {
@@ -81,7 +82,7 @@ const Page = () => {
               name: 'name',
               formItem: {
                 col: 6,
-                rules: [{ type: 'required' }],
+                rules: [{ type: EFormRuleType.required }],
                 onBlur: (e, form) => {
                   if (e.target.value && !form.getFieldValue('code')) {
                     form.setFieldValue('code', slug(e.target.value).toUpperCase());
@@ -94,14 +95,14 @@ const Page = () => {
               name: 'code',
               formItem: {
                 col: 6,
-                rules: [{ type: 'required' }, { type: 'max', value: 100 }],
+                rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.max, value: 100 }],
               },
             },
             {
               title: 'routes.admin.user.Description',
               name: 'description',
               formItem: {
-                type: 'textarea',
+                type: EFormType.textarea,
               },
             },
           ]}

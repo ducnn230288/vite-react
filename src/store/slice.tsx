@@ -1,5 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { CommonEntity, Responses } from '@models';
+import { EStatusState, CommonEntity, Responses } from '@models';
 import { Action } from '@store';
 export class Slice<T extends CommonEntity> {
   name: string;
@@ -11,7 +11,7 @@ export class Slice<T extends CommonEntity> {
     data: undefined,
     isLoading: false,
     isVisible: false,
-    status: 'idle',
+    status: EStatusState.idle,
     queryParams: '',
     keepUnusedDataFor: 60,
     time: 0,
@@ -31,7 +31,7 @@ export class Slice<T extends CommonEntity> {
           Object.keys(action.payload).forEach((key) => {
             state[key] = action.payload[key as keyof State<T>];
           });
-          state.status = 'idle';
+          state.status = EStatusState.idle;
         })
         .addCase(
           action.get.pending,
@@ -42,24 +42,24 @@ export class Slice<T extends CommonEntity> {
             state.time = new Date().getTime() + (state.keepUnusedDataFor || 60) * 1000;
             state.queryParams = JSON.stringify(action.meta.arg);
             state.isLoading = true;
-            state.status = 'get.pending';
+            state.status = EStatusState.getPending;
           },
         )
         .addCase(action.get.fulfilled, (state: State<T>, action: PayloadAction<Responses<T[]>>) => {
           if (action.payload.data) {
             state.result = action.payload;
-            state.status = 'get.fulfilled';
-          } else state.status = 'idle';
+            state.status = EStatusState.getFulfilled;
+          } else state.status = EStatusState.idle;
           state.isLoading = false;
         })
         .addCase(action.get.rejected, (state: State) => {
-          state.status = 'get.rejected';
+          state.status = EStatusState.getRejected;
           state.isLoading = false;
         })
 
         .addCase(action.getById.pending, (state: State<T>) => {
           state.isLoading = true;
-          state.status = 'getById.pending';
+          state.status = EStatusState.getByIdPending;
         })
         .addCase(
           action.getById.fulfilled,
@@ -69,13 +69,13 @@ export class Slice<T extends CommonEntity> {
               if (JSON.stringify(state.data) !== JSON.stringify(data)) state.data = data;
               // @ts-ignore
               state[keyState] = true;
-              state.status = 'getById.fulfilled';
-            } else state.status = 'idle';
+              state.status = EStatusState.getByIdFulfilled;
+            } else state.status = EStatusState.idle;
             state.isLoading = false;
           },
         )
         .addCase(action.getById.rejected, (state: State) => {
-          state.status = 'getById.rejected';
+          state.status = EStatusState.getByIdRejected;
           state.isLoading = false;
         })
 
@@ -87,19 +87,19 @@ export class Slice<T extends CommonEntity> {
           ) => {
             state.data = action.meta.arg;
             state.isLoading = true;
-            state.status = 'post.pending';
+            state.status = EStatusState.postPending;
           },
         )
         .addCase(action.post.fulfilled, (state: State<T>, action: PayloadAction<T>) => {
           if (action.payload) {
             if (JSON.stringify(state.data) !== JSON.stringify(action.payload)) state.data = action.payload;
             state.isVisible = false;
-            state.status = 'post.fulfilled';
-          } else state.status = 'idle';
+            state.status = EStatusState.postFulfilled;
+          } else state.status = EStatusState.idle;
           state.isLoading = false;
         })
         .addCase(action.post.rejected, (state: State) => {
-          state.status = 'post.rejected';
+          state.status = EStatusState.postRejected;
           state.isLoading = false;
         })
 
@@ -111,47 +111,47 @@ export class Slice<T extends CommonEntity> {
           ) => {
             state.data = action.meta.arg;
             state.isLoading = true;
-            state.status = 'put.pending';
+            state.status = EStatusState.putPending;
           },
         )
         .addCase(action.put.fulfilled, (state: State<T>, action: PayloadAction<T>) => {
           if (action.payload) {
             if (JSON.stringify(state.data) !== JSON.stringify(action.payload)) state.data = action.payload;
             state.isVisible = false;
-            state.status = 'put.fulfilled';
-          } else state.status = 'idle';
+            state.status = EStatusState.putFulfilled;
+          } else state.status = EStatusState.idle;
           state.isLoading = false;
         })
         .addCase(action.put.rejected, (state: State) => {
-          state.status = 'put.rejected';
+          state.status = EStatusState.putRejected;
           state.isLoading = false;
         })
 
         .addCase(action.putDisable.pending, (state: State<T>) => {
           state.isLoading = true;
-          state.status = 'putDisable.pending';
+          state.status = EStatusState.putDisablePending;
         })
         .addCase(action.putDisable.fulfilled, (state: State<T>, action: PayloadAction<T>) => {
           state.isVisible = false;
-          state.status = action.payload ? 'putDisable.fulfilled' : 'idle';
+          state.status = action.payload ? EStatusState.putDisableFulfilled : EStatusState.idle;
           state.isLoading = false;
         })
         .addCase(action.putDisable.rejected, (state: State) => {
-          state.status = 'putDisable.rejected';
+          state.status = EStatusState.putDisableRejected;
           state.isLoading = false;
         })
 
         .addCase(action.delete.pending, (state: State<T>) => {
           state.isLoading = true;
-          state.status = 'delete.pending';
+          state.status = EStatusState.deletePending;
         })
         .addCase(action.delete.fulfilled, (state: State<T>, action: PayloadAction<T>) => {
-          if (action.payload) state.status = 'delete.fulfilled';
-          else state.status = 'idle';
+          if (action.payload) state.status = EStatusState.deleteFulfilled;
+          else state.status = EStatusState.idle;
           state.isLoading = false;
         })
         .addCase(action.delete.rejected, (state: State) => {
-          state.status = 'delete.rejected';
+          state.status =  EStatusState.deleteRejected;
           state.isLoading = false;
         });
       extraReducers && extraReducers(builder);
@@ -164,7 +164,7 @@ export interface State<T = object> {
   data?: T;
   isLoading?: boolean;
   isVisible?: boolean;
-  status?: string;
+  status?: EStatusState;
   queryParams?: string;
   keepUnusedDataFor?: number;
   time?: number;

@@ -7,7 +7,7 @@ import { Avatar } from '@core/avatar';
 import { Button } from '@core/button';
 import { DataTable } from '@core/data-table';
 
-import { TableRefObject } from '@models';
+import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
 import { UserFacade, GlobalFacade, CodeFacade, UserTeamFacade, ManagerFacade, UserRoleFacade } from '@store';
 import { Check, Disable, Edit, Plus, Trash } from '@svgs';
 import { keyRole, routerLinks, lang } from '@utils';
@@ -46,8 +46,8 @@ const Page = () => {
   const userFacade = UserFacade();
   useEffect(() => {
     switch (userFacade.status) {
-      case 'delete.fulfilled':
-      case 'putDisable.fulfilled':
+      case EStatusState.deleteFulfilled:
+      case EStatusState.putDisableFulfilled:
         dataTableRef?.current?.onChange(request);
         break;
     }
@@ -158,7 +158,7 @@ const Page = () => {
                   title: `routes.admin.user.Full name`,
                   name: 'name',
                   tableItem: {
-                    filter: { type: 'search' },
+                    filter: { type: ETableFilterType.search },
                     width: 210,
                     fixed: window.innerWidth > 767 ? 'left' : '',
                     sorter: true,
@@ -171,7 +171,7 @@ const Page = () => {
                   tableItem: {
                     width: 200,
                     filter: {
-                      type: 'checkbox',
+                      type:  ETableFilterType.checkbox,
                       name: 'positionCode',
                       get: {
                         facade: CodeFacade,
@@ -204,7 +204,7 @@ const Page = () => {
                   name: 'manager',
                   tableItem: {
                     filter: {
-                      type: 'checkbox',
+                      type:  ETableFilterType.checkbox,
                       name: 'positionCode',
                       get: {
                         facade: ManagerFacade,
@@ -228,7 +228,7 @@ const Page = () => {
                   name: 'teams.id',
                   tableItem: {
                     filter: {
-                      type: 'checkbox',
+                      type:  ETableFilterType.checkbox,
                       name: 'teams.id',
                       get: {
                         facade: UserTeamFacade,
@@ -249,7 +249,7 @@ const Page = () => {
                   title: 'Email',
                   name: 'email',
                   tableItem: {
-                    filter: { type: 'search' },
+                    filter: { type: ETableFilterType.search },
                     sorter: true,
                   },
                 },
@@ -257,7 +257,7 @@ const Page = () => {
                   title: 'routes.admin.user.Phone Number',
                   name: 'phoneNumber',
                   tableItem: {
-                    filter: { type: 'search' },
+                    filter: { type: ETableFilterType.search },
                     sorter: true,
                   },
                 },
@@ -284,7 +284,7 @@ const Page = () => {
                   name: 'createdAt',
                   tableItem: {
                     width: 120,
-                    filter: { type: 'date' },
+                    filter: { type: ETableFilterType.date },
                     sorter: true,
                     render: (text) => dayjs(text).format(formatDate),
                   },
@@ -293,7 +293,7 @@ const Page = () => {
                   title: 'routes.admin.user.Action',
                   tableItem: {
                     width: 90,
-                    align: 'center',
+                    align: ETableAlign.center,
                     render: (text: string, data) => (
                       <div className={'flex gap-2'}>
                         {user?.role?.permissions?.includes(keyRole.P_USER_UPDATE) && (

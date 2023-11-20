@@ -9,9 +9,10 @@ import { DataTable } from '@core/data-table';
 import { lang, keyRole, routerLinks } from '@utils';
 import { GlobalFacade, CodeFacade, CodeTypeFacade } from '@store';
 import { Check, Disable, Edit, Plus, Trash } from '@svgs';
-import { TableRefObject } from '@models';
 import { createSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
+
 
 const Page = () => {
   const { user, set, formatDate } = GlobalFacade();
@@ -44,10 +45,10 @@ const Page = () => {
   const codeFacade = CodeFacade();
   useEffect(() => {
     switch (codeFacade.status) {
-      case 'put.fulfilled':
-      case 'putDisable.fulfilled':
-      case 'post.fulfilled':
-      case 'delete.fulfilled':
+      case EStatusState.putFulfilled:
+      case EStatusState.putDisableFulfilled:
+      case EStatusState.postFulfilled:
+      case EStatusState.deleteFulfilled:
         dataTableRef?.current?.onChange(request);
         break;
     }
@@ -117,7 +118,7 @@ const Page = () => {
                   name: 'code',
                   tableItem: {
                     width: 100,
-                    filter: { type: 'search' },
+                    filter: { type: ETableFilterType.search },
                     sorter: true,
                   },
                 },
@@ -125,7 +126,7 @@ const Page = () => {
                   title: 'routes.admin.Code.Name',
                   name: 'name',
                   tableItem: {
-                    filter: { type: 'search' },
+                    filter: { type: ETableFilterType.search },
                     sorter: true,
                   },
                 },
@@ -134,7 +135,7 @@ const Page = () => {
                   name: 'createdAt',
                   tableItem: {
                     width: 120,
-                    filter: { type: 'date' },
+                    filter: { type: ETableFilterType.date  },
                     sorter: true,
                     render: (text) => dayjs(text).format(formatDate),
                   },
@@ -143,7 +144,7 @@ const Page = () => {
                   title: 'routes.admin.user.Action',
                   tableItem: {
                     width: 100,
-                    align: 'center',
+                    align: ETableAlign.center,
                     render: (text: string, data) => (
                       <div className={'flex gap-2'}>
                         {user?.role?.permissions?.includes(keyRole.P_CODE_UPDATE) && (

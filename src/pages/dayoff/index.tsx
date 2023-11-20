@@ -11,6 +11,8 @@ import { DayoffFacade, GlobalFacade } from '@store';
 import { CheckCircle, Plus, Spinner, Times, Trash } from '@svgs';
 import { lang, keyRole, routerLinks, handleDownloadCSV, API } from '@utils';
 import { Message } from '@core/message';
+import { EStatusState, ETableFilterType, ETableAlign } from '@models';
+
 
 const Page = () => {
   const { formatDate, user, set } = GlobalFacade();
@@ -26,10 +28,10 @@ const Page = () => {
   const dayoffFacade = DayoffFacade();
   useEffect(() => {
     switch (dayoffFacade.status) {
-      case 'put.fulfilled':
-      case 'post.fulfilled':
-      case 'delete.fulfilled':
-      case 'putStatus.fulfilled':
+      case EStatusState.putFulfilled:
+      case EStatusState.postFulfilled:
+      case EStatusState.deleteFulfilled:
+      case EStatusState.putStatusFulfilled:
         dataTableRef.current.onChange();
         break;
     }
@@ -130,7 +132,7 @@ const Page = () => {
             name: 'dateLeaveStart',
             tableItem: {
               width: 210,
-              filter: { type: 'date' },
+              filter: { type: ETableFilterType.date },
               sorter: true,
               render: (text: string, item: any) => {
                 const startDate = dayjs(text).format(formatDate);
@@ -145,7 +147,7 @@ const Page = () => {
             tableItem: {
               onCell: () => ({ style: { paddingTop: '0.25rem', paddingBottom: '0.25rem' } }),
               filter: {
-                type: 'radio',
+                type: ETableFilterType.radio,
                 list: [
                   { label: 'Pending', value: 0 },
                   { label: 'Approved', value: 1 },
@@ -171,7 +173,7 @@ const Page = () => {
             name: 'approvedAt',
             tableItem: {
               width: 180,
-              filter: { type: 'date' },
+              filter: { type: ETableFilterType.date },
               sorter: true,
               render: (text: string) => (text ? dayjs(text).format(formatDate) : ''),
             },
@@ -194,7 +196,7 @@ const Page = () => {
               ? {
                   width: 90,
                   fixed: window.innerWidth > 767 ? 'right' : undefined,
-                  align: 'center',
+                  align: ETableAlign.center,
                   onCell: () => ({ style: { paddingTop: '0.25rem', paddingBottom: '0.25rem' } }),
                   render: (text: string, data: any) => (
                     <div className={'flex justify-center'}>

@@ -7,6 +7,8 @@ import { Form } from '@core/form';
 import { GlobalFacade, UserFacade, UserTeamFacade } from '@store';
 import { routerLinks, lang } from '@utils';
 import { Spin } from 'antd';
+import { EStatusState, EFormRuleType, EFormType } from '@models';
+
 
 const Page = () => {
   const { id } = useParams();
@@ -29,8 +31,8 @@ const Page = () => {
   const isBack = useRef(true);
   useEffect(() => {
     switch (userTeamFacade.status) {
-      case 'post.fulfilled':
-      case 'put.fulfilled':
+      case EStatusState.postFulfilled:
+      case EStatusState.putFulfilled:
         if (isBack.current) handleBack();
         else {
           isBack.current = true;
@@ -42,7 +44,7 @@ const Page = () => {
   }, [userTeamFacade.status]);
 
   const handleBack = () => {
-    userTeamFacade.set({ status: 'idle' });
+    userTeamFacade.set({ status: EStatusState.idle });
     navigate(`/${lang}${routerLinks('Team')}?${new URLSearchParams(param).toString()}`);
   };
   const handleSubmit = (values: any) => {
@@ -62,22 +64,22 @@ const Page = () => {
               title: 'routes.admin.team.Name',
               name: 'name',
               formItem: {
-                rules: [{ type: 'required' }],
+                rules: [{ type: EFormRuleType.required }],
               },
             },
             {
               title: 'routes.admin.user.Description',
               name: 'description',
               formItem: {
-                type: 'textarea',
+                type: EFormType.textarea,
               },
             },
             {
               title: 'routes.admin.dayoff.Manager',
               name: 'managerId',
               formItem: {
-                rules: [{ type: 'required' }],
-                type: 'select',
+                rules: [{ type: EFormRuleType.required }],
+                type: EFormType.select,
                 get: {
                   facade: UserFacade,
                   params: (fullTextSearch) => ({

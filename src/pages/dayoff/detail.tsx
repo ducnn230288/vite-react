@@ -10,6 +10,8 @@ import { ModalForm } from '@core/modal/form';
 import { GlobalFacade, DayoffFacade } from '@store';
 import { CheckCircle, Times } from '@svgs';
 import { keyRole, routerLinks, lang } from '@utils';
+import { EFormRuleType, EFormType } from '@models';
+
 
 const Page = () => {
   const { formatDate, user, set } = GlobalFacade();
@@ -68,8 +70,8 @@ const Page = () => {
             name: 'reasonReject',
             title: t('routes.admin.dayoff.Reason Reject'),
             formItem: {
-              type: 'textarea',
-              rules: [{ type: 'required' }],
+              type: EFormType.textarea,
+              rules: [{ type: EFormRuleType.required }],
             },
           },
         ]}

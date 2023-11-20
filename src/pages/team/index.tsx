@@ -9,6 +9,8 @@ import { Button } from '@core/button';
 import { GlobalFacade, UserTeamFacade } from '@store';
 import { Edit, Plus, Trash } from '@svgs';
 import { lang, keyRole, routerLinks } from '@utils';
+import { EStatusState, ETableAlign } from '@models';
+
 
 const Page = () => {
   const { user, set } = GlobalFacade();
@@ -24,7 +26,7 @@ const Page = () => {
   const userTeamFacade = UserTeamFacade();
   useEffect(() => {
     switch (userTeamFacade.status) {
-      case 'delete.fulfilled':
+      case EStatusState.deleteFulfilled:
         dataTableRef.current.onChange();
         break;
     }
@@ -67,7 +69,7 @@ const Page = () => {
           title: 'routes.admin.user.Action',
           tableItem: {
             width: 90,
-            align: 'center',
+            align: ETableAlign.center,
             onCell: () => ({
               style: { paddingTop: '0.25rem', paddingBottom: '0.25rem' },
             }),
