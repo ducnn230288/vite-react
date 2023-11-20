@@ -3,16 +3,15 @@ import { useTranslation } from 'react-i18next';
 import { Popconfirm, Select, Spin, Tooltip } from 'antd';
 import { useNavigate } from 'react-router';
 import classNames from 'classnames';
+import { createSearchParams } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 import { Button } from '@core/button';
 import { DataTable } from '@core/data-table';
-import { lang, keyRole, routerLinks } from '@utils';
-import { GlobalFacade, CodeFacade, CodeTypeFacade } from '@store';
+import { keyRole, lang, routerLinks } from '@utils';
+import { CodeFacade, CodeTypeFacade, GlobalFacade } from '@store';
 import { Check, Disable, Edit, Plus, Trash } from '@svgs';
-import { createSearchParams } from 'react-router-dom';
-import dayjs from 'dayjs';
 import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
-
 
 const Page = () => {
   const { user, set, formatDate } = GlobalFacade();
@@ -135,7 +134,7 @@ const Page = () => {
                   name: 'createdAt',
                   tableItem: {
                     width: 120,
-                    filter: { type: ETableFilterType.date  },
+                    filter: { type: ETableFilterType.date },
                     sorter: true,
                     render: (text) => dayjs(text).format(formatDate),
                   },

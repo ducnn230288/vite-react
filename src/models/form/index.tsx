@@ -1,6 +1,5 @@
 import { CheckboxOptionType, FormInstance } from 'antd';
 import { TableGet } from '../data-table';
-
 export enum EFormType {
   onlyNumber = 'only_number',
   hidden = 'hidden',
@@ -53,7 +52,6 @@ export enum EFormRuleType {
   onlyTextSpace = 'only_text_space',
   textarea = 'textarea',
 }
-
 export class FormModel {
   constructor(
     public name: string,

@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
+import { Spin } from 'antd';
 
-import { DataTypeFacade, Data, DataFacade, GlobalFacade } from '@store';
-import { routerLinks, lang } from '@utils';
+import { Data, DataFacade, DataTypeFacade, GlobalFacade } from '@store';
+import { lang, routerLinks } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
-import { Spin } from 'antd';
 import { EStatusState, EFormRuleType, EFormType } from '@models';
 
 const Page = () => {
@@ -43,7 +43,7 @@ const Page = () => {
   }, [dataFacade.status]);
 
   const handleBack = () => {
-    dataFacade.set({ status: EStatusState.idle  });
+    dataFacade.set({ status: EStatusState.idle });
     navigate(`/${lang}${routerLinks('Data')}?${new URLSearchParams(param).toString()}`);
   };
 

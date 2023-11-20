@@ -11,7 +11,6 @@ import { Form } from '@core/form';
 import { getQueryStringParams } from '@core/data-table';
 import { EFormType } from '@models';
 
-
 const Page = () => {
   const { set } = GlobalFacade();
   const parameterFacade = ParameterFacade();

@@ -1,16 +1,16 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
-import { Popconfirm, Spin, Tooltip, Select } from 'antd';
+import { Popconfirm, Select, Spin, Tooltip } from 'antd';
 
 import { Avatar } from '@core/avatar';
 import { Button } from '@core/button';
 import { DataTable } from '@core/data-table';
 
 import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
-import { UserFacade, GlobalFacade, CodeFacade, UserTeamFacade, ManagerFacade, UserRoleFacade } from '@store';
+import { CodeFacade, GlobalFacade, UserFacade, UserRoleFacade, UserTeamFacade, ManagerFacade, } from '@store';
 import { Check, Disable, Edit, Plus, Trash } from '@svgs';
-import { keyRole, routerLinks, lang } from '@utils';
+import { keyRole, lang, routerLinks } from '@utils';
 import classNames from 'classnames';
 import { createSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
@@ -171,7 +171,7 @@ const Page = () => {
                   tableItem: {
                     width: 200,
                     filter: {
-                      type:  ETableFilterType.checkbox,
+                      type: ETableFilterType.checkbox,
                       name: 'positionCode',
                       get: {
                         facade: CodeFacade,
@@ -261,24 +261,6 @@ const Page = () => {
                     sorter: true,
                   },
                 },
-                // {
-                //   title: 'routes.admin.user.Date of birth',
-                //   name: 'dob',
-                //   tableItem: {
-                //     filter: { type: 'date' },
-                //     sorter: true,
-                //     render: (text: string) => dayjs(text).format(formatDate),
-                //   },
-                // },
-                // {
-                //   title: 'routes.admin.user.Start Date',
-                //   name: 'startDate',
-                //   tableItem: {
-                //     filter: { type: 'search' },
-                //     sorter: true,
-                //     render: (text: string) => dayjs(text).format(formatDate),
-                //   },
-                // },
                 {
                   title: 'Created',
                   name: 'createdAt',

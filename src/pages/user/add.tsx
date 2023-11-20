@@ -4,12 +4,11 @@ import { useNavigate, useParams } from 'react-router';
 import { Spin } from 'antd';
 
 import { Avatar } from '@core/avatar';
-import { UserRoleFacade, UserFacade, CodeFacade, User, GlobalFacade, UserTeamFacade, ManagerFacade } from '@store';
-import { routerLinks, lang } from '@utils';
+import { CodeFacade, GlobalFacade, User, UserFacade, UserRoleFacade, UserTeamFacade, ManagerFacade } from '@store';
+import { lang, routerLinks } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
 import { EStatusState, EFormRuleType, EFormType, EFormModeSelect } from '@models';
-
 
 const Page = () => {
   const { id, roleCode } = useParams();
@@ -93,9 +92,9 @@ const Page = () => {
               formItem: {
                 col: 6,
                 rules: [
-                  { type: EFormRuleType.required }, 
-                  { type: EFormRuleType.email }, 
-                  { type:EFormRuleType.min, value: 6 }
+                  { type: EFormRuleType.required },
+                  { type: EFormRuleType.email },
+                  { type: EFormRuleType.min, value: 6 },
                 ],
               },
             },
@@ -106,10 +105,7 @@ const Page = () => {
                 col: 6,
                 type: EFormType.password,
                 condition: (value: string, form, index: number, values: any) => !values?.id,
-                rules: [
-                  { type: EFormRuleType.required }, 
-                  { type: EFormRuleType.min, value: 6 }
-                ],
+                rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.min, value: 6 }],
               },
             },
             {
@@ -159,7 +155,7 @@ const Page = () => {
               formItem: {
                 col: 6,
                 type: EFormType.select,
-                rules: [{ type: EFormRuleType.required}],
+                rules: [{ type: EFormRuleType.required }],
                 convert: (data) =>
                   data?.map ? data.map((_item: any) => (_item?.id !== undefined ? +_item.id : _item)) : data,
                 get: {
@@ -269,7 +265,7 @@ const Page = () => {
             //   title: 'routes.admin.user.Upload avatar',
             //   formItem: {
             //     col: 4,
-            //     type: 'upload',
+            //     type: EFormType.upload,
             //   },
             // },
           ]}

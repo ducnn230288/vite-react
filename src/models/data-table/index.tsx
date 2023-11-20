@@ -11,7 +11,6 @@ export enum ETableFilterType {
   radio = 'radio',
   date = 'date',
 }
-
 export class DataTableModel {
   name?: string;
   title?: any;

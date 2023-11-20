@@ -2,12 +2,12 @@ import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import slug from 'slug';
+import { Spin } from 'antd';
 
-import { CodeFacade, Code, CodeTypeFacade, GlobalFacade } from '@store';
-import { routerLinks, lang } from '@utils';
+import { Code, CodeFacade, CodeTypeFacade, GlobalFacade } from '@store';
+import { lang, routerLinks } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
-import { Spin } from 'antd';
 import { EStatusState, EFormRuleType, EFormType } from '@models';
 
 const Page = () => {

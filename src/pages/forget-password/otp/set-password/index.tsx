@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import { Spin } from 'antd';
 
 import { Form } from '@core/form';
-import { routerLinks, lang } from '@utils';
+import { lang, routerLinks } from '@utils';
 import { EStatusGlobal, GlobalFacade } from '@store';
 import { EFormRuleType, EFormType } from '@models';
 
@@ -68,7 +68,7 @@ const Page = () => {
               title: 'columns.auth.register.retypedPassword',
               formItem: {
                 placeholder: 'columns.auth.register.retypedPassword',
-                type:  EFormType.password,
+                type: EFormType.password,
                 rules: [
                   { type: EFormRuleType.required },
                   { type: EFormRuleType.min, value: 6 },

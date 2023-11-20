@@ -5,9 +5,8 @@ import { useNavigate } from 'react-router';
 import { Spin } from 'antd';
 import { Form } from '@core/form';
 import { EStatusGlobal, GlobalFacade } from '@store';
-import { routerLinks, lang } from '@utils';
+import { lang, routerLinks } from '@utils';
 import { EFormRuleType } from '@models';
-
 
 const Page = () => {
   const { t } = useTranslation();
@@ -41,10 +40,7 @@ const Page = () => {
                 title: t('columns.auth.reset-password.Recovery Email'),
                 formItem: {
                   placeholder: 'columns.auth.reset-password.Recovery Email',
-                  rules: [
-                    { type: EFormRuleType.required }, 
-                    { type: EFormRuleType.email}
-                  ],
+                  rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.email }],
                 },
               },
             ]}

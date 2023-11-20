@@ -5,9 +5,8 @@ import { t } from 'i18next';
 import { Spin } from 'antd';
 import { Form } from '@core/form';
 import { EStatusGlobal, GlobalFacade } from '@store';
-import { routerLinks, lang } from '@utils';
+import { lang, routerLinks } from '@utils';
 import { EFormRuleType, EFormType } from '@models';
-
 
 const Page = () => {
   const navigate = useNavigate();
@@ -42,16 +41,17 @@ const Page = () => {
                 title: 'routes.auth.reset-password.Code OTP',
                 formItem: {
                   rules: [
-                    { type: EFormRuleType.required }, 
-                    { type:EFormRuleType.min, value: 6 }, 
-                    { type: EFormRuleType.max, value: 6 }],
+                    { type: EFormRuleType.required },
+                    { type: EFormRuleType.min, value: 6 },
+                    { type: EFormRuleType.max, value: 6 },
+                  ],
                 },
               },
               {
                 title: '',
                 name: 'email',
                 formItem: {
-                  type:  EFormType.hidden,
+                  type: EFormType.hidden,
                 },
               },
             ]}

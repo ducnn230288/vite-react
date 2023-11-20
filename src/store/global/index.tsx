@@ -111,7 +111,6 @@ const checkLanguage = (language: TLanguage) => {
   localStorage.setItem('i18nextLng', language);
   return { language: language, formatDate, locale };
 };
-
 export enum EStatusGlobal {
   idle = 'idle',
   logoutFulfilled = 'logout.fulfilled',
@@ -134,7 +133,6 @@ export enum EStatusGlobal {
   resetPasswordFulfilled = 'resetPassword.fulfilled',
   resetPasswordRejected = 'resetPassword.rejected',
 }
-
 const initialState: State = {
   data: JSON.parse(localStorage.getItem(keyUser) || '{}'),
   routeLanguage: undefined,
@@ -289,12 +287,12 @@ export const globalSlice = createSlice({
         ) => {
           state.data = action.meta.arg;
           state.isLoading = true;
-          state.status =  EStatusGlobal.otpConfirmationPending;
+          state.status = EStatusGlobal.otpConfirmationPending;
         },
       )
       .addCase(action.otpConfirmation.fulfilled, (state: State, action: PayloadAction<boolean>) => {
         if (action.payload) {
-          state.status =  EStatusGlobal.otpConfirmationFulfilled;
+          state.status = EStatusGlobal.otpConfirmationFulfilled;
         } else state.status = EStatusGlobal.idle;
         state.isLoading = false;
       })
@@ -328,6 +326,7 @@ export const globalSlice = createSlice({
   },
 });
 export type TLanguage = 'vn' | 'en';
+
 interface State {
   [selector: string]: any;
   user?: User;
@@ -335,7 +334,7 @@ interface State {
   routeLanguage?: Record<string, string>;
   isLoading?: boolean;
   isVisible?: boolean;
-  status?: string;
+  status?: EStatusGlobal;
   title?: string;
   titleOption?: Record<string, string | undefined>;
   pathname?: string;

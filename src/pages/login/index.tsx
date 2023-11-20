@@ -5,9 +5,8 @@ import { useNavigate } from 'react-router';
 import { Spin } from 'antd';
 import { Form } from '@core/form';
 import { EStatusGlobal, GlobalFacade } from '@store';
-import { routerLinks, lang } from '@utils';
+import { lang, routerLinks } from '@utils';
 import { EFormRuleType, EFormType } from '@models';
-
 
 const Page = () => {
   const { t } = useTranslation();
@@ -44,10 +43,7 @@ const Page = () => {
                 title: t('columns.auth.login.Username'),
                 formItem: {
                   placeholder: 'columns.auth.login.Enter Username',
-                  rules: [
-                    { type:  EFormRuleType.required }, 
-                    { type: EFormRuleType.email }
-                  ],
+                  rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.email }],
                 },
               },
               {
@@ -57,7 +53,7 @@ const Page = () => {
                   placeholder: 'columns.auth.login.Enter Password',
                   type: EFormType.password,
                   notDefaultValid: true,
-                  rules: [{ type:  EFormRuleType.required }],
+                  rules: [{ type: EFormRuleType.required }],
                 },
               },
             ]}

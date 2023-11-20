@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
-
-import { PostTypeFacade, Post, PostFacade, GlobalFacade } from '@store';
-import { routerLinks, lang } from '@utils';
-import { Button } from '@core/button';
-import { Form } from '@core/form';
 import slug from 'slug';
 import { Spin } from 'antd';
+
+import { GlobalFacade, Post, PostFacade, PostTypeFacade } from '@store';
+import { lang, routerLinks } from '@utils';
+import { Button } from '@core/button';
+import { Form } from '@core/form';
 import { EStatusState, EFormRuleType, EFormType } from '@models';
 
 const Page = () => {
@@ -82,7 +82,7 @@ const Page = () => {
               name: 'createdAt',
               formItem: {
                 col: 6,
-                type:  EFormType.date,
+                type: EFormType.date,
               },
             },
             {
@@ -90,7 +90,7 @@ const Page = () => {
               name: 'thumbnailUrl',
               formItem: {
                 col: 6,
-                type:  EFormType.upload,
+                type: EFormType.upload,
               },
             },
             {

@@ -5,10 +5,12 @@ import { Spin } from 'antd';
 import { EStatusState, EFormRuleType } from '@models';
 
 
-import { DataTypeFacade, DataType, GlobalFacade } from '@store';
-import { routerLinks, lang } from '@utils';
+import { DataType, DataTypeFacade, GlobalFacade } from '@store';
+import { lang, routerLinks } from '@utils';
 import { Button } from '@core/button';
 import { Form } from '@core/form';
+import { EStatusState, EFormRuleType } from '@models';
+
 const Page = () => {
   const { id } = useParams();
   const dataTypeFacade = DataTypeFacade();
