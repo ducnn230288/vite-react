@@ -9,7 +9,6 @@ import { GlobalFacade, DayoffFacade } from '@store';
 import { routerLinks, lang } from '@utils';
 import { EStatusState, EFormRuleType, EFormType } from '@models';
 
-
 const Page = () => {
   const { id } = useParams();
   const dayoffFacade = DayoffFacade();
@@ -33,7 +32,7 @@ const Page = () => {
   useEffect(() => {
     switch (dayoffFacade.status) {
       case EStatusState.putFulfilled:
-        case EStatusState.postFulfilled:
+      case EStatusState.postFulfilled:
         if (isBack.current) handleBack();
         else {
           isBack.current = true;

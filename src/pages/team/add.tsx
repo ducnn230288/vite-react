@@ -9,7 +9,6 @@ import { routerLinks, lang } from '@utils';
 import { Spin } from 'antd';
 import { EStatusState, EFormRuleType, EFormType } from '@models';
 
-
 const Page = () => {
   const { id } = useParams();
   const userTeamFacade = UserTeamFacade();

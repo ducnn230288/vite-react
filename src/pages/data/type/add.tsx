@@ -2,8 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { Spin } from 'antd';
-import { EStatusState, EFormRuleType } from '@models';
-
 
 import { DataType, DataTypeFacade, GlobalFacade } from '@store';
 import { lang, routerLinks } from '@utils';

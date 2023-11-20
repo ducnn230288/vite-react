@@ -8,7 +8,7 @@ import { Button } from '@core/button';
 import { DataTable } from '@core/data-table';
 
 import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
-import { CodeFacade, GlobalFacade, UserFacade, UserRoleFacade, UserTeamFacade, ManagerFacade, } from '@store';
+import { CodeFacade, GlobalFacade, UserFacade, UserRoleFacade, UserTeamFacade, ManagerFacade } from '@store';
 import { Check, Disable, Edit, Plus, Trash } from '@svgs';
 import { keyRole, lang, routerLinks } from '@utils';
 import classNames from 'classnames';
@@ -204,7 +204,7 @@ const Page = () => {
                   name: 'manager',
                   tableItem: {
                     filter: {
-                      type:  ETableFilterType.checkbox,
+                      type: ETableFilterType.checkbox,
                       name: 'positionCode',
                       get: {
                         facade: ManagerFacade,
@@ -228,7 +228,7 @@ const Page = () => {
                   name: 'teams.id',
                   tableItem: {
                     filter: {
-                      type:  ETableFilterType.checkbox,
+                      type: ETableFilterType.checkbox,
                       name: 'teams.id',
                       get: {
                         facade: UserTeamFacade,

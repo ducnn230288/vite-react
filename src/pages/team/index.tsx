@@ -11,7 +11,6 @@ import { Edit, Plus, Trash } from '@svgs';
 import { lang, keyRole, routerLinks } from '@utils';
 import { EStatusState, ETableAlign } from '@models';
 
-
 const Page = () => {
   const { user, set } = GlobalFacade();
   useEffect(() => {

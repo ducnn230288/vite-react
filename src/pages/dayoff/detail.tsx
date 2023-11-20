@@ -12,7 +12,6 @@ import { CheckCircle, Times } from '@svgs';
 import { keyRole, routerLinks, lang } from '@utils';
 import { EFormRuleType, EFormType } from '@models';
 
-
 const Page = () => {
   const { formatDate, user, set } = GlobalFacade();
 
