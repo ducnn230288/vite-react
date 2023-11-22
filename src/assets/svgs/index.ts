@@ -23,3 +23,4 @@ export { ReactComponent as Key } from './key.svg';
 export { ReactComponent as Out } from './out.svg';
 export { ReactComponent as Logo } from './logo.svg';
 export { ReactComponent as Coffee } from './coffee-solid.svg';
+export { ReactComponent as Tich } from './tich.svg';
