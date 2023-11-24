@@ -1,19 +1,18 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import { Button } from '@core/button';
-import { DataTable } from '@core/data-table';
-import { lang, keyRole, routerLinks } from '@utils';
-import { GlobalFacade, PostFacade, PostTypeFacade } from '@store';
-import { Check, Disable, Edit, Plus, Trash } from '@svgs';
 import { Popconfirm, Select, Spin, Tooltip } from 'antd';
 import { useNavigate } from 'react-router';
 import classNames from 'classnames';
 import { createSearchParams } from 'react-router-dom';
-import { Avatar } from '@core/avatar';
 import dayjs from 'dayjs';
-import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
 
+import { Button } from '@core/button';
+import { DataTable } from '@core/data-table';
+import { keyRole, lang, routerLinks } from '@utils';
+import { GlobalFacade, PostFacade, PostTypeFacade } from '@store';
+import { Check, Disable, Edit, Plus, Trash } from '@svgs';
+import { EStatusState, ETableAlign, ETableFilterType, TableRefObject } from '@models';
+import { Avatar } from '@core/avatar';
 
 const Page = () => {
   const { user, set, formatDate } = GlobalFacade();
@@ -196,7 +195,7 @@ const Page = () => {
                   name: 'createdAt',
                   tableItem: {
                     width: 120,
-                    filter: { type: ETableFilterType.date},
+                    filter: { type: ETableFilterType.date },
                     sorter: true,
                     render: (text) => dayjs(text).format(formatDate),
                   },

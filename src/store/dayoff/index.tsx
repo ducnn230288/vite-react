@@ -5,7 +5,6 @@ import { API, routerLinks } from '@utils';
 import { useAppDispatch, useTypedSelector, Action, Slice, State, User } from '@store';
 import { CommonEntity, PaginationQuery, EStatusState } from '@models';
 
-
 const name = 'DayOff';
 const action = {
   ...new Action<DayOff>(name),

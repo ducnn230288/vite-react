@@ -1,6 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { EStatusState, CommonEntity, Responses } from '@models';
 import { Action } from '@store';
+
 export class Slice<T extends CommonEntity> {
   name: string;
   initialState: State<T>;
@@ -151,7 +152,7 @@ export class Slice<T extends CommonEntity> {
           state.isLoading = false;
         })
         .addCase(action.delete.rejected, (state: State) => {
-          state.status =  EStatusState.deleteRejected;
+          state.status = EStatusState.deleteRejected;
           state.isLoading = false;
         });
       extraReducers && extraReducers(builder);

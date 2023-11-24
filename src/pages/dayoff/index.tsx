@@ -13,7 +13,6 @@ import { lang, keyRole, routerLinks, handleDownloadCSV, API } from '@utils';
 import { Message } from '@core/message';
 import { EStatusState, ETableFilterType, ETableAlign } from '@models';
 
-
 const Page = () => {
   const { formatDate, user, set } = GlobalFacade();
   useEffect(() => {

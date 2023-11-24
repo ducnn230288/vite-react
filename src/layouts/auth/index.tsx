@@ -20,9 +20,6 @@ const Layout = ({ children }: PropsWithChildren) => {
           <div className="lg:max-w-xl mx-auto p-10 w-full">{children}</div>
         </div>
       </div>
-      {/* <div className="bg-[url('../../assets/images/login-f.png')] overflow-hidden w-full h-28 bg-cover bg-no-repeat absolute bottom-0 z-10">
-        <div className='absolute top-1/2 right-1/2 translate-x-1/2 z-20 font-medium text-white text-center'>Powered By ARI Technology Co ., JSC</div>
-      </div> */}
     </div>
   );
 };
