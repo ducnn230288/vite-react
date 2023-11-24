@@ -33,7 +33,7 @@ const Page = () => {
   useEffect(() => {
     switch (dayoffFacade.status) {
       case EStatusState.putFulfilled:
-        case EStatusState.postFulfilled:
+      case EStatusState.postFulfilled:
         if (isBack.current) handleBack();
         else {
           isBack.current = true;

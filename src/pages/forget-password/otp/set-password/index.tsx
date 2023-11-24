@@ -60,7 +60,10 @@ const Page = () => {
               formItem: {
                 placeholder: 'columns.auth.login.Enter Password',
                 type: EFormType.password,
-                rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.min, value: 6 }],
+                rules: [
+                  { type: EFormRuleType.required }, 
+                  { type: EFormRuleType.min, value: 6 }
+                ],
               },
             },
             {

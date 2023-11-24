@@ -50,6 +50,11 @@ const Layout: IMenu[] = [
         name: 'Team',
         permission: keyRole.P_USER_TEAM_LISTED,
       },
+      {
+        name: 'Question',
+        permission: keyRole.P_QUESTION_LISTED,
+        queryParams: { typeCode: "TEST_IQ" },
+      },
     ],
   },
 ];

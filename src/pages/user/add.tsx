@@ -141,7 +141,10 @@ const Page = () => {
               name: 'phoneNumber',
               formItem: {
                 col: 6,
-                rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.phone, min: 10, max: 15 }],
+                rules: [
+                  { type: EFormRuleType.required }, 
+                  { type: EFormRuleType.phone, min: 10, max: 15 }
+                ],
               },
             },
             {

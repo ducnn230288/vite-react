@@ -44,7 +44,8 @@ const Page = () => {
                   rules: [
                     { type: EFormRuleType.required }, 
                     { type:EFormRuleType.min, value: 6 }, 
-                    { type: EFormRuleType.max, value: 6 }],
+                    { type: EFormRuleType.max, value: 6 }
+                  ],
                 },
               },
               {

@@ -75,7 +75,8 @@
     "DayOff": "Nghỉ phép",
     "Booking": "Đặt trước",
     "Booking/List": "Danh sách",
-    "Booking/Add": "Tạo mới"
+    "Booking/Add": "Tạo mới",
+    "Question": "Câu hỏi"
   },
   "pages": {
     "ForgetPassword": "Quên mật khẩu",
@@ -109,7 +110,8 @@
     "Team/Edit": "Chỉnh sửa nhóm",
     "Booking": "Đặt trước",
     "Booking/Detail": "Đặt trước {{date}}",
-    "Booking/Add": "Thêm mới đặt trước {{type}} {{date}}"
+    "Booking/Add": "Thêm mới đặt trước {{type}} {{date}}",
+    "Question": "Danh sách câu hỏi"
   },
   "columns": {
     "auth": {
@@ -305,6 +307,13 @@
         "Name": "Tên Nhóm",
         "Manager": "Quản lý",
         "Pagination": "Hiển thị {{from}} - {{to}} /Tổng số {{total}} nhóm"
+      },
+      "question": {
+        "question": "Câu hỏi",
+        "level": "Cấp độ",
+        "options": "Các lựa chọn",
+        "correct": "Đáp án",
+        "createdAt": "Ngày tạo"
       }
     }
   }

@@ -75,7 +75,8 @@
     "DayOff": "Day Off",
     "Booking": "Booking",
     "Booking/List": "List",
-    "Booking/Add": "Add"
+    "Booking/Add": "Add",
+    "Question": "Question"
   },
   "pages": {
     "ForgetPassword": "Forgot Password",
@@ -109,7 +110,8 @@
     "Team/Edit": "Edit Team",
     "Booking": "Booking",
     "Booking/Detail": "Booking {{date}}",
-    "Booking/Add": "Add booking {{type}} {{date}}"
+    "Booking/Add": "Add booking {{type}} {{date}}",
+    "Question": "Question"
   },
   "columns": {
     "auth": {
@@ -306,6 +308,13 @@
         "Name": "Name",
         "Manager": "Manager",
         "Pagination": "Show {{from}} - {{to}} /Total {{total}} team"
+      },
+      "question": {
+        "question": "Question",
+        "level": "Level",
+        "options": "Options",
+        "correct": "Correct",
+        "createdAt": "Created"
       }
     }
   }

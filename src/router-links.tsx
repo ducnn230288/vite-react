@@ -18,6 +18,7 @@ export const routerLinks = (name: string, type?: string) => {
     Parameter: '/setting/parameter',
     'Code/Add': '/setting/code/add',
     Team: '/setting/team',
+    Question: '/setting/question',
     'Team/Add': '/setting/team/add',
     DayOff: '/dayoff/list',
     'DayOff/List': '/dayoff/list',
@@ -43,6 +44,7 @@ export const routerLinks = (name: string, type?: string) => {
     DayOff: '/dayoff',
     UserManager: '/user',
     Booking: '/booking',
+    Question: '/question',
   }; // 💬 generate api to here
 
   switch (type) {

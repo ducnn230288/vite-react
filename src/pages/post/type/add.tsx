@@ -79,7 +79,10 @@ const Page = () => {
               title: 'Code',
               name: 'code',
               formItem: {
-                rules: [{ type: EFormRuleType.required }, { type: EFormRuleType.max, value: 100 }],
+                rules: [
+                  { type: EFormRuleType.required }, 
+                  { type: EFormRuleType.max, value: 100 }
+                ],
                 type: id ? EFormType.hidden : EFormType.text,
               },
             },
