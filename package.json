@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "serve": "npx serve build -l 4000",
     "build:dev": "tsc && vite build",
-    "build:staging": "tsc && vite build --mode staging",
+    "build:stag": "tsc && vite build --mode staging",
     "build:prod": "tsc && vite build --mode prod",
     "preview": "vite preview",
     "format": "prettier --write \"{src,public}/**/*.{tsx,jsx}\"",
@@ -31,6 +32,7 @@
     "@reduxjs/toolkit": "^1.9.7",
     "antd": "^5.10.2",
     "antd-input-otp": "^2.0.4",
+    "draggabilly": "^3.0.0",
     "echarts": "^5.4.3",
     "glightbox": "^3.2.0",
     "gsap": "^3.12.2",
@@ -52,6 +54,7 @@
     "web-vitals": "^3.5.0"
   },
   "devDependencies": {
+    "@types/draggabilly": "^2.1.5",
     "@types/react": "^18.2.31",
     "@types/react-dom": "^18.2.14",
     "@types/slug": "^5.0.6",

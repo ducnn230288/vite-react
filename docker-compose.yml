@@ -1,11 +1,10 @@
-version: "3.8"
+version: "3.9"
+
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - '4000:4000'
+  test:
+    image: 'langphongmtb/robot-framework-playwright'
     volumes:
-      - ./src:/app/src
-    command: npm run dev
+      - .\test:/app/test
+    tty: true
+    stdin_open: true
+
