@@ -10,4 +10,4 @@ services:
     volumes:
       - ./test:/app/test
     command: >
-      npm run serve
+      npx serve -l 4000
